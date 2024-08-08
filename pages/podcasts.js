@@ -18,7 +18,7 @@ export default function Page() {
       />
       <main>
       <Typography gutterBottom variant="h1" component="div" key="title" className="h">Podcasts</Typography>
-        <span className="description">Here are all our current podcasts. Podcasts from previous years may be found in <a href="https://archive.urn1350.net">the archive</a></span>
+        <span className="description">Here are all our current podcasts. Podcasts from previous years may be found in <a href="https://archive.urn1350.co.uk">the archive</a></span>
         <EpisodesTable full={true}/>
         </main>
       <Footer/>
