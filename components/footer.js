@@ -22,7 +22,7 @@ export default class Header extends React.Component {
           Find out more about us, and get in touch on our <a href="https://urn1350.co.uk/pages/about">About</a> page.
         </div>
         <div> 
-          Please find our constitution <a href="https://constitution.urn1350.net/constitution.pdf">here</a><br />
+          Please find our constitution <a href="https://constitution.urn1350.co.uk/constitution.pdf">here</a><br />
       </div>
       </AppBar>
     );
