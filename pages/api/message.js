@@ -40,6 +40,6 @@ export default async function handler(req, res) {
         }
       ],
     })
-    res.status(x.status).json(x.data)
+    //res.status(x.status).json(x.data)
   }
   
