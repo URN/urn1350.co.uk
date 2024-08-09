@@ -6,8 +6,8 @@ const UON_PREFIX = "128.243"
 
 
 export default async function handler(req, res) {
-    var url = process.env.SLACK_URL
-    var x = await  Axios.post(url, {text:req.body.msg})
+    //var url = process.env.SLACK_URL
+    //var x = await  Axios.post(url, {text:req.body.msg})
 
     const detectedIp = requestIp.getClientIp(req)
 
