@@ -27,13 +27,20 @@
     "slug": "dont-deep-it",
     "featured": "yes"
   },
+  "it-girls": {
+    "spotify": "0daJ8mf3GPDlgNXsaZ6pgQ",
+    "description": "Join co-hosts Alice and Zoë as they discuss all things 'IT Girl'",
+    "title": "IT Girls In Training",
+    "slug": "it-girls",
+    "featured": "yes"
+  },
   "urn-interviews": {
     "spotify": "2WNCH3gnNaIIMp2aQ7z7Ky",
     "description": "Here is the back-catalogue of people we've interviewed in the past",
     "title": "URN Interviews",
     "slug": "urn-interviews",
     "image": "https://i.scdn.co/image/ab6765630000ba8a91de447530e7b3519efd7fcf",
-    "featured": "yes"
+    "featured": "no"
   },
   "urn-news": {
     "spotify": "2eqOO1VfSpqQZJuKLpn4qU",
