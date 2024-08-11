@@ -3,9 +3,11 @@ import ImageHeader from '../components/index/imageHeader';
 import Footer from '../components/footer';
 import NowPlaying from '../components/index/nowPlaying';
 import Schedule from '../components/index/schedule';
+import News from '../components/index/news';
+
 
 import Settings from '../settings.json';
-import PodcastBar from '../components/PodcastBar';
+import EpisodesTable from '../components/PodcastBar';
 import Spotify from '../components/index/spotify';
 
 export default function Home() {
@@ -14,6 +16,7 @@ export default function Home() {
       <Header title={Settings.siteTitle} />
       <ImageHeader />
       <main>
+        {/* <News /> */}
         <NowPlaying />
         <div className="index-container">
 
@@ -22,7 +25,7 @@ export default function Home() {
             <Spotify />
           </div>
         </div>
-        <PodcastBar />
+        <EpisodesTable full={false}/>
       </main>
       <Footer />
     </>

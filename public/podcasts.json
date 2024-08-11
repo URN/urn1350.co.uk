@@ -1,16 +1,46 @@
 {
+  "margot-mercredis": {
+    "spotify": "6VO4dI4ffWmxqsvTJQGCfq",
+    "description": "Join Margot as she uncovers the ups and downs of what a year abroad in France is like!",
+    "title": "It's Margot Mercredis",
+    "slug": "margot-mercredis",
+    "featured": "yes"
+  },
+  "urngasm": {
+    "spotify": "2oR3CFAxRzhLnFDSZXtAxD",
+    "description": "This is URN's 'sexiest' sex and relationships podcast. Hosted by Izzy, Ellen, Josie and Charlie - breaking the stigma around naughty nattering!",
+    "title": "URNgasm",
+    "slug": "urngasm",
+    "featured": "yes"
+  },
+  "like-a-green-and-gold-girl": {
+    "spotify": "0KnmifmZGlvxkDkbyxVmmi",
+    "description": "This is University of Nottingham's women in sport podcast! In each episode, Libby chats with UoN's elite female athletes from a range of sports, delving into their experiences in sport and their time at the university.",
+    "title": "Like A Green and Gold Girl",
+    "slug": "like-a-green-and-gold-girl",
+    "featured": "yes"
+  },
   "urn-interviews": {
     "spotify": "2WNCH3gnNaIIMp2aQ7z7Ky",
     "description": "Here is the back-catalogue of people we've interviewed in the past",
     "title": "URN Interviews",
     "slug": "urn-interviews",
-    "image": "https://i.scdn.co/image/ab6765630000ba8a91de447530e7b3519efd7fcf"
+    "image": "https://i.scdn.co/image/ab6765630000ba8a91de447530e7b3519efd7fcf",
+    "featured": "yes"
   },
-  "urngasm": {
-    "spotify": "2oR3CFAxRzhLnFDSZXtAxD",
-    "description": "This is URN's 'sexiest' sex and relationships podcast. Hosted by Ben, Cora, and Izzy - breaking the stigma around naughty nattering!",
-    "title": "URNgasm",
-    "slug": "urngasm"
+  "urn-news": {
+    "spotify": "2eqOO1VfSpqQZJuKLpn4qU",
+    "description": "Reporting and daily news discussion from the award winning URN News Team",
+    "title": "URN News",
+    "slug": "urn-news",
+    "featured": "yes"
+  },
+  "ctrl-urn-del": {
+    "spotify": "3RtijNhH8lOcwiT5SfrueF",
+    "description": "Tune in to URNs first weekly tech news podcast and join Kasia, Harvey, Jacob, Eisha and Rowan as they discuss the latest developments, events and issues from the past week.",
+    "title": "Ctrl+URN+Del",
+    "slug": "ctrl-urn-del",
+    "featured": "yes"
   },
   "offair": {
     "spotify": "7M9oXJU4YDz5UjlJYOHL88",
@@ -43,6 +73,7 @@
     "description": "All other content from University Radio Nottingham",
     "title": "University Radio Nottingham",
     "slug": "urn",
-    "image": "https://i.scdn.co/image/15de83d5ae9f2b26b479cecbab81a82b907338b5"
+    "image": "https://i.scdn.co/image/15de83d5ae9f2b26b479cecbab81a82b907338b5",
+    "featured": "yes"
   }
 }
