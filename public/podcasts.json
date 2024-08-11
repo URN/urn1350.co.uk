@@ -20,6 +20,13 @@
     "slug": "like-a-green-and-gold-girl",
     "featured": "yes"
   },
+  "dont-deep-it": {
+    "spotify": "3iGgv5DTXRCZ6CNhcGl25m",
+    "description": "Welcome to Don't Deep It where we do, in fact, deep it! We are here to deep everything and anything from what you had for dinner last night to the reason for existence...",
+    "title": "Don't Deep It",
+    "slug": "dont-deep-it",
+    "featured": "yes"
+  },
   "urn-interviews": {
     "spotify": "2WNCH3gnNaIIMp2aQ7z7Ky",
     "description": "Here is the back-catalogue of people we've interviewed in the past",
@@ -74,6 +81,6 @@
     "title": "University Radio Nottingham",
     "slug": "urn",
     "image": "https://i.scdn.co/image/15de83d5ae9f2b26b479cecbab81a82b907338b5",
-    "featured": "yes"
+    "featured": "no"
   }
 }
