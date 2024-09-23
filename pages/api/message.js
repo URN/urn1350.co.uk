@@ -14,6 +14,10 @@ export default async function handler(req, res) {
     if (req.body.msg.length >= 200) {
         return res.status(200).json({});
     }
+
+    if (req.body.message == "") {
+      return res.status(400);
+    }
     
     var discord = process.env.DISCORD_URL
     await Axios.post(discord, {
