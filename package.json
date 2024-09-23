@@ -14,7 +14,7 @@
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.61",
-    "axios": "^1.7.2",
+    "axios": "^1.7.4",
     "markdown-to-jsx": "^7.4.7",
     "mui-audio-player": "^1.0.1",
     "next": "^14.2.10",
