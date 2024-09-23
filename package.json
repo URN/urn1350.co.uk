@@ -17,7 +17,7 @@
     "axios": "^1.7.2",
     "markdown-to-jsx": "^7.4.7",
     "mui-audio-player": "^1.0.1",
-    "next": "^14.2.4",
+    "next": "^14.2.10",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "request-ip": "^3.3.0",
