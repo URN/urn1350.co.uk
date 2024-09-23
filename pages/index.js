@@ -17,7 +17,7 @@ export default function Home() {
       <ImageHeader />
       <main>
         {<News />}
-        {/*<NowPlaying />*/}
+        <NowPlaying />
         <div className="index-container">
 
           <Schedule />
