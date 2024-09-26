@@ -1,4 +1,4 @@
-import Axios from 'axios';
+/*import Axios from 'axios';
 import requestIp from 'request-ip'
 
 // Any IP starting with 128.243 belongs to Uni of Nottingham
@@ -44,4 +44,4 @@ export default async function handler(req, res) {
     })
     res.status(200).json({})
   }
-  
+  */
