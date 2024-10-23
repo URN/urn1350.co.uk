@@ -100,7 +100,7 @@ const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", 
 	});
       }
       
-      let streamURL = `https://urn-temp-stream01.urn1350.net/listen?cache=${this.state.cacheBust}`;
+      let streamURL = `https://live.urn1350.co.uk/listen?cache=${this.state.cacheBust}`;
 
       return (
         
