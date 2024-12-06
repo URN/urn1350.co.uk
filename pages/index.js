@@ -16,7 +16,6 @@ export default function Home() {
       <Header title={Settings.siteTitle} />
       <ImageHeader />
       <main>
-        {<News />}
         <NowPlaying />
         <div className="index-container">
 
