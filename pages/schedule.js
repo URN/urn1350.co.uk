@@ -21,7 +21,6 @@ function pm(x)
 
 export default function Page({schedule}) {
     const today = schedule.Monday;
-  
   return (
     <>
       <Header
