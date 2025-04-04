@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     var discord_internal = process.env.INT_DISCORD_URL
 
     await Axios.post(discord_internal, {
-      "content": req.body.message,
+      "content": req.body.msg,
       "embeds": null
     });
 
