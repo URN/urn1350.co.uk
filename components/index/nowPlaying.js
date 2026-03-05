@@ -1,129 +1,173 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
-import Alert from "@material-ui/lab/Alert";
-import AlertTitle from "@material-ui/lab/AlertTitle";
 import Button from '@material-ui/core/Button';
 import Axios from 'axios';
 import YAML from 'yaml';
 
 import Settings from '../../settings.json';
-  
-function pm(x)
-{
-  if(x == 12)
-  return x;
 
+function pm(x) {
+  if (x === 12) return x;
   return x - 12;
 }
 
-const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-  export default class ImageHeader extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = { msg: "", schedule: null, cacheBust: null };
-      this.send_message = this.send_message.bind(this);
-      Axios.get(`${Settings.cdnUrl}/schedule.yml`).then(r => {
-        const schedule = YAML.parse(r.data)
-        this.setState({
-          ...this.state,
-          schedule
-        })
-      })
-    }
+const days = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
 
-    send_message = async e => {
-      e.preventDefault();
-    // pass form data
-    // get it from state
-    let that = this;
-    const formData = {msg: that.state.msg};
-    var x = await Axios.post("/api/message" ,formData)
+export default class ImageHeader extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { msg: '', schedule: null, cacheBust: null, isPlaying: false };
+    this.audioRef = React.createRef();
+    this.send_message = this.send_message.bind(this);
+
+    Axios.get(`${Settings.cdnUrl}/schedule.yml`).then((r) => {
+      const schedule = YAML.parse(r.data);
+      this.setState({
+        ...this.state,
+        schedule,
+      });
+    });
+  }
+
+  send_message = async (e) => {
+    e.preventDefault();
+    const formData = { msg: this.state.msg };
+    await Axios.post('/api/message', formData);
 
     this.setState({
       ...this.state,
-      msg: ""
-    })
+      msg: '',
+    });
+  };
+
+  update = async (event) => {
+    this.setState({
+      ...this.state,
+      msg: event.target.value,
+    });
+  };
+
+  togglePlay = () => {
+    const audio = this.audioRef.current;
+    if (!audio) return;
+
+    if (this.state.isPlaying) {
+      audio.pause();
+    } else {
+      audio.play();
     }
 
+    this.setState({
+      ...this.state,
+      isPlaying: !this.state.isPlaying,
+    });
+  };
 
-    update = async event => {
-  this.setState({
-    ...this.state,
-    msg: event.target.value
-  })
+  render() {
+    let show_name = '';
+    let time = '';
 
-}
+    if (this.state.schedule != null) {
+      const d = new Date();
+      const days_schedule = this.state.schedule[days[d.getDay()]];
 
-    render() {
-      let show_name = "";
-      let time = "";
-
-      if(this.state.schedule != null )
-      {
-        const d = new Date()
-        let days_schedule = this.state.schedule[days[d.getDay()]]
-
-        let current_show = Object.keys(days_schedule).map(
-          key => 
-            [key, days_schedule[key]]
-        ).filter(
-          ([key, value]) => value.start <= d.getHours() && d.getHours() < value.end 
+      const current_show = Object.keys(days_schedule)
+        .map((key) => [key, days_schedule[key]])
+        .filter(
+          ([, value]) =>
+            value.start <= d.getHours() && d.getHours() < value.end
         )[0];
-        
-        show_name = current_show[0];
 
-        let s = current_show[1].start;
-        let e = current_show[1].end;
-          
-        if ( e == 24){
-          time = `${pm(s)}pm-12am`
-        }
-        else if(e >= 12)
-        {
-          if(s >= 12){
-            time = `${pm(s)}-${pm(e)}pm`
-          }
-          else {
-            time = `${s}am-${pm(e)}pm`
-          }
+      show_name = current_show[0];
+
+      const s = current_show[1].start;
+      const e = current_show[1].end;
+
+      if (e === 24) {
+        time = `${pm(s)}pm-12am`;
+      } else if (e >= 12) {
+        if (s >= 12) {
+          time = `${pm(s)}-${pm(e)}pm`;
         } else {
-          time = `${s}-${e}am`
+          time = `${s}am-${pm(e)}pm`;
         }
-        
+      } else {
+        time = `${s}-${e}am`;
       }
-
-      if (!this.state.cacheBust) {
-	this.setState({
-	   ...this.state,
-	   cacheBust: Math.floor(Math.random() * 10000000)
-	});
-      }
-      
-      let streamURL = `https://live.urn1350.co.uk/listen?cache=${this.state.cacheBust}`;
-
-      return (
-        
-        <Paper className="now-playing" elevation={3}>
-	    
-            <h1>Now Playing</h1>
-            <span className="show-name">{show_name}</span>
-            <span className="show-time">From {time}</span>
-            <br/>
-            <audio src={streamURL} controls preload="none" />
-            <form onSubmit={this.handleOnSubmit}>
-            <TextField
-          className="message-show"
-          label="Message The Show"
-          multiline
-          minRows={4}
-          variant="standard"
-          value={this.state.msg}
-          onChange={this.update}
-        />
-        <Button variant="contained" color="primary" onClick={this.send_message}>Submit</Button>
-        </form>
-        </Paper>
-      );
     }
+
+    if (!this.state.cacheBust) {
+      this.setState({
+        ...this.state,
+        cacheBust: Math.floor(Math.random() * 10000000),
+      });
+    }
+
+    const streamURL = `https://live.urn1350.co.uk/listen?cache=${this.state.cacheBust}`;
+
+    return (
+      <div className="now-playing">
+        <Paper className="now-playing-top-box" elevation={3}>
+          <div className="now-playing-header">
+            <div className="now-playing-meta">
+              <span className="on-air-label">On Air Now</span>
+              <div>
+                <span className="show-name">{show_name}</span>
+              </div>
+              <span className="show-time">From {time}</span>
+            </div>
+            <button
+              type="button"
+              className={`listen-button ${
+                this.state.isPlaying ? 'is-playing' : ''
+              }`}
+              onClick={this.togglePlay}
+            >
+              <span className="listen-button-icon">
+                {this.state.isPlaying ? '❚❚' : '▶'}
+              </span>
+              <span className="listen-button-label">
+                {this.state.isPlaying ? 'Pause' : 'Listen'}
+              </span>
+            </button>
+          </div>
+          <audio
+            ref={this.audioRef}
+            src={streamURL}
+            preload="none"
+            className="now-playing-audio"
+          />
+        </Paper>
+        <Paper className="now-playing-message-box" elevation={3}>
+          <form onSubmit={this.handleOnSubmit}>
+            <TextField
+              className="message-show"
+              label="Message The Show"
+              multiline
+              minRows={4}
+              variant="standard"
+              value={this.state.msg}
+              onChange={this.update}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.send_message}
+            >
+              Submit
+            </Button>
+          </form>
+        </Paper>
+      </div>
+    );
+  }
 }

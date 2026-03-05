@@ -28,6 +28,17 @@
       xl: 1800px,
     // Large Desktop
   );
+
+  body {
+    background-image:
+      linear-gradient(135deg, rgba(35, 12, 80, 0.7), rgba(122, 75, 145, 0.7)),
+      url("https://content.urn1350.co.uk/content/images/Nottingham.jpg");
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    color: #f8f2ff;
+  }
   
   @function container($container-size, $true-val: false) {
     @return map-get($container-sizes, $container-size);
@@ -73,6 +84,42 @@
   flex-wrap: wrap;
   display: flex;
   justify-content: space-around;
+}
+
+.instagram-latest {
+  max-width: min(63rem, 95vw);
+  margin: 2rem auto;
+}
+
+.instagram-latest h2 {
+  margin: 0 0 0.75rem;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.instagram-feed-scroll {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.instagram-card {
+  padding: 0;
+  border-radius: 24px;
+  overflow: hidden;
+  min-width: 320px;
+  max-width: 360px;
+  flex: 0 0 auto;
+}
+
+.instagram-embed-wrapper iframe {
+  width: 100%;
+  min-height: 520px;
+  border: 0;
 }
 
 
