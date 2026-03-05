@@ -1,3 +1,10 @@
+/* Sticky header + nav: both stay at top when scrolling -------------------- */
+.site-header-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
 .title {
   text-align: center;
   width: 100%;
@@ -82,6 +89,51 @@ header .subtitle {
 
 .hero-text-block h1 {
   margin: 0;
+}
+
+/* Header "On Air Now" + Listen Now ---------------------------------------- */
+.hero-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.hero-onair {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-onair .on-air-label {
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.hero-mic-icon {
+  font-size: 1rem;
+}
+
+.hero-show-name {
+  font-weight: bolder;
+  font-style: oblique;
+  font-size: 1.1rem;
+  max-width: 12rem;
+  word-wrap: break-word;
+}
+
+.hero-listen-link {
+  text-decoration: none;
+}
+
+.listen-button--header {
+  background: #ffffff;
+  color: #7A4B91;
+}
+
+.listen-button--header .listen-button-icon {
+  background: #ffffff;
+  color: #7A4B91;
 }
 
 /* .hero-subtitle-right was used when the subtitle sat on the right;

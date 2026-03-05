@@ -14,8 +14,10 @@ import Spotify from '../components/index/spotify';
 export default function Home() {
   return (
     <>
-      <ImageHeader />
-      <Header title={Settings.siteTitle} />
+      <div className="site-header-sticky">
+        <ImageHeader />
+        <Header title={Settings.siteTitle} />
+      </div>
       <main>
         <NowPlaying />
         <InstagramLatest />

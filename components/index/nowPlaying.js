@@ -136,7 +136,7 @@ export default class ImageHeader extends React.Component {
                 {this.state.isPlaying ? '❚❚' : '▶'}
               </span>
               <span className="listen-button-label">
-                {this.state.isPlaying ? 'Pause' : 'Listen'}
+                {this.state.isPlaying ? 'Pause' : 'Play'}
               </span>
             </button>
           </div>
