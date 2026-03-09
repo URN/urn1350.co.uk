@@ -31,13 +31,13 @@
 
   body {
     background-image:
-      linear-gradient(135deg, rgba(35, 12, 80, 0.7), rgba(122, 75, 145, 0.7)),
+      linear-gradient(135deg, rgba(105, 72, 138, 0.72), rgba(122, 92, 152, 0.72)),
       url("https://content.urn1350.co.uk/content/images/Nottingham.jpg");
     background-position: center top;
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
-    color: #f8f2ff;
+    color: #ffffff;
   }
   
   @function container($container-size, $true-val: false) {
@@ -64,6 +64,23 @@
     }
   }
 
+.schedule-spotify-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1.5rem;
+    max-width: 70rem;
+}
+
+.schedule-spotify-row .schedule {
+    margin-bottom: 0;
+}
+
 .index-container {
     display: flex;
     flex-direction: row;
@@ -72,9 +89,32 @@
 }
 
 .schedule-parent {
-    width: min(30rem, 95vw);
-    margin: 0 2rem;
+    width: min(36rem, 95vw);
+    height: 425px;
+    margin: 0;
+    margin-top: 12.5px;
     display: inline-block;
+    border: 10px solid #ffffff;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.schedule-parent .spotify {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-radius: 0;
+}
+
+.schedule-parent .spotify iframe {
+    width: 100%;
+    height: 100%;
+    min-height: 425px;
+}
+
+.podcasts-heading {
+  color: #ffffff;
 }
 
 .podcast-holder {
@@ -84,20 +124,25 @@
   flex-wrap: wrap;
   display: flex;
   justify-content: space-around;
+  border-bottom: none !important;
+  box-shadow: none !important;
 }
 
 .instagram-latest {
+  margin: 0.75rem 0 2rem;
+}
+
+.instagram-latest-feed {
   max-width: min(63rem, 95vw);
-  margin: 2rem auto;
+  margin: 0 auto;
 }
 
 .instagram-latest h2 {
   margin: 0 0 0.75rem;
   color: #ffffff;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 2rem;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 .instagram-feed-scroll {
@@ -139,4 +184,65 @@
   justify-content: center;
   height: auto;
   overflow: inherit;
+}
+
+.join-us {
+  max-width: min(36rem, 95vw);
+  margin: 2rem auto;
+  margin-top: -8px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 1rem;
+  background: #ffffff !important;
+  color: #5F2A87;
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
+  position: relative;
+  z-index: 1;
+}
+
+.join-us-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.join-us h2 {
+  margin: 0;
+  color: #5F2A87;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.join-us-button {
+  display: inline-block;
+  margin: 0;
+  padding: 0.5rem 1.5rem;
+  background: #5F2A87;
+  color: #ffffff !important;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 2rem;
+  transition: background 0.15s ease;
+}
+
+.join-us-button:hover {
+  background: #7A4B91;
+  color: #ffffff !important;
+}
+
+/* Info pages (about, committee, get-involved, etc.): all text white */
+main.page,
+main.page * {
+  color: #ffffff !important;
+}
+
+main.page a {
+  color: #e8e0f0 !important;
+}
+
+main.page a:hover {
+  color: #ffffff !important;
 }

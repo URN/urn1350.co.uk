@@ -31,7 +31,7 @@ export default class PodcastBar extends React.Component {
             return (
                 <>
                 {
-                  (this.props.full?<></>:<h1>Podcasts</h1>)
+                  (this.props.full?<></>:<h1 className="podcasts-heading">Podcasts</h1>)
                 }
                   <div className={`podcast-holder ${this.props.full?"full":""}`}>
                   {

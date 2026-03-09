@@ -37,8 +37,8 @@ export default function Page({data, p}) {
         image={data.image}
         description={data.description}
       />
-      <main>
-      <Markdown options={{ forceBlock: false }}>
+      <main className={`page page-${slug.replace(/\//g, "-")}`}>
+        <Markdown options={{ forceBlock: false }}>
             {data}
           </Markdown>
         </main>

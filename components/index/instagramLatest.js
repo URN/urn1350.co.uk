@@ -5,12 +5,13 @@ export default function InstagramLatest() {
   const posts = [
     'https://www.instagram.com/p/DVUN-9LjOjy/embed',
     'https://www.instagram.com/p/DVE2WBvDC6o/embed',
-    'https://www.instagram.com/p/DUllU7kjGvN/embed',
+    'https://www.instagram.com/p/DVg3jk_jD8n/embed',
   ];
 
   return (
     <section className="instagram-latest">
-      <h2>Latest</h2>
+      <h2>Latest at URN</h2>
+      <div className="instagram-latest-feed">
       <div className="instagram-feed-scroll">
         {posts.map((url, index) => (
           <Paper elevation={3} className="instagram-card" key={url || index}>
@@ -25,6 +26,7 @@ export default function InstagramLatest() {
             </div>
           </Paper>
         ))}
+      </div>
       </div>
     </section>
   );

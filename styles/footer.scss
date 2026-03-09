@@ -5,13 +5,17 @@
     flex-direction: column;
   }
 
-footer {
+footer,
+footer.MuiAppBar-root {
     align-self: flex-end;
     margin-top: auto;
     padding: 1rem;
     column-count: 2 !important;
     display: block !important;
     font-size: 1rem;
+    box-shadow: none !important;
+    border: none !important;
+    border-top: none !important;
 }
 
 footer a {
