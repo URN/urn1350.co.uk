@@ -117,6 +117,21 @@
   color: #ffffff;
 }
 
+.podcasts-page .h,
+.podcasts-page .description,
+.podcasts-page .MuiTypography-h1 {
+  color: #ffffff !important;
+}
+
+.podcasts-page .description a {
+  color: #e8e0f0 !important;
+  text-decoration: underline;
+}
+
+.podcasts-page .description a:hover {
+  color: #ffffff !important;
+}
+
 .podcast-holder {
   white-space: nowrap;
   margin: 2rem auto;
@@ -245,4 +260,83 @@ main.page a {
 
 main.page a:hover {
   color: #ffffff !important;
+}
+
+/* Committee page and all previous years: white card for readability */
+main[class*="page-committee"] {
+  background: #ffffff !important;
+  color: #2d2d2d !important;
+  padding: 2rem !important;
+  border-radius: 1rem;
+  max-width: 40rem;
+  margin: 1.5rem auto !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+main[class*="page-committee"] h1 {
+  font-family: bebas-neue !important;
+  font-size: 2.25rem !important;
+  color: #2d2d2d !important;
+  margin-top: 0 !important;
+  margin-bottom: 1rem !important;
+}
+
+main[class*="page-committee"] h2 {
+  font-family: bebas-neue !important;
+  font-size: 1.25rem !important;
+  font-weight: 400 !important;
+  color: #ffffff !important;
+  background: #5F2A87;
+  margin: 1.5rem 0 0.75rem !important;
+  padding: 0.5rem 1.25rem !important;
+  border-radius: 2rem;
+  width: fit-content;
+  display: inline-block;
+}
+
+main[class*="page-committee"] p {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 1.05rem !important;
+  color: #2d2d2d !important;
+  line-height: 1.65;
+  margin: 0 0 1rem !important;
+}
+
+main[class*="page-committee"] ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem !important;
+}
+
+main[class*="page-committee"] ul li {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 1.05rem !important;
+  color: #2d2d2d !important;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(45, 45, 45, 0.15);
+  line-height: 1.6;
+}
+
+main[class*="page-committee"] ul li:last-child {
+  border-bottom: none;
+}
+
+main[class*="page-committee"] ul li strong {
+  color: #5F2A87 !important;
+}
+
+main[class*="page-committee"] a {
+  color: #5F2A87 !important;
+}
+
+main[class*="page-committee"] a:hover {
+  color: #7A4B91 !important;
+}
+
+main[class*="page-committee"] ul li a {
+  color: #2d2d2d !important;
+}
+
+main[class*="page-committee"] ul li a:hover {
+  color: #5F2A87 !important;
 }

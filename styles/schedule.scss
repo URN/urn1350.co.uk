@@ -165,3 +165,39 @@
 .day .show-time {
     max-width: 5rem;
 }
+
+/* Full schedule page: pill format, no scrolling */
+.schedule-page .schedule-day {
+    height: auto;
+    width: min(20rem, 95vw);
+    margin: 1rem;
+    background: #ffffff !important;
+}
+
+.schedule-page .schedule-list--no-scroll {
+    overflow: visible;
+    min-height: auto;
+    flex: none;
+}
+
+/* Full Schedule heading: white, same font as day names */
+.schedule-page .h {
+    color: #ffffff !important;
+    font-family: bebas-neue !important;
+    font-size: 2.25rem !important;
+    margin-top: 1.5rem !important;
+}
+
+/* Day names: same-sized purple pill, white text - same font as "Latest" */
+.schedule-page .schedule-title {
+    font-family: bebas-neue !important;
+    color: #ffffff !important;
+    background: #5F2A87;
+    margin: 0 auto 1rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 2rem;
+    width: 11rem;
+    text-align: center;
+    display: block;
+    box-sizing: border-box;
+}

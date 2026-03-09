@@ -4,6 +4,7 @@ import Footer from '../components/footer';
 import Schedule from '../components/index/schedule';
 import News from '../components/index/news';
 
+import NowPlaying from '../components/index/nowPlaying';
 import InstagramLatest from '../components/index/instagramLatest';
 
 import Settings from '../settings.json';
@@ -19,6 +20,7 @@ export default function Home() {
         <Header title={Settings.siteTitle} />
       </div>
       <main>
+        <NowPlaying />
         <InstagramLatest />
         <div className="schedule-spotify-row">
           <Schedule />

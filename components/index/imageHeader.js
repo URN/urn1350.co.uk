@@ -96,13 +96,13 @@ export default class ImageHeader extends React.Component {
               </span>
               <span className="hero-show-name">{show_name}</span>
             </div>
-            <a href="/listen" className="hero-listen-link">
+            <a href="/schedule" className="hero-listen-link">
               <button
                 type="button"
                 className="listen-button listen-button--header"
               >
-                <span className="listen-button-icon">▶</span>
-                <span className="listen-button-label">Listen Now</span>
+                <span className="listen-button-icon">›</span>
+                <span className="listen-button-label">View Full Schedule</span>
               </button>
             </a>
           </div>

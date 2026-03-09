@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper';
 export default function InstagramLatest() {
   const posts = [
     'https://www.instagram.com/p/DVUN-9LjOjy/embed',
-    'https://www.instagram.com/p/DVE2WBvDC6o/embed',
+    'https://www.instagram.com/p/DVowfycDDSf/embed',
     'https://www.instagram.com/p/DVg3jk_jD8n/embed',
   ];
 
@@ -31,4 +31,3 @@ export default function InstagramLatest() {
     </section>
   );
 }
-
