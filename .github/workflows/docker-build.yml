@@ -12,4 +12,4 @@ jobs:
           registry: ghcr.io
           image: urn1350.net
           username: Emersont1
-          password: ${{ secrets.CONTAINER_REGISTRY }}
+          password: ${{ secrets.CR_PAT }}
