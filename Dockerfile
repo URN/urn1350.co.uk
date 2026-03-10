@@ -8,8 +8,8 @@ WORKDIR /usr/src/app
 # where available (npm@5+)
 COPY package*.json ./
 
-# Install build tools and dependencies
-RUN apk add --no-cache build-base python2 py2-pip && \
+# Install dependencies (no Python 2 required)
+RUN apk add --no-cache build-base && \
     npm install
 # If you are building your code for production
 # RUN npm ci --only=production
