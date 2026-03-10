@@ -3,11 +3,11 @@ import Footer from "../components/footer";
 
 import Settings from '../settings.json';
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Paper from '@mui/material/Paper';
+import CircularProgress from '@mui/material/CircularProgress';
 import Axios from 'axios';
 import YAML from 'yaml';
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 
 const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 

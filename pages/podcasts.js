@@ -5,7 +5,7 @@ import Axios from 'axios';
 
 import EpisodesTable from '../components/PodcastBar';
 
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 
 import Settings from '../settings.json';
 

@@ -1,11 +1,11 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Paper from '@mui/material/Paper';
+import CircularProgress from '@mui/material/CircularProgress';
 import Axios from 'axios';
 import YAML from 'yaml';
 
 import Settings from '../../settings.json';
-import { Button, Card } from '@material-ui/core';
+import { Button, Card } from '@mui/material';
 
 function pm(x)
 {
