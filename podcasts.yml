@@ -1,0 +1,108 @@
+# -----------------------------------------------------------------------------
+# PODCASTS — deploy to website-content (same place as schedule.yml)
+# URL when live: https://content.urn1350.co.uk/podcasts.yml
+# -----------------------------------------------------------------------------
+#
+# HOW TO EDIT
+# -----------
+# Each podcast is listed under `podcasts:` with a unique key (slug). That key
+# is used in the site URL: /podcasts/<slug>
+#
+#   title        — Display name
+#   information  — Blurb / description (use | for multiple lines)
+#   spotify      — Spotify *show* ID only (from open.spotify.com/show/THIS_PART)
+#   image        — Either:
+#                  • filename only, e.g. urngasm.jpg  → loaded from podcasts.urn1350.co.uk
+#                  • full URL if the art is hosted elsewhere
+#   featured     — "yes" to show on the home page row; "no" or omit for listing only
+#
+# Spotify embed in the app is: https://open.spotify.com/embed/show/<spotify>
+# -----------------------------------------------------------------------------
+
+podcasts:
+  margot-mercredis:
+    title: "It's Margot Mercredis"
+    information: "Join Margot as she uncovers the ups and downs of what a year abroad in France is like!"
+    spotify: "6VO4dI4ffWmxqsvTJQGCfq"
+    image: "margot-mercredis.jpg"
+    featured: "yes"
+
+  urngasm:
+    title: "URNgasm"
+    information: "This is URN's 'sexiest' sex and relationships podcast. Hosted by Izzy, Ellen, Josie and Charlie - breaking the stigma around naughty nattering!"
+    spotify: "2oR3CFAxRzhLnFDSZXtAxD"
+    image: "urngasm.jpg"
+    featured: "yes"
+
+  like-a-green-and-gold-girl:
+    title: "Like A Green and Gold Girl"
+    information: "This is University of Nottingham's women in sport podcast! In each episode, Libby chats with UoN's elite female athletes from a range of sports, delving into their experiences in sport and their time at the university."
+    spotify: "0KnmifmZGlvxkDkbyxVmmi"
+    image: "like-a-green-and-gold-girl.jpg"
+    featured: "yes"
+
+  dont-deep-it:
+    title: "Don't Deep It"
+    information: "Welcome to Don't Deep It where we do, in fact, deep it! We are here to deep everything and anything from what you had for dinner last night to the reason for existence..."
+    spotify: "3iGgv5DTXRCZ6CNhcGl25m"
+    image: "dont-deep-it.jpg"
+    featured: "yes"
+
+  it-girls:
+    title: "IT Girls In Training"
+    information: "Join co-hosts Alice and Zoë as they discuss all things 'IT Girl'"
+    spotify: "0daJ8mf3GPDlgNXsaZ6pgQ"
+    image: "it-girls.jpg"
+    featured: "yes"
+
+  urn-interviews:
+    title: "URN Interviews"
+    information: "Here is the back-catalogue of people we've interviewed in the past"
+    spotify: "2WNCH3gnNaIIMp2aQ7z7Ky"
+    image: "https://i.scdn.co/image/ab6765630000ba8a91de447530e7b3519efd7fcf"
+    featured: "no"
+
+  urn-news:
+    title: "URN News"
+    information: "Reporting and daily news discussion from the award winning URN News Team"
+    spotify: "2eqOO1VfSpqQZJuKLpn4qU"
+    image: "urn-news.jpg"
+    featured: "yes"
+
+  ctrl-urn-del:
+    title: "Ctrl+URN+Del"
+    information: "Tune in to URNs first weekly tech news podcast and join Kasia, Harvey, Jacob, Eisha and Rowan as they discuss the latest developments, events and issues from the past week."
+    spotify: "3RtijNhH8lOcwiT5SfrueF"
+    image: "ctrl-urn-del.jpg"
+    featured: "yes"
+
+  offair:
+    title: "Off Air With... URN"
+    information: "Join Erin as she interviews the members of University Radio Nottingham about their lives off air."
+    spotify: "7M9oXJU4YDz5UjlJYOHL88"
+    image: "https://i.scdn.co/image/ab67656300005f1f6766149d6421d856617aa4bc"
+
+  ecofrenzy:
+    title: "EcoFrenzy"
+    information: "University Radio Nottingham's official environmentalist podcast brought to you by Erin, Gabby and Georgia. Listen in to hear all things sustainability and broken down into fun, informative, relatable content that doesn't judge the listener!"
+    spotify: "5BRoczi4hRoewb5eI2ZFzx"
+    image: "https://i.scdn.co/image/ab67656300005f1f8f3d8afbca8b20dc10816b4b"
+
+  the-roundtable:
+    title: "The Roundtable"
+    information: "Welcome to the Roundtable, URN's ideological discussion podcast. From the left to the right, we see whether we agree on the big issues!"
+    spotify: "7pn6HYmXYr9w2XvTYXcRr6"
+    image: "the-roundtable.jpg"
+
+  mellob-experience:
+    title: "The Mellob Experience"
+    information: "Within the Mellob Experience, you can witness permanently-under-a-rock Ben try to discover iconic movies/music/everything he should have seen - as well as chat about a mixture of books and anything at all! Joined by the much smarter co-host Jacob, it is not an experience you want to miss."
+    spotify: "62ENuKmC6fBv9868ZQEQ7e"
+    image: "mellob-experience.jpg"
+
+  urn:
+    title: "University Radio Nottingham"
+    information: "All other content from University Radio Nottingham"
+    spotify: "6zfRbAD54jxzJBwITs6o9T"
+    image: "https://i.scdn.co/image/15de83d5ae9f2b26b479cecbab81a82b907338b5"
+    featured: "no"

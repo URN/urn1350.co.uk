@@ -28,6 +28,31 @@
       xl: 1800px,
     // Large Desktop
   );
+
+  body {
+    background-image:
+      linear-gradient(135deg, rgba(105, 72, 138, 0.72), rgba(122, 92, 152, 0.72)),
+      url("https://content.urn1350.co.uk/content/images/Nottingham.jpg");
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    color: #ffffff;
+  }
+
+  /* About Us only: same purple overlay, Studio.png (same folder as Nottingham/oscilloscope) */
+  body.page-bg-about {
+    background-image:
+      linear-gradient(135deg, rgba(105, 72, 138, 0.72), rgba(122, 92, 152, 0.72)),
+      url("https://content.urn1350.co.uk/content/images/Studio.png");
+  }
+
+  /* Full Schedule page: oscilloscope.jpg, same overlay as default/about */
+  body.page-bg-schedule {
+    background-image:
+      linear-gradient(135deg, rgba(105, 72, 138, 0.72), rgba(122, 92, 152, 0.72)),
+      url("https://content.urn1350.co.uk/content/images/oscilloscope.jpg");
+  }
   
   @function container($container-size, $true-val: false) {
     @return map-get($container-sizes, $container-size);
@@ -53,6 +78,42 @@
     }
   }
 
+/* Schedule + Spotify side by side: need room for two ~36rem blocks + gap;
+   70rem was too narrow and forced wrap on large screens. */
+.schedule-spotify-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1.5rem;
+    max-width: 90rem;
+    width: 100%;
+}
+
+/* On large screens keep one row; nowrap + wide enough max-width prevents stack */
+@include min(1200px) {
+  .schedule-spotify-row {
+    flex-wrap: nowrap;
+    justify-content: center;
+  }
+}
+
+/* In row layout, drop auto margins so flex can place both blocks on one line */
+.schedule-spotify-row .schedule {
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    flex: 0 1 auto;
+}
+
+.schedule-spotify-row .schedule-parent {
+    flex: 0 1 auto;
+}
+
 .index-container {
     display: flex;
     flex-direction: row;
@@ -61,9 +122,77 @@
 }
 
 .schedule-parent {
-    width: min(30rem, 95vw);
-    margin: 0 2rem;
+    width: min(36rem, 95vw);
+    height: 425px;
+    margin: 0;
+    margin-top: 12.5px;
     display: inline-block;
+    border: 10px solid #ffffff;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.schedule-parent .spotify {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-radius: 0;
+}
+
+.schedule-parent .spotify iframe {
+    width: 100%;
+    height: 100%;
+    min-height: 425px;
+}
+
+/* Same font treatment as .instagram-latest h2 ("Latest at URN") */
+.podcasts-heading {
+  color: #ffffff;
+  font-family: bebas-neue, sans-serif;
+  font-weight: 600;
+  font-size: 2rem;
+  letter-spacing: 0.08em;
+  text-align: center;
+  margin: 0 0 0.75rem;
+}
+
+/* Line under podcast cards on homepage */
+.podcasts-subheading {
+  color: #ffffff;
+  text-align: center;
+  margin: 1.25rem auto 1rem;
+  max-width: min(36rem, 95vw);
+  padding: 0 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+/* Page heading + intro only — not inside cards (cards use .h on title and need dark text) */
+.podcasts-page-title,
+.podcasts-page .description,
+.podcasts-page > .MuiTypography-h1 {
+  color: #ffffff !important;
+}
+
+/* Podcast cards: black text on white/light CardContent */
+.podcasts-page .podcast-card .MuiCardContent-root,
+.podcasts-page .podcast-card .MuiCardContent-root .MuiTypography-root {
+  color: #2d2d2d !important;
+}
+
+.podcasts-page .description a {
+  color: #e8e0f0 !important;
+  text-decoration: underline;
+}
+
+.podcasts-page .description a:hover {
+  color: #ffffff !important;
+}
+
+/* Push podcast block down on homepage (below schedule/Spotify row) */
+.home-podcast-section {
+  margin-top: 2.5rem;
 }
 
 .podcast-holder {
@@ -73,6 +202,47 @@
   flex-wrap: wrap;
   display: flex;
   justify-content: space-around;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+.instagram-latest {
+  margin: 0.75rem 0 2rem;
+}
+
+.instagram-latest-feed {
+  max-width: min(63rem, 95vw);
+  margin: 0 auto;
+}
+
+.instagram-latest h2 {
+  margin: 0 0 0.75rem;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 2rem;
+  letter-spacing: 0.08em;
+}
+
+.instagram-feed-scroll {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.instagram-card {
+  padding: 0;
+  border-radius: 24px;
+  overflow: hidden;
+  min-width: 320px;
+  max-width: 360px;
+  flex: 0 0 auto;
+}
+
+.instagram-embed-wrapper iframe {
+  width: 100%;
+  min-height: 520px;
+  border: 0;
 }
 
 
@@ -92,4 +262,144 @@
   justify-content: center;
   height: auto;
   overflow: inherit;
+}
+
+.join-us {
+  max-width: min(36rem, 95vw);
+  margin: 2rem auto;
+  margin-top: -8px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 1rem;
+  background: #ffffff !important;
+  color: #5F2A87;
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
+  position: relative;
+  z-index: 1;
+}
+
+.join-us-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.join-us h2 {
+  margin: 0;
+  color: #5F2A87;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.join-us-button {
+  display: inline-block;
+  margin: 0;
+  padding: 0.5rem 1.5rem;
+  background: #5F2A87;
+  color: #ffffff !important;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 2rem;
+  transition: background 0.15s ease;
+}
+
+.join-us-button:hover {
+  background: #7A4B91;
+  color: #ffffff !important;
+}
+
+/* Info pages (about, committee, get-involved, etc.): all text white */
+main.page,
+main.page * {
+  color: #ffffff !important;
+}
+
+main.page a {
+  color: #e8e0f0 !important;
+}
+
+main.page a:hover {
+  color: #ffffff !important;
+}
+
+/* Committee page and all previous years: white card for readability */
+main[class*="page-committee"] {
+  background: #ffffff !important;
+  color: #2d2d2d !important;
+  padding: 2rem !important;
+  border-radius: 1rem;
+  max-width: 40rem;
+  margin: 1.5rem auto !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+main[class*="page-committee"] h1 {
+  font-family: bebas-neue !important;
+  font-size: 2.25rem !important;
+  color: #2d2d2d !important;
+  margin-top: 0 !important;
+  margin-bottom: 1rem !important;
+}
+
+main[class*="page-committee"] h2 {
+  font-family: bebas-neue !important;
+  font-size: 1.25rem !important;
+  font-weight: 400 !important;
+  color: #ffffff !important;
+  background: #5F2A87;
+  margin: 1.5rem 0 0.75rem !important;
+  padding: 0.5rem 1.25rem !important;
+  border-radius: 2rem;
+  width: fit-content;
+  display: inline-block;
+}
+
+main[class*="page-committee"] p {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 1.05rem !important;
+  color: #2d2d2d !important;
+  line-height: 1.65;
+  margin: 0 0 1rem !important;
+}
+
+main[class*="page-committee"] ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem !important;
+}
+
+main[class*="page-committee"] ul li {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 1.05rem !important;
+  color: #2d2d2d !important;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(45, 45, 45, 0.15);
+  line-height: 1.6;
+}
+
+main[class*="page-committee"] ul li:last-child {
+  border-bottom: none;
+}
+
+main[class*="page-committee"] ul li strong {
+  color: #5F2A87 !important;
+}
+
+main[class*="page-committee"] a {
+  color: #5F2A87 !important;
+}
+
+main[class*="page-committee"] a:hover {
+  color: #7A4B91 !important;
+}
+
+main[class*="page-committee"] ul li a {
+  color: #2d2d2d !important;
+}
+
+main[class*="page-committee"] ul li a:hover {
+  color: #5F2A87 !important;
 }

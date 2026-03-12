@@ -1,18 +1,96 @@
 .schedule {
-    padding: 1rem;
+    padding: 1.5rem;
     text-align: center;
     height: 425px;
     margin-top: 12.5px;
     margin-bottom: 25px;
+    max-width: min(36rem, 95vw);
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 1rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
 }
-
 
 .schedule-parent iframe {
     width: 100%;
 }
 
-.schedule h1 {
-    margin: 0;
+.schedule-title {
+    margin: 0 0 1rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #2d2d2d;
+}
+
+/* Home page only: same font treatment as .instagram-latest h2 ("Latest at URN") — bebas-neue */
+.schedule-spotify-row .schedule > .schedule-title {
+    font-family: bebas-neue, sans-serif !important;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+}
+
+.schedule-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+}
+
+.schedule .show {
+    color: white !important;
+    padding: 0.5rem 1rem !important;
+    margin: 0 !important;
+    min-height: 2.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.schedule .show-time,
+.schedule .show-name {
+    line-height: 1.4;
+    display: inline-flex;
+    align-items: center;
+}
+
+.schedule .show:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+}
+
+@keyframes schedule-live-flash {
+    0%, 100% { opacity: 1; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); }
+    50% { opacity: 0.85; box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.6); }
+}
+
+.schedule .show.is-live {
+    animation: schedule-live-flash 1.5s ease-in-out infinite;
+}
+
+.schedule-cta {
+    border-radius: 2rem !important;
+    margin-top: 1rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.06em !important;
+    text-transform: uppercase !important;
+    padding: 0.5rem 1.5rem !important;
+    box-shadow: 0 4px 14px rgba(122, 75, 145, 0.4) !important;
+}
+
+.schedule-cta:hover {
+    box-shadow: 0 6px 20px rgba(122, 75, 145, 0.5) !important;
 }
 
 .spotify {
@@ -93,4 +171,40 @@
 
 .day .show-time {
     max-width: 5rem;
+}
+
+/* Full schedule page: pill format, no scrolling */
+.schedule-page .schedule-day {
+    height: auto;
+    width: min(20rem, 95vw);
+    margin: 1rem;
+    background: #ffffff !important;
+}
+
+.schedule-page .schedule-list--no-scroll {
+    overflow: visible;
+    min-height: auto;
+    flex: none;
+}
+
+/* Full Schedule heading: white, same font as day names */
+.schedule-page .h {
+    color: #ffffff !important;
+    font-family: bebas-neue !important;
+    font-size: 2.25rem !important;
+    margin-top: 1.5rem !important;
+}
+
+/* Day names: same-sized purple pill, white text - same font as "Latest" */
+.schedule-page .schedule-title {
+    font-family: bebas-neue !important;
+    color: #ffffff !important;
+    background: #5F2A87;
+    margin: 0 auto 1rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 2rem;
+    width: 11rem;
+    text-align: center;
+    display: block;
+    box-sizing: border-box;
 }

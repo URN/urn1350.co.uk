@@ -1,3 +1,10 @@
+/* Sticky header + nav: both stay at top when scrolling -------------------- */
+.site-header-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
 .title {
   text-align: center;
   width: 100%;
@@ -14,28 +21,79 @@
   vertical-align: middle;
 }
 
-nav div {
-  display: flex;
-  justify-content: space-around;
+/* Navigation bar under hero ---------------------------------------------- */
+nav.MuiAppBar-root {
+  background-color: #7A4B91;
+  color: #ffffff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
 }
 
-nav span {
-  color: white;
-  font-weight: bold;
+nav .MuiToolbar-root {
+  justify-content: center;
+  gap: 2.75rem;
 }
 
+nav .MuiButton-root {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+nav .MuiButton-label {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+nav .MuiButton-root:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* iPhone / narrow width: smaller nav text + tighter gap so "About Us" stays one line */
+@media (max-width: 768px) {
+  nav .MuiToolbar-root {
+    gap: 0.65rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    flex-wrap: nowrap;
+    min-height: 48px;
+  }
+
+  nav .MuiButton-root {
+    font-size: 0.62rem;
+    letter-spacing: 0.03em;
+    padding: 0.35rem 0.4rem;
+    min-width: 0;
+  }
+
+  nav .MuiButton-label {
+    font-size: 0.62rem;
+    white-space: nowrap;
+    line-height: 1.2;
+  }
+}
+
+@media (max-width: 400px) {
+  nav .MuiToolbar-root {
+    gap: 0.45rem;
+    padding-left: 0.35rem;
+    padding-right: 0.35rem;
+  }
+
+  nav .MuiButton-root {
+    font-size: 0.55rem;
+    padding: 0.3rem 0.3rem;
+  }
+
+  nav .MuiButton-label {
+    font-size: 0.55rem;
+  }
+}
 
 header {
-
-  /* The image used */
-  background-image: url("https://content.urn1350.co.uk/content/images/Nottingham.jpg");
-
-  /* Add the blur effect */
-
-  /* Center and scale the image nicely */
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  background: transparent;
 }
 
 header h1 {
@@ -43,23 +101,238 @@ header h1 {
   font-size: 3rem;
 }
 
-/* Position text in the middle of the page/image */
+/* Hero header layout ----------------------------------------------------- */
 header .header-text {
-  /*background: rgba(255, 255, 255, 0.2);*/
   width: 100%;
   height: 100%;
-  display: inline-block;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   color: white;
-  padding: 1rem;
+  padding: 1.5rem 2rem;
   font-size: 1.5rem;
 }
 
 header .subtitle {
   font-style: oblique;
   font-weight: lighter;
+  font-size: 1.4rem;
+  display: block;
+  line-height: 1.38; /* space between the two slogan lines */
 }
 
 .blurred-container {
-  background-color: #5F2A87AA; //rgba(64, 64, 64, .8);
+  background-color: #5F2A87;
+}
+
+.hero-title {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  text-align: left;
+}
+
+.hero-logo {
+  height: 3.5rem;
+}
+
+.hero-text-block h1 {
+  margin: 0;
+}
+
+/* Header "On Air Now" + Listen Now ---------------------------------------- */
+.hero-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.hero-onair {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-onair .on-air-label {
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.hero-mic-icon {
+  font-size: 1rem;
+}
+
+.hero-show-name {
+  font-weight: bolder;
+  font-style: oblique;
+  font-size: 1.1rem;
+  max-width: 12rem;
+  word-wrap: break-word;
+}
+
+.hero-listen-link {
+  text-decoration: none;
+}
+
+.listen-button--header {
+  background: #ffffff;
+  color: #7A4B91;
+}
+
+.listen-button--header .listen-button-icon {
+  background: #ffffff;
+  color: #7A4B91;
+}
+
+/* .hero-subtitle-right was used when the subtitle sat on the right;
+   it is no longer needed now that the subtitle is under the title. */
+
+/*
+ * Before the title wraps: stack on-air + schedule button vertically so the
+ * right column uses less width and "University Radio Nottingham" can stay
+ * on one line. No title/logo shrink here — that stays until 768px.
+ */
+@media (max-width: 1100px) {
+  /* "View Full" / "Schedule" on two lines; icon stays beside the text block */
+  header .listen-button--header .schedule-btn-linebreak {
+    display: inline;
+  }
+
+  /* Only the label text smaller — button padding/icon stay as nowPlaying.scss */
+  header .listen-button--header .listen-button-label {
+    font-size: 0.7rem;
+    line-height: 1.12;
+    text-align: left;
+    letter-spacing: 0.04em;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.6rem;
+    flex-shrink: 0;
+  }
+
+  /* One line + ellipsis below 1100px (stacked column has limited width) */
+  .hero-onair {
+    align-items: flex-end;
+    text-align: right;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .hero-show-name {
+    max-width: min(20rem, 48vw);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    word-wrap: normal;
+  }
+
+  /* Keep the main title on one line as long as possible */
+  .hero-text-block h1 {
+    white-space: nowrap;
+  }
+}
+
+/* Logo, title, slogan shrink below 970px (was 768px) */
+@media (max-width: 970px) {
+  header .header-text {
+    padding: 1rem 1rem;
+    gap: 0.5rem;
+  }
+
+  .hero-logo {
+    height: 2.5rem;
+  }
+
+  header h1,
+  .hero-text-block h1 {
+    font-size: 1.8rem;
+  }
+
+  header .subtitle {
+    font-size: 0.88rem;
+    line-height: 1.32;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Title can wrap again below this width if needed */
+  .hero-text-block h1 {
+    white-space: normal;
+  }
+
+  /* Stack "On Air Now" + show name above the schedule button so it doesn't bunch on phones */
+  .hero-actions {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+  }
+
+  /* One line + ellipsis for long show names; constrain width so ellipsis works */
+  .hero-onair {
+    align-items: flex-end;
+    text-align: right;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .hero-show-name {
+    font-size: 0.9rem;
+    max-width: min(14rem, 42vw);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+  }
+
+  /* Shrink the On Air labels */
+  .hero-onair .on-air-label {
+    font-size: 0.8rem;
+  }
+
+  /* Only schedule label text smaller — button chrome unchanged */
+  header .listen-button--header .listen-button-label {
+    font-size: 0.55rem;
+    letter-spacing: 0.04em;
+  }
+}
+
+/* For very tiny phone screens, shrink it just a tiny bit more */
+@media (max-width: 500px) {
+  header h1,
+  .hero-text-block h1 {
+    font-size: 1.3rem;
+  }
+  
+  /* Slogan only smaller; keep two lines close */
+  header .subtitle {
+    font-size: 0.75rem;
+    line-height: 1.28;
+  }
+  
+  .hero-logo {
+    height: 2rem;
+  }
+  
+  /* Keep stacked layout on very small screens */
+  .hero-actions {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.45rem;
+  }
+
+  .hero-show-name {
+    max-width: min(12rem, 38vw);
+  }
+
+  /* Only label text smaller on very narrow widths */
+  header .listen-button--header .listen-button-label {
+    font-size: 0.52rem;
+    letter-spacing: 0.03em;
+  }
 }

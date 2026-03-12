@@ -1,13 +1,13 @@
 import React from 'react';
 import Axios from 'axios';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Typography from '@material-ui/core/Typography';
-import { CardActionArea } from '@material-ui/core';
+import CircularProgress from '@mui/material/CircularProgress';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import { CardActionArea } from '@mui/material';
 
-import PlusIcon from '@material-ui/icons/Add'
+import PlusIcon from '@mui/icons-material/Add'
 
 import PodcastCard from './podcastCard'
 import Settings from '../settings.json';
@@ -31,7 +31,16 @@ export default class PodcastBar extends React.Component {
             return (
                 <>
                 {
-                  (this.props.full?<></>:<h1>Podcasts</h1>)
+                  (this.props.full ? (
+                    <></>
+                  ) : (
+                    <>
+                      <h1 className="podcasts-heading">Podcasts</h1>
+                      <p className="podcasts-subheading">
+                        New podcasts coming to the website soon!
+                      </p>
+                    </>
+                  ))
                 }
                   <div className={`podcast-holder ${this.props.full?"full":""}`}>
                   {

@@ -2,7 +2,10 @@
     width: min(15rem, 35vw);
     height: 20rem;
     margin: 1rem;
-    display: inline-block
+    display: inline-block;
+    border: 10px solid #ffffff !important;
+    border-radius: 0.5rem;
+    overflow: hidden;
 }
 
 .large-icon {
