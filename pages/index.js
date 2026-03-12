@@ -24,7 +24,9 @@ export default function Home() {
             <Spotify />
           </div>
         </div>
-        <EpisodesTable full={false}/>
+        <div className="home-podcast-section">
+          <EpisodesTable full={false} />
+        </div>
         <JoinUs />
       </main>
       <Footer />

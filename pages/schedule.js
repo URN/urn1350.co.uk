@@ -20,6 +20,11 @@ function pm(x)
 }
 
 export default function Page({schedule}) {
+  React.useEffect(() => {
+    document.body.classList.add('page-bg-schedule');
+    return () => document.body.classList.remove('page-bg-schedule');
+  }, []);
+
   const d = new Date();
   const currentDayIndex = (d.getDay() + 6) % 7; // Monday=0, Sunday=6
   const currentHour = d.getHours();

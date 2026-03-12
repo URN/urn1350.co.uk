@@ -19,7 +19,7 @@ function PageName(str){
 export default function Page({data, p}) {
   const slug = p.join("/");
 
-  // About page only: swap body background to oscilloscope.jpg (same overlay as global)
+  // About page only: swap body background to Studio.png (same overlay as global)
   React.useEffect(() => {
     if (slug !== 'about') return;
     document.body.classList.add('page-bg-about');

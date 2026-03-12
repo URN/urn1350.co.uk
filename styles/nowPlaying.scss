@@ -34,6 +34,14 @@
     display: flex;
     flex-direction: column;
     gap: 0.15rem;
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+/* Wrapper around show name — full width so wrapped text uses whole column */
+.now-playing-meta > div {
+    min-width: 0;
+    width: 100%;
 }
 
 @keyframes on-air-flash {
@@ -50,10 +58,16 @@
     animation: on-air-flash 1.5s ease-in-out infinite;
 }
 
-.now-playing .show-name{
+.now-playing .show-name {
     font-weight: bolder;
     font-style: oblique;
     font-size: 1.35rem;
+    line-height: 1.3;
+    /* Wrap to as many lines as needed; flex column has min-width 0 so it doesn’t overflow */
+    display: block;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .show-time{
@@ -145,27 +159,6 @@
     float: right;
 }
 
-/* Long show names: one line + ellipsis when viewport < 1100px */
-@media (max-width: 1100px) {
-    .now-playing-meta {
-        min-width: 0;
-        flex: 1 1 auto;
-        overflow: hidden;
-    }
-
-    .now-playing-meta > div {
-        min-width: 0;
-        overflow: hidden;
-    }
-
-    .now-playing .show-name {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: block;
-    }
-}
-
 @media (max-width: 600px) {
     .now-playing {
         padding: 0 1.25rem;
@@ -176,24 +169,8 @@
         gap: 0.5rem;
     }
 
-    /* Let meta column shrink so ellipsis can apply */
-    .now-playing-meta {
-        min-width: 0;
-        flex: 1 1 auto;
-        overflow: hidden;
-    }
-
-    .now-playing-meta > div {
-        min-width: 0;
-        overflow: hidden;
-    }
-
     .now-playing .show-name {
         font-size: 1.1rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: block;
     }
 
     /* Don't enlarge header schedule button — header.scss handles .listen-button--header on small widths */

@@ -40,8 +40,15 @@
     color: #ffffff;
   }
 
-  /* About Us only: same purple overlay, different image (same CDN path as Nottingham) */
+  /* About Us only: same purple overlay, Studio.png (same folder as Nottingham/oscilloscope) */
   body.page-bg-about {
+    background-image:
+      linear-gradient(135deg, rgba(105, 72, 138, 0.72), rgba(122, 92, 152, 0.72)),
+      url("https://content.urn1350.co.uk/content/images/Studio.png");
+  }
+
+  /* Full Schedule page: oscilloscope.jpg, same overlay as default/about */
+  body.page-bg-schedule {
     background-image:
       linear-gradient(135deg, rgba(105, 72, 138, 0.72), rgba(122, 92, 152, 0.72)),
       url("https://content.urn1350.co.uk/content/images/oscilloscope.jpg");
@@ -139,14 +146,39 @@
     min-height: 425px;
 }
 
+/* Same font treatment as .instagram-latest h2 ("Latest at URN") */
 .podcasts-heading {
   color: #ffffff;
+  font-family: bebas-neue, sans-serif;
+  font-weight: 600;
+  font-size: 2rem;
+  letter-spacing: 0.08em;
+  text-align: center;
+  margin: 0 0 0.75rem;
 }
 
-.podcasts-page .h,
+/* Line under podcast cards on homepage */
+.podcasts-subheading {
+  color: #ffffff;
+  text-align: center;
+  margin: 1.25rem auto 1rem;
+  max-width: min(36rem, 95vw);
+  padding: 0 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+/* Page heading + intro only — not inside cards (cards use .h on title and need dark text) */
+.podcasts-page-title,
 .podcasts-page .description,
-.podcasts-page .MuiTypography-h1 {
+.podcasts-page > .MuiTypography-h1 {
   color: #ffffff !important;
+}
+
+/* Podcast cards: black text on white/light CardContent */
+.podcasts-page .podcast-card .MuiCardContent-root,
+.podcasts-page .podcast-card .MuiCardContent-root .MuiTypography-root {
+  color: #2d2d2d !important;
 }
 
 .podcasts-page .description a {
@@ -156,6 +188,11 @@
 
 .podcasts-page .description a:hover {
   color: #ffffff !important;
+}
+
+/* Push podcast block down on homepage (below schedule/Spotify row) */
+.home-podcast-section {
+  margin-top: 2.5rem;
 }
 
 .podcast-holder {
