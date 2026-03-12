@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import Axios from 'axios';
 import YAML from 'yaml';
 
@@ -112,10 +113,10 @@ export default class ImageHeader extends React.Component {
               </span>
               <span className="hero-show-name">{show_name}</span>
             </div>
-            <a href="/schedule" className="hero-listen-link">
-              <button
-                type="button"
+            <Link href="/schedule" className="hero-listen-link">
+              <span
                 className="listen-button listen-button--header"
+                role="button"
               >
                 <span className="listen-button-icon">›</span>
                 <span className="listen-button-label">
@@ -123,8 +124,8 @@ export default class ImageHeader extends React.Component {
                   <br className="schedule-btn-linebreak" aria-hidden="true" />
                   Schedule
                 </span>
-              </button>
-            </a>
+              </span>
+            </Link>
           </div>
         </div>
       </header>

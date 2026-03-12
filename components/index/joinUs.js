@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import Paper from '@mui/material/Paper';
 
 export default function JoinUs() {
@@ -6,7 +7,7 @@ export default function JoinUs() {
     <Paper elevation={3} className="join-us">
       <div className="join-us-inner">
         <h2>Want to join us?</h2>
-        <a href="/pages/get-involved" className="join-us-button">Get involved</a>
+        <Link href="/pages/get-involved" className="join-us-button">Get involved</Link>
       </div>
     </Paper>
   );
