@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -10,7 +11,7 @@ import Settings from '../settings.json';
     render() {
       return (
         <Card className="podcast-card">
-        <CardActionArea href={`/podcasts/${this.props.data.slug}`}>
+        <CardActionArea component={Link} href={`/podcasts/${this.props.data.slug}`}>
           <CardMedia
             component="img"
             image={this.props.data.image ? this.props.data.image : `${Settings.podcastUrl}/${this.props.data.slug}.jpg`}

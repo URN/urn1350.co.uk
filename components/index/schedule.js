@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import Paper from '@mui/material/Paper';
 import CircularProgress from '@mui/material/CircularProgress';
 import Axios from 'axios';
@@ -36,7 +37,7 @@ const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", 
         <Paper className="schedule" elevation={3}>
           <h1 className="schedule-title">Today's Schedule</h1>
           <CircularProgress color="primary" />
-          <Button className="schedule-cta" color="primary" href="/schedule">View Full Schedule</Button>
+          <Button className="schedule-cta" color="primary" component={Link} href="/schedule">View Full Schedule</Button>
         </Paper>
       );
     }
@@ -80,7 +81,7 @@ const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", 
             );
           })}
       </div>
-      <Button className="schedule-cta" variant="contained" color="primary" href="/schedule">
+      <Button className="schedule-cta" variant="contained" color="primary" component={Link} href="/schedule">
         View Full Schedule
       </Button>
     </Paper>);

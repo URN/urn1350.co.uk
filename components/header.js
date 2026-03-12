@@ -1,5 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
+import Link from 'next/link';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -78,10 +79,10 @@ export default class Header extends React.Component {
           <Box>
             <AppBar color="secondary" position="sticky" component="nav">
             <Toolbar>
-              <Button href="/">Home</Button>
-              <Button href="/podcasts">Podcasts</Button>
-              <Button href="/pages/about">About Us</Button>
-              <Button href="/pages/committee">Committee</Button>
+              <Button component={Link} href="/">Home</Button>
+              <Button component={Link} href="/podcasts">Podcasts</Button>
+              <Button component={Link} href="/pages/about">About Us</Button>
+              <Button component={Link} href="/pages/committee">Committee</Button>
             </Toolbar>
           </AppBar>
           </Box>

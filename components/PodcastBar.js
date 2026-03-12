@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import Axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
 import Card from '@mui/material/Card';
@@ -48,7 +49,7 @@ export default class PodcastBar extends React.Component {
                   }
                   
                   {this.props.full?<></>:<Card className="podcast-card">
-        <CardActionArea href="podcasts">
+        <CardActionArea component={Link} href="/podcasts">
         <PlusIcon className="large-icon" color="primary" />
           <CardContent>
             <Typography gutterBottom variant="h6" component="div">
