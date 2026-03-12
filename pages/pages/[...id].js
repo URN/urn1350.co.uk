@@ -1,3 +1,4 @@
+import React from 'react';
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 import https from 'https';
@@ -17,6 +18,14 @@ function PageName(str){
 
 export default function Page({data, p}) {
   const slug = p.join("/");
+
+  // About page only: swap body background to oscilloscope.jpg (same overlay as global)
+  React.useEffect(() => {
+    if (slug !== 'about') return;
+    document.body.classList.add('page-bg-about');
+    return () => document.body.classList.remove('page-bg-about');
+  }, [slug]);
+
   if (!data) {
     return (
       <>

@@ -87,6 +87,10 @@ export default class ImageHeader extends React.Component {
             value.start <= d.getHours() && d.getHours() < value.end
         )[0];
 
+      if (!current_show) {
+        show_name = '';
+        time = '';
+      } else {
       show_name = current_show[0];
 
       const s = current_show[1].start;
@@ -102,6 +106,7 @@ export default class ImageHeader extends React.Component {
         }
       } else {
         time = `${s}-${e}am`;
+      }
       }
     }
 

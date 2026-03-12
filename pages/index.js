@@ -1,5 +1,4 @@
 import Header from '../components/header';
-import ImageHeader from '../components/index/imageHeader';
 import Footer from '../components/footer';
 import Schedule from '../components/index/schedule';
 import News from '../components/index/news';
@@ -15,10 +14,7 @@ import JoinUs from '../components/index/joinUs';
 export default function Home() {
   return (
     <>
-      <div className="site-header-sticky">
-        <ImageHeader />
-        <Header title={Settings.siteTitle} />
-      </div>
+      <Header title={Settings.siteTitle} />
       <main>
         <NowPlaying />
         <InstagramLatest />

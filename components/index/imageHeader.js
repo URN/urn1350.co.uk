@@ -85,7 +85,23 @@ export default class ImageHeader extends React.Component {
             />
             <div className="hero-text-block">
               <h1>{Settings.siteTitle}</h1>
-              <span className="subtitle">{Settings.siteSubtitle}</span>
+              <span className="subtitle">
+                {(() => {
+                  const s = Settings.siteSubtitle || '';
+                  const breakBefore = 'Your Student Sound';
+                  const i = s.indexOf(breakBefore);
+                  if (i > 0) {
+                    return (
+                      <>
+                        {s.slice(0, i).trimEnd()}
+                        <br />
+                        {s.slice(i).trimStart()}
+                      </>
+                    );
+                  }
+                  return s;
+                })()}
+              </span>
             </div>
           </div>
           <div className="hero-actions">
@@ -102,7 +118,11 @@ export default class ImageHeader extends React.Component {
                 className="listen-button listen-button--header"
               >
                 <span className="listen-button-icon">›</span>
-                <span className="listen-button-label">View Full Schedule</span>
+                <span className="listen-button-label">
+                  View Full{' '}
+                  <br className="schedule-btn-linebreak" aria-hidden="true" />
+                  Schedule
+                </span>
               </button>
             </a>
           </div>

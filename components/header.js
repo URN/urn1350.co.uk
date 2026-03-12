@@ -6,6 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 
 import Settings from '../settings.json';
+import ImageHeader from './index/imageHeader';
 
 function _Image(params) {
     if (params.image) {
@@ -72,8 +73,10 @@ export default class Header extends React.Component {
           <meta charSet="utf-8" />
           <meta name="robots" content="index,follow" />
         </Head>
-        <Box>
-          <AppBar color="secondary" position="sticky" component="nav">
+        <div className="site-header-sticky">
+          <ImageHeader />
+          <Box>
+            <AppBar color="secondary" position="sticky" component="nav">
             <Toolbar>
               <Button href="/">Home</Button>
               <Button href="/podcasts">Podcasts</Button>
@@ -81,7 +84,8 @@ export default class Header extends React.Component {
               <Button href="/pages/committee">Committee</Button>
             </Toolbar>
           </AppBar>
-        </Box>
+          </Box>
+        </div>
       </>
     );
   }
