@@ -5,7 +5,10 @@ import Button from '@mui/material/Button';
 import Axios from 'axios';
 import YAML from 'yaml';
 
+import PlayArrow from '@mui/icons-material/PlayArrow';
+import Pause from '@mui/icons-material/Pause';
 import Settings from '../../settings.json';
+import { StreamPlayerContext } from '../../context/StreamPlayerContext';
 
 function pm(x) {
   if (x === 12) return x;
@@ -22,11 +25,10 @@ const days = [
   'Saturday',
 ];
 
-export default class ImageHeader extends React.Component {
+export default class NowPlaying extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { msg: '', schedule: null, cacheBust: null, isPlaying: false };
-    this.audioRef = React.createRef();
+    this.state = { msg: '', schedule: null };
     this.send_message = this.send_message.bind(this);
 
     Axios.get(`${Settings.cdnUrl}/schedule.yml`).then((r) => {
@@ -56,20 +58,9 @@ export default class ImageHeader extends React.Component {
     });
   };
 
-  togglePlay = () => {
-    const audio = this.audioRef.current;
-    if (!audio) return;
-
-    if (this.state.isPlaying) {
-      audio.pause();
-    } else {
-      audio.play();
-    }
-
-    this.setState({
-      ...this.state,
-      isPlaying: !this.state.isPlaying,
-    });
+  handleOnSubmit = (e) => {
+    e.preventDefault();
+    this.send_message(e);
   };
 
   render() {
@@ -110,16 +101,9 @@ export default class ImageHeader extends React.Component {
       }
     }
 
-    if (!this.state.cacheBust) {
-      this.setState({
-        ...this.state,
-        cacheBust: Math.floor(Math.random() * 10000000),
-      });
-    }
-
-    const streamURL = `https://live.urn1350.co.uk/listen?cache=${this.state.cacheBust}`;
-
     return (
+      <StreamPlayerContext.Consumer>
+        {({ isPlaying, isLoading, togglePlay }) => (
       <div className="now-playing">
         <Paper className="now-playing-top-box" elevation={3}>
           <div className="now-playing-header">
@@ -132,25 +116,18 @@ export default class ImageHeader extends React.Component {
             </div>
             <button
               type="button"
-              className={`listen-button ${
-                this.state.isPlaying ? 'is-playing' : ''
-              }`}
-              onClick={this.togglePlay}
+              className={`listen-button ${isPlaying ? 'is-playing' : ''} ${isLoading ? 'is-loading' : ''}`}
+              onClick={togglePlay}
+              disabled={isLoading}
             >
               <span className="listen-button-icon">
-                {this.state.isPlaying ? '❚❚' : '▶'}
+                {isLoading ? <span className="listen-button-spinner" aria-hidden="true" /> : (isPlaying ? <Pause fontSize="inherit" /> : <PlayArrow fontSize="inherit" />)}
               </span>
               <span className="listen-button-label">
-                {this.state.isPlaying ? 'Pause' : 'Play'}
+                {isLoading ? 'Loading…' : (isPlaying ? 'Pause' : 'Play')}
               </span>
             </button>
           </div>
-          <audio
-            ref={this.audioRef}
-            src={streamURL}
-            preload="none"
-            className="now-playing-audio"
-          />
         </Paper>
         <Paper className="now-playing-message-box" elevation={3}>
           <form onSubmit={this.handleOnSubmit}>
@@ -173,6 +150,8 @@ export default class ImageHeader extends React.Component {
           </form>
         </Paper>
       </div>
+        )}
+      </StreamPlayerContext.Consumer>
     );
   }
 }
