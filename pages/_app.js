@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from '../theme';
+import { StreamPlayerProvider } from '../context/StreamPlayerContext';
 
 import '../styles/style.scss';
 
@@ -20,9 +21,10 @@ export default function MyApp(props) {
 
   return (
       <ThemeProvider theme={theme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Component {...pageProps} />
+        <StreamPlayerProvider>
+          <Component {...pageProps} />
+        </StreamPlayerProvider>
       </ThemeProvider>
   );
 }

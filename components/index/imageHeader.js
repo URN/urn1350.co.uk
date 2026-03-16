@@ -1,9 +1,11 @@
 import React from 'react';
-import Link from 'next/link';
 import Axios from 'axios';
 import YAML from 'yaml';
 
+import PlayArrow from '@mui/icons-material/PlayArrow';
+import Pause from '@mui/icons-material/Pause';
 import Settings from '../../settings.json';
+import { StreamPlayerContext } from '../../context/StreamPlayerContext';
 
 function pm(x) {
   if (x === 12) return x;
@@ -113,19 +115,23 @@ export default class ImageHeader extends React.Component {
               </span>
               <span className="hero-show-name">{show_name}</span>
             </div>
-            <Link href="/schedule" className="hero-listen-link">
-              <span
-                className="listen-button listen-button--header"
-                role="button"
-              >
-                <span className="listen-button-icon">›</span>
-                <span className="listen-button-label">
-                  View Full{' '}
-                  <br className="schedule-btn-linebreak" aria-hidden="true" />
-                  Schedule
-                </span>
-              </span>
-            </Link>
+            <StreamPlayerContext.Consumer>
+              {({ isPlaying, isLoading, togglePlay }) => (
+                <button
+                  type="button"
+                  className={`listen-button ${isPlaying ? 'is-playing' : ''} ${isLoading ? 'is-loading' : ''}`}
+                  onClick={togglePlay}
+                  disabled={isLoading}
+                >
+                  <span className="listen-button-icon">
+                    {isLoading ? <span className="listen-button-spinner" aria-hidden="true" /> : (isPlaying ? <Pause fontSize="inherit" /> : <PlayArrow fontSize="inherit" />)}
+                  </span>
+                  <span className="listen-button-label">
+                    {isLoading ? 'Loading…' : (isPlaying ? 'Pause' : 'Play')}
+                  </span>
+                </button>
+              )}
+            </StreamPlayerContext.Consumer>
           </div>
         </div>
       </header>

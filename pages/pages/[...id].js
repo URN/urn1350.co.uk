@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import Header from "../../components/header";
 import Footer from "../../components/footer";
 import https from 'https';
@@ -9,6 +10,18 @@ import Markdown from 'markdown-to-jsx';
 
 
 import Settings from '../../settings.json';
+
+function MdLink({ href, children, ...props }) {
+  const isInternal = href && href.startsWith('/') && !href.startsWith('//');
+  if (isInternal) {
+    return (
+      <Link href={href} {...props}>
+        {children}
+      </Link>
+    );
+  }
+  return <a href={href} {...props}>{children}</a>;
+}
 
 function PageName(str){
     return str.replaceAll("/", ":").split('-')
@@ -47,7 +60,12 @@ export default function Page({data, p}) {
         description={data.description}
       />
       <main className={`page page-${slug.replace(/\//g, "-")}`}>
-        <Markdown options={{ forceBlock: false }}>
+        <Markdown
+          options={{
+            forceBlock: false,
+            overrides: { a: MdLink },
+          }}
+        >
             {data}
           </Markdown>
         </main>

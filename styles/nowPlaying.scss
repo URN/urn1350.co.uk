@@ -82,24 +82,59 @@
     gap: 0.75rem;
     padding: 0.7rem 1.75rem 0.7rem 1.1rem;
     border-radius: 999px;
-    border: none;
+    border: 2px solid rgba(255, 255, 255, 0.35);
     cursor: pointer;
     background: linear-gradient(135deg, #7A4B91, #5F2A87);
     color: #ffffff;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.12em;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.listen-button:hover,
+.listen-button:focus-visible {
+    transform: scale(1.04);
+    box-shadow: 0 4px 20px rgba(95, 42, 135, 0.5);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+.listen-button:hover {
+    background: linear-gradient(135deg, #8a5ba1, #6f3a97);
 }
 
 .listen-button-icon {
-    width: 2.1rem;
-    height: 2.1rem;
+    width: 2.25rem;
+    height: 2.25rem;
     border-radius: 50%;
     background: rgba(0, 0, 0, 0.18);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.05rem;
+    font-size: 1.2rem;
+}
+
+.listen-button-spinner {
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: listen-button-spin 0.7s linear infinite;
+}
+
+@keyframes listen-button-spin {
+    to { transform: rotate(360deg); }
+}
+
+.listen-button.is-loading {
+    cursor: wait;
+    pointer-events: auto;
+}
+
+.listen-button.is-loading:hover,
+.listen-button.is-loading:focus-visible {
+    transform: none;
 }
 
 /* Header variant: same geometry, inverted colours */
@@ -113,8 +148,7 @@
 .listen-button.listen-button--header .listen-button-icon {
     background: #ffffff;
     color: #7A4B91;
-    font-size: 1.5rem;
-    padding-bottom: 3px;
+    font-size: 1.7rem;
     width: auto;
     height: auto;
 }
@@ -133,6 +167,10 @@
 
 .listen-button.is-playing {
     background: linear-gradient(135deg, #4b275f, #311942);
+}
+
+.listen-button.is-playing:hover {
+    background: linear-gradient(135deg, #5c326f, #3d2052);
 }
 
 .listen-button-label {
@@ -181,9 +219,9 @@
     }
 
     .now-playing .listen-button-icon {
-        width: 1.8rem;
-        height: 1.8rem;
-        font-size: 0.9rem;
+        width: 2rem;
+        height: 2rem;
+        font-size: 1.05rem;
     }
 
     .now-playing button.MuiButton-root {
