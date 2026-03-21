@@ -196,12 +196,12 @@
 }
 
 .podcast-holder {
-  white-space: nowrap;
   margin: 2rem auto;
   flex-direction: row;
   flex-wrap: wrap;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 0.5rem;
   border-bottom: none !important;
   box-shadow: none !important;
 }
@@ -249,8 +249,7 @@
 @media (min-width: 600px){
   .podcast-holder {
     max-width: 95vw;
-    overflow: scroll hidden;
-    white-space: nowrap;
+    overflow: visible;
     margin: 2rem auto;
   }
 }
