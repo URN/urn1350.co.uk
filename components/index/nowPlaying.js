@@ -28,15 +28,18 @@ const days = [
 export default class NowPlaying extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { msg: '', schedule: null };
+    this.state = {
+      msg: '',
+      schedule: null,
+    };
     this.send_message = this.send_message.bind(this);
 
     Axios.get(`${Settings.cdnUrl}/schedule.yml`).then((r) => {
       const schedule = YAML.parse(r.data);
-      this.setState({
-        ...this.state,
+      this.setState((prevState) => ({
+        ...prevState,
         schedule,
-      });
+      }));
     });
   }
 
@@ -52,10 +55,10 @@ export default class NowPlaying extends React.Component {
   };
 
   update = async (event) => {
-    this.setState({
-      ...this.state,
+    this.setState((prevState) => ({
+      ...prevState,
       msg: event.target.value,
-    });
+    }));
   };
 
   handleOnSubmit = (e) => {
