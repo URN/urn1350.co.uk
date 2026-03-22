@@ -92,17 +92,22 @@ audio{
     padding: 2rem 0;
 }
 
-.podcast-detail-page {
-    max-width: 70rem;
+/* Full-width, box-sized main so 95vw + padding cannot overflow viewport */
+main.podcast-detail-page.is-fluid {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: min(70rem, 100%);
+    margin-left: auto;
+    margin-right: auto;
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
-    padding-top: 1.0rem;
-    padding-bottom: 1rem;
+    padding: 1rem 1rem 1rem;
+    overflow-x: hidden;
 }
 
 .podcast-detail-card {
     display: grid;
-    grid-template-columns: minmax(220px, 300px) 1fr;
+    grid-template-columns: minmax(0, min(300px, 100%)) minmax(0, 1fr);
     gap: 1.5rem;
     align-items: start;
     background: #ffffff;
@@ -110,25 +115,46 @@ audio{
     border-radius: 1rem;
     padding: 1rem;
     border: 8px solid #ffffff;
+    box-sizing: border-box;
+    max-width: 100%;
+    min-width: 0;
 }
 
 .podcast-detail-image {
+    display: block;
     width: 100%;
+    max-width: 100%;
+    height: auto;
     border-radius: 0.75rem;
     aspect-ratio: 1 / 1;
     object-fit: cover;
 }
 
+.podcast-detail-content {
+    min-width: 0;
+    max-width: 100%;
+}
+
 .podcast-detail-content .h,
-.podcast-spotify .h {
+.podcast-embed-block .h {
     color: #2d2d2d !important;
     font-family: bebas-neue, sans-serif !important;
     font-weight: 600;
     letter-spacing: 0.04em;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+    hyphens: auto;
+}
+
+.podcast-detail-content .h {
+    font-size: clamp(1.75rem, 6vw, 2.4rem) !important;
+    line-height: 1.1 !important;
 }
 
 .podcast-detail-content .description {
     color: #2d2d2d !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .podcast-spotify {
@@ -138,10 +164,76 @@ audio{
     padding: 1rem;
     margin-top: 1rem;
     border: 8px solid #ffffff;
+    box-sizing: border-box;
+    max-width: 100%;
+    min-width: 0;
+}
+
+.podcast-spotify iframe {
+    max-width: 100%;
+    min-width: 0;
+}
+
+.podcast-tiktok {
+    background: #ffffff;
+    color: #2d2d2d;
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-top: 1rem;
+    border: 8px solid #ffffff;
+    box-sizing: border-box;
+    max-width: 100%;
+    min-width: 0;
+}
+
+.podcast-tiktok-frame {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    border-radius: 12px;
+    line-height: 0; /* remove gap below iframe */
+}
+
+.podcast-tiktok-frame iframe {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    height: 520px;
+    max-height: min(520px, 75vh);
+    border: 0;
+}
+
+.podcast-tiktok .h {
+    margin-bottom: 0.5rem !important;
+}
+
+.podcast-tiktok .podcast-button {
+    margin-top: 0.75rem !important;
 }
 
 @media (max-width: 900px) {
     .podcast-detail-card {
         grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 0.75rem;
+        border-width: 6px;
+    }
+
+    main.podcast-detail-page.is-fluid {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+
+    .podcast-spotify,
+    .podcast-tiktok {
+        padding: 0.75rem;
+        border-width: 6px;
+    }
+
+    .podcast-tiktok-frame iframe {
+        height: min(480px, 70vh);
+        max-height: 70vh;
     }
 }

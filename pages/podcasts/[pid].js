@@ -35,6 +35,39 @@ function toSpotifyShowUrl(value) {
   return '';
 }
 
+/**
+ * TikTok: optional `tiktokEmbed` (full embed URL), or `tiktoklink` profile/video URL.
+ * Profile: https://www.tiktok.com/@handle → embed/@handle
+ * Video:   .../video/123 → embed/v2/123
+ */
+function toTikTokEmbedUrl(data) {
+  const direct = data.tiktokEmbed && String(data.tiktokEmbed).trim();
+  if (direct) {
+    if (direct.includes('tiktok.com/embed')) {
+      return direct.split('?')[0];
+    }
+  }
+  const link = data.tiktoklink && String(data.tiktoklink).trim();
+  if (!link) return '';
+  if (link.includes('tiktok.com/embed')) {
+    return link.split('?')[0];
+  }
+  const videoMatch = link.match(/tiktok\.com\/@[^/]+\/video\/(\d+)/i);
+  if (videoMatch && videoMatch[1]) {
+    return `https://www.tiktok.com/embed/v2/${videoMatch[1]}`;
+  }
+  const profileMatch = link.match(/tiktok\.com\/@([^/?&#]+)/i);
+  if (profileMatch && profileMatch[1]) {
+    return `https://www.tiktok.com/embed/@${profileMatch[1]}`;
+  }
+  return '';
+}
+
+function toTikTokOpenUrl(data) {
+  const link = data.tiktoklink && String(data.tiktoklink).trim();
+  return link || '';
+}
+
 export default function Page({ data }) {
   if (!data) {
     return (
@@ -55,7 +88,7 @@ export default function Page({ data }) {
         title={`${data.title} - ${Settings.siteTitle}`}
         description={data.description}
       />
-      <main className="podcast-detail-page">
+      <main className="podcast-detail-page is-fluid">
         <article className="podcast-detail-card">
           {data.image && (
             <img className="podcast-detail-image" src={data.image} alt={data.title} />
@@ -89,7 +122,7 @@ export default function Page({ data }) {
         </article>
 
         {toSpotifyEmbedUrl(data.spotifyEmbed) && (
-          <section className="podcast-spotify">
+          <section className="podcast-spotify podcast-embed-block">
             <Typography gutterBottom variant="h2" component="div" className="h">
               Listen on Spotify
             </Typography>
@@ -101,6 +134,7 @@ export default function Page({ data }) {
               frameBorder="0"
               allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
               loading="lazy"
+              title="Spotify podcast player"
             />
             {toSpotifyShowUrl(data.spotifyEmbed) && (
               <div style={{ textAlign: "center" }}>
@@ -117,6 +151,40 @@ export default function Page({ data }) {
             )}
           </section>
         )}
+
+        {!toSpotifyEmbedUrl(data.spotifyEmbed) && toTikTokEmbedUrl(data) && (
+          <section className="podcast-tiktok podcast-embed-block">
+            <Typography gutterBottom variant="h2" component="div" className="h">
+              Watch on TikTok
+            </Typography>
+            <div className="podcast-tiktok-frame">
+              <iframe
+                style={{ borderRadius: "12px" }}
+                src={toTikTokEmbedUrl(data)}
+                width="100%"
+                height="520"
+                frameBorder="0"
+                allow="encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"
+                title="TikTok embed"
+              />
+            </div>
+            {toTikTokOpenUrl(data) && (
+              <div style={{ textAlign: "center" }}>
+                <Button
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="podcast-button"
+                  variant="contained"
+                  color="primary"
+                  href={toTikTokOpenUrl(data)}
+                >
+                  Open on TikTok
+                </Button>
+              </div>
+            )}
+          </section>
+        )}
       </main>
       <Footer />
     </>
@@ -128,7 +196,8 @@ export async function getServerSideProps(context) {
   let data = null;
   try {
     const response = await Axios.get(`${Settings.cdnUrl}/Podcasts/podcasts.yml`);
-    const parsed = YAML.parse(response.data);
+    const raw = String(response.data).replace(/^ {3}- /gm, '  - ');
+    const parsed = YAML.parse(raw);
     const podcasts = Array.isArray(parsed?.podcasts) ? parsed.podcasts : [];
     data = podcasts.find((podcast) => podcast.slug === context.query.pid) || null;
   } catch (error) {
