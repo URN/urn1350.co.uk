@@ -32,14 +32,19 @@ export default class PodcastBar extends React.Component {
       const response = await Axios.get(
         `${Settings.cdnUrl}/Podcasts/podcasts.yml?cb=${this.state.cacheBust}`
       );
-      const parsed = YAML.parse(response.data);
+      // Tolerate common typo: extra space before list dash (must align with other `  -` items)
+      const raw = String(response.data).replace(/^ {3}- /gm, '  - ');
+      const parsed = YAML.parse(raw);
       const podcasts = Array.isArray(parsed?.podcasts) ? parsed.podcasts : [];
       podcasts.sort((a, b) => (a.order || 999) - (b.order || 999));
       this.setState({ podcasts, loading: false, error: null });
     } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Podcasts YAML load failed:', error);
       this.setState({
         loading: false,
-        error: 'Unable to load podcasts right now.',
+        error:
+          'Unable to load podcasts. Check that podcasts.yml is valid YAML on content.urn1350.co.uk (list items must use the same indentation, e.g. two spaces before each `-`).',
       });
     }
   };
