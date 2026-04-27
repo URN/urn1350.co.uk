@@ -6,8 +6,8 @@ import React from 'react';
 import Paper from '@mui/material/Paper';
 import CircularProgress from '@mui/material/CircularProgress';
 import Axios from 'axios';
-import YAML from 'yaml';
 import { Typography } from '@mui/material';
+import { parseScheduleYaml } from '../utils/schedule';
 
 const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
@@ -45,12 +45,12 @@ export default function Page({schedule}) {
               <Paper className="schedule schedule-day" elevation={3} key={day}>
                 <h1 className="schedule-title">{day}</h1>
                 <div className="schedule-list schedule-list--no-scroll">
-                  {Object.keys(daySchedule)
-                    .filter((x) => daySchedule[x].type !== "automation" && x)
-                    .map((x) => {
+                  {(daySchedule || [])
+                    .filter((show) => show.type !== "automation" && show.name)
+                    .map((show) => {
                       let time = "";
-                      const s = daySchedule[x].start;
-                      const e = daySchedule[x].end;
+                      const s = show.start;
+                      const e = show.end;
 
                       if (e == 24) {
                         time = `${pm(s)}pm-12am`;
@@ -68,11 +68,11 @@ export default function Page({schedule}) {
 
                       return (
                         <div
-                          key={x}
-                          className={daySchedule[x].type + " show" + (isLive ? " is-live" : "")}
+                          key={show.id}
+                          className={show.type + " show" + (isLive ? " is-live" : "")}
                         >
                           <span className="show-time">{time}</span>
-                          <span className="show-name">{x}</span>
+                          <span className="show-name">{show.name}</span>
                         </div>
                       );
                     })}
@@ -90,7 +90,7 @@ export default function Page({schedule}) {
 export async function getStaticProps(context) {
     const cb = Math.floor(Math.random() * 1000);
     const data = await Axios.get(`${Settings.cdnUrl}/schedule.yml?cb=${cb}`);
-    const schedule = YAML.parse(data.data);
+    const schedule = parseScheduleYaml(data.data);
     return {
       props: {schedule}, // will be passed to the page component as props
     }

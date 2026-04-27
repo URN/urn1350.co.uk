@@ -3,10 +3,10 @@ import Link from 'next/link';
 import Paper from '@mui/material/Paper';
 import CircularProgress from '@mui/material/CircularProgress';
 import Axios from 'axios';
-import YAML from 'yaml';
 
 import Settings from '../../settings.json';
 import { Button, Card } from '@mui/material';
+import { parseScheduleYaml } from '../../utils/schedule';
 
 function pm(x)
 {
@@ -23,7 +23,7 @@ const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", 
       super(props);
       this.state = {schedule: null, rand: Math.floor(Math.random() * 1000)};
       Axios.get(`${Settings.cdnUrl}/schedule.yml?cb=${this.state.rand}`).then(r => {
-        const schedule = YAML.parse(r.data)
+        const schedule = parseScheduleYaml(r.data)
         this.setState({
           ...this.state,
           schedule
@@ -44,18 +44,18 @@ const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", 
   else {
     const d = new Date();
     const currentHour = d.getHours();
-    let today = this.state.schedule[days[d.getDay()]];
+    let today = this.state.schedule[days[d.getDay()]] || [];
 
     return (
     <Paper className="schedule" elevation={3}>
       <h1 className="schedule-title">Today's Schedule</h1>
       <div className="schedule-list">
-        {Object.keys(today)
-          .filter((x) => today[x].type !== "automation" && x)
-          .map((x) => {
+        {today
+          .filter((show) => show.type !== "automation" && show.name)
+          .map((show) => {
             let time = "";
-            let s = today[x].start;
-            let e = today[x].end;
+            let s = show.start;
+            let e = show.end;
             const isLive = s <= currentHour && currentHour < e;
 
             if (e == 24) {
@@ -72,11 +72,11 @@ const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", 
 
             return (
               <div
-                key={x}
-                className={today[x].type + " show" + (isLive ? " is-live" : "")}
+                key={show.id}
+                className={show.type + " show" + (isLive ? " is-live" : "")}
               >
                 <span className="show-time">{time}</span>
-                <span className="show-name">{x}</span>
+                <span className="show-name">{show.name}</span>
               </div>
             );
           })}
