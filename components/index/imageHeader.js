@@ -1,11 +1,11 @@
 import React from 'react';
 import Axios from 'axios';
-import YAML from 'yaml';
 
 import PlayArrow from '@mui/icons-material/PlayArrow';
 import Pause from '@mui/icons-material/Pause';
 import Settings from '../../settings.json';
 import { StreamPlayerContext } from '../../context/StreamPlayerContext';
+import { parseScheduleYaml } from '../../utils/schedule';
 
 function pm(x) {
   if (x === 12) return x;
@@ -28,7 +28,7 @@ export default class ImageHeader extends React.Component {
     this.state = { schedule: null };
 
     Axios.get(`${Settings.cdnUrl}/schedule.yml`).then((r) => {
-      const schedule = YAML.parse(r.data);
+      const schedule = parseScheduleYaml(r.data);
       this.setState({
         ...this.state,
         schedule,
@@ -42,21 +42,19 @@ export default class ImageHeader extends React.Component {
     }
 
     const d = new Date();
-    const days_schedule = this.state.schedule[days[d.getDay()]];
+    const days_schedule = this.state.schedule[days[d.getDay()]] || [];
 
-    const current_show = Object.keys(days_schedule)
-      .map((key) => [key, days_schedule[key]])
-      .filter(
-        ([, value]) => value.start <= d.getHours() && d.getHours() < value.end
-      )[0];
+    const current_show = days_schedule.find(
+      (value) => value.start <= d.getHours() && d.getHours() < value.end
+    );
 
     if (!current_show) {
       return { show_name: '', time: '' };
     }
 
-    const show_name = current_show[0];
-    const s = current_show[1].start;
-    const e = current_show[1].end;
+    const show_name = current_show.name;
+    const s = current_show.start;
+    const e = current_show.end;
 
     let time = '';
     if (e === 24) {
