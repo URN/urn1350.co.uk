@@ -3,12 +3,12 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Axios from 'axios';
-import YAML from 'yaml';
 
 import PlayArrow from '@mui/icons-material/PlayArrow';
 import Pause from '@mui/icons-material/Pause';
 import Settings from '../../settings.json';
 import { StreamPlayerContext } from '../../context/StreamPlayerContext';
+import { parseScheduleYaml } from '../../utils/schedule';
 
 function pm(x) {
   if (x === 12) return x;
@@ -35,7 +35,7 @@ export default class NowPlaying extends React.Component {
     this.send_message = this.send_message.bind(this);
 
     Axios.get(`${Settings.cdnUrl}/schedule.yml`).then((r) => {
-      const schedule = YAML.parse(r.data);
+      const schedule = parseScheduleYaml(r.data);
       this.setState((prevState) => ({
         ...prevState,
         schedule,
@@ -72,23 +72,20 @@ export default class NowPlaying extends React.Component {
 
     if (this.state.schedule != null) {
       const d = new Date();
-      const days_schedule = this.state.schedule[days[d.getDay()]];
+      const days_schedule = this.state.schedule[days[d.getDay()]] || [];
 
-      const current_show = Object.keys(days_schedule)
-        .map((key) => [key, days_schedule[key]])
-        .filter(
-          ([, value]) =>
-            value.start <= d.getHours() && d.getHours() < value.end
-        )[0];
+      const current_show = days_schedule.find(
+        (value) => value.start <= d.getHours() && d.getHours() < value.end
+      );
 
       if (!current_show) {
         show_name = '';
         time = '';
       } else {
-      show_name = current_show[0];
+      show_name = current_show.name;
 
-      const s = current_show[1].start;
-      const e = current_show[1].end;
+      const s = current_show.start;
+      const e = current_show.end;
 
       if (e === 24) {
         time = `${pm(s)}pm-12am`;
