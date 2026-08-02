@@ -6,13 +6,6 @@
   Safe push model: this script only reads a local file and makes outbound HTTPS
   requests. It does not expose C:\GLUE, open port 9005, or accept inbound traffic.
 
-.SETUP
-  1. Copy this script to the RCS machine, e.g. C:\GLUE\Upload-NowPlaying.ps1
-  2. Set $ApiSecret to the same value as NOW_PLAYING_SECRET on the website.
-  3. Confirm $NowPlayingFile matches your GLUE output path.
-  4. Run once manually to test, then schedule it to start at boot
-     (Task Scheduler: "At startup", run whether user is logged on or not).
-
 .EXAMPLE
   powershell -ExecutionPolicy Bypass -File C:\GLUE\Upload-NowPlaying.ps1
 #>
@@ -25,6 +18,8 @@ $ApiSecret = 'REPLACE_WITH_SAME_SECRET_AS_NOW_PLAYING_SECRET'
 $NowPlayingFile = 'C:\GLUE\nowplaying.txt'
 $PollSeconds = 2
 $LogFile = 'C:\GLUE\nowplaying-upload.log'
+# Re-POST unchanged data occasionally so website restarts still recover the current track.
+$RefreshSeconds = 60
 
 function Write-Log {
   param([string]$Message)
@@ -92,9 +87,6 @@ if ($ApiSecret -eq 'REPLACE_WITH_SAME_SECRET_AS_NOW_PLAYING_SECRET' -or [string]
 if (-not (Test-Path -LiteralPath $NowPlayingFile)) {
   Write-Log "Waiting for file to appear: $NowPlayingFile"
 }
-
-# Re-POST unchanged data occasionally so website restarts still recover the current track.
-$RefreshSeconds = 60
 
 Write-Log "Watching $NowPlayingFile -> $ApiUrl"
 $lastRaw = $null
