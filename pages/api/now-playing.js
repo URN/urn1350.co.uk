@@ -1,7 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
+import { getStore } from '@netlify/blobs';
 
+const BLOB_STORE = 'now-playing';
+const BLOB_KEY = 'current';
 const DATA_DIR = path.join(process.cwd(), 'data');
 const DATA_FILE =
   process.env.NOW_PLAYING_FILE || path.join(DATA_DIR, 'now-playing.json');
@@ -25,29 +28,87 @@ function toText(artist, title) {
   return artist || title || '';
 }
 
-function readStored() {
+function normalizeStored(parsed) {
+  if (!parsed || typeof parsed !== 'object') return emptyPayload();
+  const artist = parsed.artist || '';
+  const title = parsed.title || '';
+  return {
+    ...emptyPayload(),
+    ...parsed,
+    artist,
+    title,
+    text: parsed.text || toText(artist, title),
+  };
+}
+
+function useBlobs() {
+  // Netlify Functions inject blob credentials; local next dev uses the file fallback.
+  return Boolean(
+    process.env.NETLIFY ||
+      process.env.NETLIFY_BLOBS_CONTEXT ||
+      process.env.SITE_ID ||
+      process.env.NETLIFY_SITE_ID
+  );
+}
+
+function getBlobStore() {
+  const siteID = process.env.SITE_ID || process.env.NETLIFY_SITE_ID;
+  const token =
+    process.env.NETLIFY_BLOBS_TOKEN ||
+    process.env.NETLIFY_API_TOKEN ||
+    process.env.NETLIFY_AUTH_TOKEN;
+
+  if (siteID && token) {
+    return getStore({
+      name: BLOB_STORE,
+      siteID,
+      token,
+      consistency: 'strong',
+    });
+  }
+
+  return getStore({ name: BLOB_STORE, consistency: 'strong' });
+}
+
+function readFromFile() {
   try {
     if (!fs.existsSync(DATA_FILE)) return emptyPayload();
-    const raw = fs.readFileSync(DATA_FILE, 'utf8');
-    const parsed = JSON.parse(raw);
-    const artist = parsed.artist || '';
-    const title = parsed.title || '';
-    return {
-      ...emptyPayload(),
-      ...parsed,
-      artist,
-      title,
-      text: parsed.text || toText(artist, title),
-    };
+    return normalizeStored(JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')));
   } catch (error) {
-    console.error('Error reading now-playing data:', error.message);
+    console.error('Error reading now-playing file:', error.message);
     return emptyPayload();
   }
 }
 
-function writeStored(payload) {
+function writeToFile(payload) {
   fs.mkdirSync(path.dirname(DATA_FILE), { recursive: true });
   fs.writeFileSync(DATA_FILE, JSON.stringify(payload, null, 2), 'utf8');
+}
+
+async function readStored() {
+  if (useBlobs()) {
+    try {
+      const store = getBlobStore();
+      const data = await store.get(BLOB_KEY, {
+        type: 'json',
+        consistency: 'strong',
+      });
+      return normalizeStored(data);
+    } catch (error) {
+      console.error('Error reading now-playing blob:', error.message);
+      // Fall through to file for local/netlify-dev edge cases.
+    }
+  }
+  return readFromFile();
+}
+
+async function writeStored(payload) {
+  if (useBlobs()) {
+    const store = getBlobStore();
+    await store.setJSON(BLOB_KEY, payload);
+    return;
+  }
+  writeToFile(payload);
 }
 
 function extractSecret(req) {
@@ -94,7 +155,7 @@ function normalizeBody(body = {}) {
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
-    const data = readStored();
+    const data = await readStored();
     res.setHeader('Cache-Control', 'no-store');
     return res.status(200).json({
       artist: data.artist || '',
@@ -129,11 +190,14 @@ export default async function handler(req, res) {
     }
 
     try {
-      writeStored(payload);
+      await writeStored(payload);
       return res.status(200).json({ success: true, ...payload });
     } catch (error) {
       console.error('Error writing now-playing data:', error.message);
-      return res.status(500).json({ error: 'Unable to store now playing data.' });
+      return res.status(500).json({
+        error: 'Unable to store now playing data.',
+        detail: error.message,
+      });
     }
   }
 
