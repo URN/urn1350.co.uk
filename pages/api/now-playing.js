@@ -5,6 +5,7 @@ import { getStore } from '@netlify/blobs';
 
 const BLOB_STORE = 'now-playing';
 const BLOB_KEY = 'current';
+const STALE_AFTER_MS = 10 * 60 * 1000;
 const DATA_DIR = path.join(process.cwd(), 'data');
 const DATA_FILE =
   process.env.NOW_PLAYING_FILE || path.join(DATA_DIR, 'now-playing.json');
@@ -20,7 +21,16 @@ function emptyPayload() {
     runtime: '',
     text: '',
     updatedAt: null,
+    changedAt: null,
   };
+}
+
+function isStale(data) {
+  const stamp = data?.changedAt || data?.updatedAt;
+  if (!stamp) return true;
+  const changedAtMs = Date.parse(stamp);
+  if (Number.isNaN(changedAtMs)) return true;
+  return Date.now() - changedAtMs > STALE_AFTER_MS;
 }
 
 function toText(artist, title) {
@@ -131,7 +141,7 @@ function secretsMatch(provided, expected) {
   return crypto.timingSafeEqual(a, b);
 }
 
-function normalizeBody(body = {}) {
+function normalizeBody(body = {}, previous = null) {
   const station = String(body.station ?? '').trim();
   const artist = String(body.artist ?? '').trim();
   const title = String(body.title ?? '').trim();
@@ -139,6 +149,12 @@ function normalizeBody(body = {}) {
   const id = String(body.id ?? '').trim();
   const airdatetime = String(body.airdatetime ?? '').trim();
   const runtime = String(body.runtime ?? '').trim();
+  const now = new Date().toISOString();
+  const sameTrack =
+    previous &&
+    previous.artist === artist &&
+    previous.title === title &&
+    (previous.artist || previous.title);
 
   return {
     station,
@@ -149,7 +165,10 @@ function normalizeBody(body = {}) {
     airdatetime,
     runtime,
     text: toText(artist, title),
-    updatedAt: new Date().toISOString(),
+    updatedAt: now,
+    // Only reset the staleness clock when the track itself changes.
+    changedAt:
+      sameTrack && previous.changedAt ? previous.changedAt : now,
   };
 }
 
@@ -157,6 +176,11 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     const data = await readStored();
     res.setHeader('Cache-Control', 'no-store');
+
+    if (isStale(data)) {
+      return res.status(200).json(emptyPayload());
+    }
+
     return res.status(200).json({
       artist: data.artist || '',
       title: data.title || '',
@@ -167,6 +191,7 @@ export default async function handler(req, res) {
       airdatetime: data.airdatetime || '',
       runtime: data.runtime || '',
       updatedAt: data.updatedAt || null,
+      changedAt: data.changedAt || null,
     });
   }
 
@@ -182,7 +207,8 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    const payload = normalizeBody(req.body || {});
+    const previous = await readStored();
+    const payload = normalizeBody(req.body || {}, previous);
     if (!payload.artist && !payload.title) {
       return res.status(400).json({
         error: 'At least one of artist or title is required.',

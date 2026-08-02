@@ -6,6 +6,7 @@ import Axios from 'axios';
 
 import PlayArrow from '@mui/icons-material/PlayArrow';
 import Pause from '@mui/icons-material/Pause';
+import MusicNote from '@mui/icons-material/MusicNote';
 import Settings from '../../settings.json';
 import { StreamPlayerContext } from '../../context/StreamPlayerContext';
 import { parseScheduleYaml } from '../../utils/schedule';
@@ -145,9 +146,12 @@ export default class NowPlaying extends React.Component {
               </div>
               {(this.state.trackArtist || this.state.trackTitle) && (
                 <span className="now-playing-track">
-                  {this.state.trackArtist && this.state.trackTitle
-                    ? `${this.state.trackArtist} — ${this.state.trackTitle}`
-                    : this.state.trackArtist || this.state.trackTitle}
+                  <MusicNote className="now-playing-track-icon" fontSize="inherit" aria-hidden="true" />
+                  <span className="now-playing-track-text">
+                    {this.state.trackArtist && this.state.trackTitle
+                      ? `${this.state.trackArtist} — ${this.state.trackTitle}`
+                      : this.state.trackArtist || this.state.trackTitle}
+                  </span>
                 </span>
               )}
               {time ? <span className="show-time">From {time}</span> : null}
