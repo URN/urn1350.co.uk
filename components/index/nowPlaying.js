@@ -25,14 +25,20 @@ const days = [
   'Saturday',
 ];
 
+const NOW_PLAYING_POLL_MS = 15000;
+
 export default class NowPlaying extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       msg: '',
       schedule: null,
+      trackArtist: '',
+      trackTitle: '',
     };
     this.send_message = this.send_message.bind(this);
+    this.fetchNowPlaying = this.fetchNowPlaying.bind(this);
+    this.nowPlayingTimer = null;
 
     Axios.get(`${Settings.cdnUrl}/schedule.yml`).then((r) => {
       const schedule = parseScheduleYaml(r.data);
@@ -42,6 +48,31 @@ export default class NowPlaying extends React.Component {
       }));
     });
   }
+
+  componentDidMount() {
+    this.fetchNowPlaying();
+    this.nowPlayingTimer = setInterval(this.fetchNowPlaying, NOW_PLAYING_POLL_MS);
+  }
+
+  componentWillUnmount() {
+    if (this.nowPlayingTimer) {
+      clearInterval(this.nowPlayingTimer);
+      this.nowPlayingTimer = null;
+    }
+  }
+
+  fetchNowPlaying = async () => {
+    try {
+      const { data } = await Axios.get('/api/now-playing');
+      this.setState((prevState) => ({
+        ...prevState,
+        trackArtist: data.artist || '',
+        trackTitle: data.title || '',
+      }));
+    } catch (error) {
+      // Keep the last known track if the endpoint is briefly unavailable.
+    }
+  };
 
   send_message = async (e) => {
     e.preventDefault();
@@ -112,7 +143,14 @@ export default class NowPlaying extends React.Component {
               <div>
                 <span className="show-name">{show_name}</span>
               </div>
-              <span className="show-time">From {time}</span>
+              {(this.state.trackArtist || this.state.trackTitle) && (
+                <span className="now-playing-track">
+                  {this.state.trackArtist && this.state.trackTitle
+                    ? `${this.state.trackArtist} — ${this.state.trackTitle}`
+                    : this.state.trackArtist || this.state.trackTitle}
+                </span>
+              )}
+              {time ? <span className="show-time">From {time}</span> : null}
             </div>
             <button
               type="button"

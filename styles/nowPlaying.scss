@@ -75,6 +75,15 @@
     opacity: 0.9;
 }
 
+.now-playing-track {
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1.35;
+    opacity: 0.95;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
 .listen-button {
     position: relative;
     display: inline-flex;
