@@ -21,6 +21,8 @@ const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", 
   export default class Schedule extends React.Component {
     constructor(props) {
       super(props);
+      this.liveRef = React.createRef();
+      this.hasScrolledToLive = false;
       this.state = {schedule: null, rand: Math.floor(Math.random() * 1000)};
       Axios.get(`${Settings.cdnUrl}/schedule.yml?cb=${this.state.rand}`).then(r => {
         const schedule = parseScheduleYaml(r.data)
@@ -29,6 +31,28 @@ const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", 
           schedule
         })
       })
+    }
+
+    componentDidUpdate() {
+      if (this.hasScrolledToLive) return;
+
+      const live = this.liveRef.current;
+      const list = live && live.parentElement;
+      if (!list) return;
+
+      const listRect = list.getBoundingClientRect();
+      const liveRect = live.getBoundingClientRect();
+      const top =
+        list.scrollTop +
+        (liveRect.top - listRect.top) -
+        (list.clientHeight - liveRect.height) / 2;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      this.hasScrolledToLive = true;
+      list.scrollTo({
+        top: Math.max(0, top),
+        behavior: reduceMotion ? 'auto' : 'smooth',
+      });
     }
 
     render() {
@@ -73,6 +97,7 @@ const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", 
             return (
               <div
                 key={show.id}
+                ref={isLive ? this.liveRef : undefined}
                 className={show.type + " show" + (isLive ? " is-live" : "")}
               >
                 <span className="show-time">{time}</span>
