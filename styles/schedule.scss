@@ -118,16 +118,35 @@
     padding: 3px !important;
 }
 
-.after-dark {
-    background-color: #2e343f !important;
-}
-
-.sport {
-    background-color: #008ac4 !important;
+.breakfast {
+    background-color: #FEDA86 !important;
 }
 
 .daytime {
-    background-color: #c60047 !important;
+    background-color: #44D7FC !important;
+}
+
+.drivetime {
+    background-color: #FB763B !important;
+}
+
+.sport {
+    background-color: #9DDA57 !important;
+}
+
+.pre-club {
+    background-color: #905ECE !important;
+}
+
+.after-dark {
+    background-color: #4A2A8B !important;
+}
+
+.schedule .show.breakfast,
+.schedule .show.daytime,
+.schedule .show.drivetime,
+.schedule .show.sport {
+    color: #1a1a1a !important;
 }
 
 .show-name {
