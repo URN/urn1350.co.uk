@@ -44,7 +44,14 @@ export default function Header() {
     return () => router.events.off('routeChangeComplete', close);
   }, [router.events]);
 
-  const subline = ready && show ? `${show.name} · ${leftText}` : 'Live from the Portland Building';
+  const subline = ready && show ? (
+    <>
+      <span className="menu__show">{show.name}</span>
+      <span className="menu__left">{leftText}</span>
+    </>
+  ) : (
+    'Live from the Portland Building'
+  );
 
   return (
     <header className="site-header">

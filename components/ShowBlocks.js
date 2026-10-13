@@ -42,7 +42,12 @@ export default function ShowBlocks({ rows, nightFirst = false, left, onListen, e
                     <span className="row__main">
                       <span className="row__title">{r.name}</span>
                       <span className="row__sub small">
-                        {isNow ? `On air now${left ? ` · ${left} min left` : ''}` : r.state === 'past' ? 'Finished' : `until ${formatMinutes(r.endMin)}`}
+                        {isNow ? (
+                          <>
+                            <span>On air now</span>
+                            {left ? <span>{left} min left</span> : null}
+                          </>
+                        ) : r.state === 'past' ? 'Finished' : `until ${formatMinutes(r.endMin)}`}
                       </span>
                     </span>
                     <span className="row__end">

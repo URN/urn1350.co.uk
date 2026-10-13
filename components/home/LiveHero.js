@@ -133,7 +133,10 @@ export default function LiveHero() {
             <div className="nowplaying" aria-live="polite">
               <div className="nowplaying__tile"><Meter active={isPlaying} /></div>
               <div className="nowplaying__text">
-                <span className="caps caps--lime">Now playing{track.time ? ` · since ${track.time}` : ''}</span>
+                <span className="nowplaying__label">
+                  <span className="caps caps--lime">Now playing</span>
+                  {track.time ? <span className="muted nowplaying__since tnum">{track.time}</span> : null}
+                </span>
                 <span className="nowplaying__title">{track.title}</span>
                 <span className="muted nowplaying__artist">{track.artist}</span>
               </div>
@@ -146,7 +149,10 @@ export default function LiveHero() {
                   {history.map((h) => (
                     <li key={`${h.time}-${h.title}`}>
                       <span className="muted tnum">{h.time}</span>
-                      <span>{h.title}{h.artist ? <span className="muted"> · {h.artist}</span> : null}</span>
+                      <span className="played__track">
+                        <span>{h.title}</span>
+                        {h.artist ? <span className="muted">{h.artist}</span> : null}
+                      </span>
                     </li>
                   ))}
                 </ol>

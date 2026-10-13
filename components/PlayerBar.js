@@ -68,7 +68,7 @@ export default function PlayerBar() {
           <span className="player__title">
             <span className="badge badge--live"><span className="live-dot live-dot--white" aria-hidden="true" />Live</span>
             <span className="player__show">{title}</span>
-            {ready && show ? <span className="player__left">· {leftText}</span> : null}
+            {ready && show ? <span className="player__left">{leftText}</span> : null}
           </span>
           {error ? (
             <span className="player__error" role="alert">{error}</span>
@@ -80,7 +80,7 @@ export default function PlayerBar() {
               </span>
             </span>
           ) : (
-            <span className="player__tag">1350 · Your student sound</span>
+            <span className="player__tag">Your student sound</span>
           )}
         </div>
 
