@@ -175,7 +175,13 @@ function normalizeBody(body = {}, previous = null) {
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     const data = await readStored();
-    res.setHeader('Cache-Control', 'no-store');
+    // Set the CDN lifetime explicitly. Without this header the Next runtime on
+    // Netlify can cache the response for a year. Browsers still recheck every poll.
+    res.setHeader(
+      'Netlify-CDN-Cache-Control',
+      'public, durable, max-age=30, stale-while-revalidate=60'
+    );
+    res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
 
     if (isStale(data)) {
       return res.status(200).json(emptyPayload());
