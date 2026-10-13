@@ -1,0 +1,50 @@
+import React from 'react';
+import Link from 'next/link';
+
+import { SOCIALS } from './Header';
+import { useTheme } from '../context/ThemeContext';
+
+export default function Footer() {
+  const { theme, toggle } = useTheme();
+  const year = new Date().getFullYear();
+
+  return (
+    <footer className="site-footer">
+      <p className="site-footer__lede">
+        Student radio from the University of Nottingham, <span>made by students, live every day.</span>
+      </p>
+      <div className="site-footer__cols">
+        <div>
+          <h2>Listen</h2>
+          <Link href="/#listen">Listen live</Link>
+          <Link href="/schedule">Schedule</Link>
+          <Link href="/podcasts">Podcasts</Link>
+        </div>
+        <div>
+          <h2>Station</h2>
+          <Link href="/pages/about">About and contact</Link>
+          <Link href="/pages/committee">Committee</Link>
+          <Link href="/pages/get-involved">Get involved</Link>
+        </div>
+        <div>
+          <h2>Follow</h2>
+          {SOCIALS.map((s) => (
+            <a key={s.href} href={s.href} target="_blank" rel="noopener noreferrer">{s.label}</a>
+          ))}
+        </div>
+        <div>
+          <h2>Small print</h2>
+          <Link href="/pages/competitions">Competition terms</Link>
+          <a href="https://constitution.urn1350.co.uk/constitution.pdf">Constitution (PDF)</a>
+          <button type="button" className="textbtn" onClick={toggle}>
+            {theme === 'day' ? 'Switch to night look' : 'Switch to purple look'}
+          </button>
+        </div>
+      </div>
+      <div className="site-footer__base">
+        <span>Best Student Radio Station, Student Radio Awards 2021, 2018, 2017, 2016, 2014, 2013, 2012, 2011, 2010</span>
+        <span>© URN {year} · University of Nottingham Students&apos; Union</span>
+      </div>
+    </footer>
+  );
+}

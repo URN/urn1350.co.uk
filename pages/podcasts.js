@@ -1,26 +1,44 @@
-import Header from "../components/header";
-import Footer from "../components/footer";
-import EpisodesTable from '../components/PodcastBar';
-import { Typography } from "@mui/material";
-import Settings from '../settings.json';
+import React from 'react';
 
-export default function Page() {
+import Seo from '../components/Seo';
+import Cta from '../components/Cta';
+import PixelHeading from '../components/PixelHeading';
+import PodcastCard from '../components/PodcastCard';
+import { fetchPodcasts } from '../lib/content';
+
+export default function Page({ podcasts }) {
   return (
     <>
-      <Header
-        title={`Podcasts - ${Settings.siteTitle}`}
-      />
-      <main className="podcasts-page">
-        <Typography gutterBottom variant="h1" component="div" key="title" className="h podcasts-page-title">
-          Podcasts
-        </Typography>
-        <span className="description">
-          Explore all URN podcasts. Podcasts from previous years can still be found in{' '}
-          <a href="https://archive.urn1350.co.uk">the archive</a>.
-        </span>
-        <EpisodesTable full={true} />
-      </main>
-      <Footer />
+      <Seo title="Podcasts" />
+      <section className="pagehead pagehead--split" aria-labelledby="h1">
+        <div className="pagehead__title pagehead__title--row">
+          <PixelHeading id="h1" size="xl">Podcasts</PixelHeading>
+          {podcasts.length > 0 ? <span className="count" aria-label={`${podcasts.length} podcasts`}>{podcasts.length}</span> : null}
+        </div>
+        <div className="pagehead__aside">
+          <p className="lede muted">
+            Explore all URN podcasts. Podcasts from previous years can still be found in{' '}
+            <a className="textlink" href="https://archive.urn1350.co.uk">the archive</a>.
+          </p>
+        </div>
+      </section>
+
+      {podcasts.length > 0 ? (
+        <ul className="pods">
+          {podcasts.map((p, i) => (
+            <PodcastCard podcast={p} index={i} key={p.slug} />
+          ))}
+        </ul>
+      ) : (
+        <p className="empty">Unable to load podcasts.</p>
+      )}
+
+      <Cta heading="Got an idea for a podcast?" sub="We'll give you the studio and the training." href="/pages/get-involved" label="Get involved" />
     </>
   );
+}
+
+export async function getStaticProps() {
+  const podcasts = await fetchPodcasts();
+  return { props: { podcasts }, revalidate: 60 };
 }
