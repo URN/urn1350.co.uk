@@ -6,6 +6,8 @@ import { getStore } from '@netlify/blobs';
 const BLOB_STORE = 'now-playing';
 const BLOB_KEY = 'current';
 const STALE_AFTER_MS = 10 * 60 * 1000;
+const HISTORY_LENGTH = 4;
+const CACHE_TAG = 'now-playing';
 const DATA_DIR = path.join(process.cwd(), 'data');
 const DATA_FILE =
   process.env.NOW_PLAYING_FILE || path.join(DATA_DIR, 'now-playing.json');
@@ -22,7 +24,20 @@ function emptyPayload() {
     text: '',
     updatedAt: null,
     changedAt: null,
+    history: [],
   };
+}
+
+function normalizeHistory(history) {
+  if (!Array.isArray(history)) return [];
+  return history
+    .filter((h) => h && typeof h === 'object' && (h.artist || h.title))
+    .map((h) => ({
+      artist: String(h.artist || ''),
+      title: String(h.title || ''),
+      playedAt: h.playedAt ? String(h.playedAt) : null,
+    }))
+    .slice(0, HISTORY_LENGTH);
 }
 
 function isStale(data) {
@@ -48,6 +63,7 @@ function normalizeStored(parsed) {
     artist,
     title,
     text: parsed.text || toText(artist, title),
+    history: normalizeHistory(parsed.history),
   };
 }
 
@@ -156,6 +172,22 @@ function normalizeBody(body = {}, previous = null) {
     previous.title === title &&
     (previous.artist || previous.title);
 
+  // A stale record means the station went quiet, so its tracks are not "earlier" any more.
+  let history = [];
+  if (previous && !isStale(previous)) {
+    history = previous.history || [];
+    if (!sameTrack && (previous.artist || previous.title)) {
+      history = [
+        {
+          artist: previous.artist,
+          title: previous.title,
+          playedAt: previous.airdatetime || previous.changedAt || null,
+        },
+        ...history,
+      ];
+    }
+  }
+
   return {
     station,
     artist,
@@ -169,13 +201,42 @@ function normalizeBody(body = {}, previous = null) {
     // Only reset the staleness clock when the track itself changes.
     changedAt:
       sameTrack && previous.changedAt ? previous.changedAt : now,
+    history: normalizeHistory(history),
   };
+}
+
+// Same request as purgeCache from @netlify/functions, whose current release needs Node 22.
+async function purgeCdnCache() {
+  const token = process.env.NETLIFY_PURGE_API_TOKEN;
+  const siteID = process.env.SITE_ID;
+  if (!token || !siteID) {
+    if (process.env.NETLIFY) console.warn('Skipping now-playing cache purge: no purge token or site ID.');
+    return;
+  }
+  const response = await fetch('https://api.netlify.com/api/v1/purge', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=utf8',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ site_id: siteID, cache_tags: [CACHE_TAG] }),
+    signal: AbortSignal.timeout(5000),
+  });
+  if (!response.ok) throw new Error(`purge API returned ${response.status}`);
 }
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     const data = await readStored();
-    res.setHeader('Cache-Control', 'no-store');
+    // Set the CDN lifetime explicitly. Without this header the Next runtime on
+    // Netlify can cache the response for a year. POST purges the tag when the
+    // track changes; the TTL only bounds staleness if a purge fails.
+    res.setHeader(
+      'Netlify-CDN-Cache-Control',
+      'public, durable, max-age=60, stale-while-revalidate=60'
+    );
+    res.setHeader('Netlify-Cache-Tag', CACHE_TAG);
+    res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
 
     if (isStale(data)) {
       return res.status(200).json(emptyPayload());
@@ -192,6 +253,7 @@ export default async function handler(req, res) {
       runtime: data.runtime || '',
       updatedAt: data.updatedAt || null,
       changedAt: data.changedAt || null,
+      history: data.history,
     });
   }
 
@@ -217,7 +279,6 @@ export default async function handler(req, res) {
 
     try {
       await writeStored(payload);
-      return res.status(200).json({ success: true, ...payload });
     } catch (error) {
       console.error('Error writing now-playing data:', error.message);
       return res.status(500).json({
@@ -225,6 +286,17 @@ export default async function handler(req, res) {
         detail: error.message,
       });
     }
+
+    // Repeat posts of the same track keep changedAt, so they never purge.
+    if (payload.changedAt !== previous.changedAt) {
+      try {
+        await purgeCdnCache();
+      } catch (error) {
+        console.error('Error purging now-playing cache:', error.message);
+      }
+    }
+
+    return res.status(200).json({ success: true, ...payload });
   }
 
   res.setHeader('Allow', ['GET', 'POST']);
