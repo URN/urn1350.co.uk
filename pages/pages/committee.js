@@ -33,16 +33,14 @@ export default function Page({ current }) {
             <PixelHeading id="h1" size="xl">Committee</PixelHeading>
             <span className="yearchip tnum">{year}</span>
           </div>
-          <p className="pagehead__intro">
-            {isNow
-              ? 'The students running URN this year. Every one of them juggles a degree with running the station.'
-              : `The committee that ran URN in ${year}. Role names have changed over the years.`}
-          </p>
+          {isNow ? null : (
+            <p className="pagehead__intro">{`The committee that ran URN in ${year}. Role names have changed over the years.`}</p>
+          )}
         </div>
         <div role="group" aria-label="Year" className="pills pills--scroll">
-          {years.map((y, i) => (
+          {years.map((y) => (
             <button key={y} type="button" className="pill tnum" aria-pressed={y === year} onClick={() => setYear(y)}>
-              {i === 0 ? `${y} · now` : y}
+              {y}
             </button>
           ))}
         </div>
