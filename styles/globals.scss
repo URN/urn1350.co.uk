@@ -1980,6 +1980,62 @@ textarea.field {
   }
 }
 
+/* ---------- committee ---------- */
+
+.yearchip {
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.pagehead__intro {
+  margin: 0;
+  max-width: 440px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.roster {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 120px;
+    padding: clamp(20px, 2.4vw, 32px) var(--gutter);
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+
+    &--lead {
+      background: var(--lime);
+      color: var(--ink);
+    }
+  }
+  &__role {
+    font-size: 14px;
+    line-height: 1.35;
+    color: var(--muted);
+  }
+  &__item--lead &__role {
+    color: var(--ink);
+  }
+  &__name {
+    font-size: clamp(24px, 2.2vw, 34px);
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+}
+
 /* ---------- prose pages, 404 ---------- */
 
 .doc {
