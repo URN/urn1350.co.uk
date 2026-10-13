@@ -10,7 +10,7 @@ const FACTS = [
   ['1979', 'first broadcast on University Park, November 1979'],
   ['24h', 'on air every day in term, twenty hours of it live'],
   ['150+', 'student members presenting, producing and reporting'],
-  ['35k+', 'University of Nottingham students within reach'],
+  ['36k+', 'University of Nottingham students within reach'],
 ];
 
 const MAKE = [
@@ -32,7 +32,7 @@ const HOMES = [
 const BEST_STATION = ['2010', '2011', '2012', '2013', '2014', '2016', '2017', '2018', '2021'];
 
 const CONTACTS = [
-  ['Prizes and partnerships', 'Reach over 35,000 students. Provide prizes and get exposure across the Nottingham student community.', 'marketing@urn1350.co.uk'],
+  ['Prizes and partnerships', 'Reach over 36,000 students. Provide prizes and get exposure across the Nottingham student community.', 'marketing@urn1350.co.uk'],
   ['Artists', 'Want to work with URN? Send us your music.', 'music@urn1350.co.uk'],
   ['Joining URN', 'Presenting, producing, reporting or tech.', null],
   ['Everything else', 'Any other questions for the station.', 'management@urn1350.co.uk'],
