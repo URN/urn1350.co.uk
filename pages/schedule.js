@@ -87,7 +87,6 @@ export default function Page({ schedule: staticSchedule }) {
 
         {ready && show ? (
           <Link href="/#listen" className="livebar">
-            <span className="badge badge--ink"><span className="live-dot" aria-hidden="true" />Live</span>
             <span className="livebar__title">{show.name}</span>
             <span className="tnum">{formatRange(show)}</span>
             <span className="btn btn--ink livebar__cta"><PlayIcon size={12} />Listen and message</span>

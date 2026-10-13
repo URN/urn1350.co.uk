@@ -66,7 +66,6 @@ export default function PlayerBar() {
 
         <div className="player__info">
           <span className="player__title">
-            <span className="badge badge--live"><span className="live-dot live-dot--white" aria-hidden="true" />Live</span>
             <span className="player__show">{title}</span>
             {ready && show ? <span className="player__left">{leftText}</span> : null}
           </span>
