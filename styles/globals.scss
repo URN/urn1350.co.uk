@@ -314,32 +314,6 @@ main:focus {
   }
 }
 
-.listen-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 18px;
-  border: 0;
-  border-radius: 999px;
-  background: var(--action);
-  color: #fff;
-  font-size: 15px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s, transform 0.3s var(--ease-spring);
-
-  &:hover {
-    background: var(--action-hover);
-    transform: scale(1.04);
-  }
-  &:active {
-    transform: scale(0.96);
-  }
-}
-.site-header__links + .listen-btn {
-  margin-left: clamp(16px, 1.8vw, 28px);
-}
-
 .tag {
   align-self: flex-start;
   display: inline-block;
@@ -2724,13 +2698,6 @@ textarea.field {
   }
   .pixel--hero {
     --size: clamp(34px, 9vw, 60px);
-  }
-  .listen-btn {
-    margin-left: auto;
-    padding: 8px 14px;
-  }
-  .site-header__links + .listen-btn {
-    margin-left: auto;
   }
   .live__rings {
     right: -40vw;

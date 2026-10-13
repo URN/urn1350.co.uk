@@ -68,10 +68,6 @@ export default function Header() {
             );
           })}
         </div>
-        <button type="button" className={`listen-btn ${isPlaying ? 'is-playing' : ''}`} onClick={togglePlay}>
-          {isPlaying ? <PauseIcon size={16} /> : <PlayIcon size={16} />}
-          {isPlaying ? 'Pause' : 'Listen live'}
-        </button>
         <button
           type="button"
           className="menu-btn"
