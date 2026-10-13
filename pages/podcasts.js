@@ -31,7 +31,7 @@ export default function Page({ podcasts }) {
       <Reveal as="section" className="archive" aria-labelledby="archive-h">
         <div className="archive__text">
           <h2 id="archive-h" className="archive__title">Looking for older shows?</h2>
-          <p className="muted">You can find shows from previous years in the archive.</p>
+          <p className="muted">You can find podcasts from previous years in the archive.</p>
         </div>
         <a className="btn btn--ghost btn--xl" href="https://archive.urn1350.co.uk" target="_blank" rel="noopener noreferrer">
           Browse the archive<ArrowIcon className="arrow" />
