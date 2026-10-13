@@ -8,7 +8,7 @@ import PodcastCard from '../components/PodcastCard';
 import { ArrowIcon } from '../components/Icons';
 import LiveHero from '../components/home/LiveHero';
 import Lineup from '../components/home/Lineup';
-import { InstagramLatest, SpotifyPlaylist } from '../components/home/Social';
+import { InstagramLatest } from '../components/home/Social';
 import { fetchSchedule, fetchPodcasts, fetchInstagramPosts } from '../lib/content';
 
 export default function Home({ podcasts, posts }) {
@@ -36,7 +36,6 @@ export default function Home({ podcasts, posts }) {
       ) : null}
 
       <InstagramLatest posts={posts} />
-      <SpotifyPlaylist />
       <Cta heading="Want to join us?" href="/pages/get-involved" label="Get involved" />
     </>
   );
