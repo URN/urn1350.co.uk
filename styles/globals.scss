@@ -1004,7 +1004,7 @@ textarea.field {
       transform: scale(0.93);
     }
     &.is-playing {
-      animation: pulse-lime 2s ease-out infinite;
+      animation: pulse-action 2s ease-out infinite;
     }
   }
   &__info {
@@ -1191,7 +1191,7 @@ textarea.field {
     }
   }
   &.is-playing &__rings i {
-    border-color: rgba(156, 216, 84, 0.75);
+    border-color: rgba(143, 107, 230, 0.8);
     animation-duration: 4.2s;
   }
   &.is-playing &__rings i:nth-child(2) {
@@ -1279,7 +1279,7 @@ textarea.field {
     box-shadow: none;
   }
   &.is-playing &__disc {
-    animation: pulse-lime 2s ease-out infinite;
+    animation: pulse-action 2s ease-out infinite;
   }
   &__text {
     display: flex;
@@ -2866,12 +2866,12 @@ textarea.field {
   }
 }
 
-@keyframes pulse-lime {
+@keyframes pulse-action {
   0% {
-    box-shadow: 0 0 0 0 rgba(156, 216, 84, 0.55);
+    box-shadow: 0 0 0 0 rgba(143, 107, 230, 0.65);
   }
   100% {
-    box-shadow: 0 0 0 22px rgba(156, 216, 84, 0);
+    box-shadow: 0 0 0 22px rgba(143, 107, 230, 0);
   }
 }
 
