@@ -28,6 +28,9 @@ const HOMES = [
   ['2018', 'Media Zone, Portland Floor C', 'Our home since the Portland redevelopment.'],
 ];
 
+// Years URN won Best Student Radio Station: add the new year to the end when it happens.
+const BEST_STATION = ['2010', '2011', '2012', '2013', '2014', '2016', '2017', '2018', '2021'];
+
 const CONTACTS = [
   ['Prizes and partnerships', 'Reach over 35,000 students. Provide prizes and get exposure across the Nottingham student community.', 'marketing@urn1350.co.uk'],
   ['Artists', 'Want to work with URN? Send us your music.', 'music@urn1350.co.uk'],
@@ -118,11 +121,15 @@ export default function Page() {
         <div className="awards__row">
           <h2 id="awards-h" className="h-light">Best Student<br />Radio Station</h2>
           <p className="muted awards__note">
-            We have held the title of Best Student Radio Station several times and have won more Student Radio Awards than
-            any other station. They're judged by some of the most prominent figures in the radio industry, from across the BBC
-            and commercial radio.
+            Student Radio Awards, judged by some of the most prominent figures in the radio industry, from across the BBC and
+            commercial radio. URN has won more of them than any other station.
           </p>
         </div>
+        <ul className="awards__years" aria-label="Years we won Best Student Radio Station">
+          {BEST_STATION.map((y) => (
+            <li className="tnum" key={y}>{y}</li>
+          ))}
+        </ul>
       </section>
 
       <section className="contacts" aria-labelledby="contact-h">

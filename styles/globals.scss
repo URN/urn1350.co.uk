@@ -2360,6 +2360,20 @@ textarea.field {
     font-size: 16px;
     line-height: 1.5;
   }
+  // plain numerals, not pills: these aren't links
+  &__years {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 36px;
+    margin: 28px 0 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-dot);
+    font-weight: 900;
+    font-size: clamp(28px, 3vw, 44px);
+    line-height: 1;
+    color: var(--lime);
+  }
 }
 
 .contacts {
