@@ -92,6 +92,11 @@ export default function LiveHero() {
 
       <div className="live__grid">
         <div className="live__main">
+          <p className="onair">
+            <span className="onair__badge"><span className="live-dot live-dot--white" aria-hidden="true" />{live ? 'On air now' : 'Live radio'}</span>
+            <span className="onair__what">University Radio Nottingham. Live student radio, 24/7.</span>
+          </p>
+
           <PixelHeading id="live-h" size="hero" play={ready || waited}>{title}</PixelHeading>
 
           <button
@@ -105,7 +110,7 @@ export default function LiveHero() {
             </span>
             <span className="bigplay__text">
               <span>{playText}</span>
-              <span className="muted bigplay__sub">Live from the Portland Building</span>
+              <span className="muted bigplay__sub">{isPlaying ? 'You’re listening to URN' : 'Press play to tune in. Live from the Portland Building'}</span>
             </span>
           </button>
           {error ? <p className="notice notice--err" role="alert">{error}</p> : null}
@@ -167,6 +172,7 @@ export default function LiveHero() {
         <div className="panel__head">
           <div>
             <h2 className="panel__title">Message {title}</h2>
+            <p className="muted panel__hint">Request a song or say hi. It goes straight to the studio.</p>
           </div>
           <div role="group" aria-label="Message type" className="pills">
             {kinds.map((k) => (
