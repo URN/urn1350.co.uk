@@ -106,12 +106,10 @@ export function formatRange(show) {
   return `${formatMinutes(show.startMin)}–${formatMinutes(show.endMin)}`;
 }
 
-export function formatLeft(mins) {
+export function formatLeft(mins, endMin) {
   if (mins <= 0) return 'ending now';
-  if (mins < 60) return `${mins} min left`;
-  const h = Math.floor(mins / 60);
-  const m = mins % 60;
-  return m ? `${h} h ${m} min left` : `${h} h left`;
+  if (mins < 60) return mins === 1 ? '1 min left' : `${mins} mins left`;
+  return `until ${formatMinutes(endMin)}`;
 }
 
 /** Tags each show as 'now', 'past' or 'next' relative to the clock (only on today's list). */

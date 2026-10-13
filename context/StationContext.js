@@ -122,7 +122,7 @@ export function StationProvider({ children, initialSchedule }) {
       now,
       show,
       left,
-      leftText: show ? formatLeft(left) : '',
+      leftText: show ? formatLeft(left, show.endMin) : '',
       pct,
       upNext: upcoming.slice(0, 2),
       nextShow: upcoming[0] || null,

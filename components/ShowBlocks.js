@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { PlayIcon } from './Icons';
-import { formatMinutes } from '../utils/schedule';
+import { formatMinutes, formatLeft } from '../utils/schedule';
 
 const LABELS = { day: 'Daytime', night: 'After dark' };
 
@@ -45,7 +45,7 @@ export default function ShowBlocks({ rows, nightFirst = false, left, onListen, e
                         {isNow ? (
                           <>
                             <span>On air now</span>
-                            {left ? <span>{left} min left</span> : null}
+                            {left != null ? <span>{formatLeft(left, r.endMin)}</span> : null}
                           </>
                         ) : r.state === 'past' ? 'Finished' : `until ${formatMinutes(r.endMin)}`}
                       </span>

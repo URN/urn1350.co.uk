@@ -26,7 +26,7 @@ function Meter({ active }) {
 }
 
 export default function LiveHero() {
-  const { ready, show, pct, leftText, upNext, track, history } = useStation();
+  const { ready, show, pct, left, leftText, upNext, track, history } = useStation();
   const { isPlaying, isLoading, error, togglePlay } = useStreamPlayer();
   const msg = useMessage();
   const [kind, setKind] = useState('Request');
@@ -76,7 +76,7 @@ export default function LiveHero() {
       <div className="live__progress">
         <div className="live__meta">
           <span className="doto">{live ? formatRange(show) : ready ? 'Between shows' : ' '}</span>
-          <span className="muted">{live ? leftText : '\u00a0'}</span>
+          <span className="muted">{live && left < 60 ? leftText : '\u00a0'}</span>
         </div>
         <div
           className="bar"
