@@ -92,11 +92,6 @@ export default function LiveHero() {
 
       <div className="live__grid">
         <div className="live__main">
-          <p className="onair">
-            <span className="onair__badge"><span className="live-dot live-dot--white" aria-hidden="true" />{live ? 'On air now' : 'Live radio'}</span>
-            <span className="onair__what">University Radio Nottingham. Live student radio, 24/7.</span>
-          </p>
-
           <PixelHeading id="live-h" size="hero" play={ready || waited}>{title}</PixelHeading>
 
           <button

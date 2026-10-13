@@ -340,32 +340,6 @@ main:focus {
   margin-left: clamp(16px, 1.8vw, 28px);
 }
 
-.onair {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 14px;
-  margin: 0;
-
-  &__badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 5px 12px;
-    border-radius: 999px;
-    background: var(--red);
-    color: #fff;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  &__what {
-    font-size: clamp(15px, 1.3vw, 18px);
-    color: var(--muted);
-  }
-}
-
 .tag {
   align-self: flex-start;
   display: inline-block;
