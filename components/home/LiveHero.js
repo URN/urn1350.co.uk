@@ -136,7 +136,13 @@ export default function LiveHero() {
         {track ? (
           <div className="live__side">
             <div className="nowplaying" aria-live="polite">
-              <div className="nowplaying__tile"><Meter active={isPlaying} /></div>
+              <div className="nowplaying__tile">
+                {track.artwork ? (
+                  <img className="nowplaying__art" src={track.artwork} alt="" width="96" height="96" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+                ) : (
+                  <Meter active={isPlaying} />
+                )}
+              </div>
               <div className="nowplaying__text">
                 <span className="nowplaying__label">
                   <span className="caps caps--lime">Now playing</span>

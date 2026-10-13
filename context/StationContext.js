@@ -79,13 +79,14 @@ export function StationProvider({ children, initialSchedule }) {
         if (cancelled) return;
         const artist = data.artist || '';
         const title = data.title || '';
-        const key = `${artist}|${title}`;
+        const artwork = data.artwork || '';
+        const key = `${artist}|${title}|${artwork}`;
         if (!artist && !title) {
           lastKey.current = '';
           setTrack(null);
         } else if (key !== lastKey.current) {
           lastKey.current = key;
-          setTrack({ artist, title, time: timeOf(data.airdatetime || data.changedAt) });
+          setTrack({ artist, title, artwork, time: timeOf(data.airdatetime || data.changedAt) });
         }
         const played = Array.isArray(data.history) ? data.history : [];
         const historyKey = played.map((h) => `${h.playedAt}|${h.artist}|${h.title}`).join('\n');
