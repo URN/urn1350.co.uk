@@ -13,7 +13,6 @@ export default function Page({ podcasts }) {
       <section className="pagehead pagehead--split" aria-labelledby="h1">
         <div className="pagehead__title pagehead__title--row">
           <PixelHeading id="h1" size="xl">Podcasts</PixelHeading>
-          {podcasts.length > 0 ? <span className="count" aria-label={`${podcasts.length} podcasts`}>{podcasts.length}</span> : null}
         </div>
         <div className="pagehead__aside">
           <p className="lede muted">

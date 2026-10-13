@@ -368,14 +368,6 @@ main:focus {
   }
 }
 
-.count {
-  padding: 6px 14px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  font-size: 16px;
-  line-height: 1.2;
-}
-
 /* ---------- buttons, pills, fields ---------- */
 
 .btn {
@@ -1648,6 +1640,11 @@ textarea.field {
   }
   &--split {
     flex-direction: row;
+  }
+  // pills carry 4px of focus-ring padding; drop the top pull-up so the visible
+  // pill edge sits the same 28px under the title as the rule on other pages
+  > .pills--scroll {
+    margin-top: 0;
   }
   &__aside {
     display: flex;
