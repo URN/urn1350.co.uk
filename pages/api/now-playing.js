@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
 import { getStore } from '@netlify/blobs';
+import { findArtwork } from '../../lib/artwork';
 
 const BLOB_STORE = 'now-playing';
 const BLOB_KEY = 'current';
@@ -22,6 +23,7 @@ function emptyPayload() {
     airdatetime: '',
     runtime: '',
     text: '',
+    artwork: '',
     updatedAt: null,
     changedAt: null,
     history: [],
@@ -197,6 +199,7 @@ function normalizeBody(body = {}, previous = null) {
     airdatetime,
     runtime,
     text: toText(artist, title),
+    artwork: '',
     updatedAt: now,
     // Only reset the staleness clock when the track itself changes.
     changedAt:
@@ -246,6 +249,7 @@ export default async function handler(req, res) {
       artist: data.artist || '',
       title: data.title || '',
       text: data.text || toText(data.artist, data.title),
+      artwork: data.artwork || '',
       station: data.station || '',
       type: data.type || '',
       id: data.id || '',
@@ -276,6 +280,15 @@ export default async function handler(req, res) {
         error: 'At least one of artist or title is required.',
       });
     }
+
+    // Look art up once per track change; repeat POSTs of the same track reuse it,
+    // and a track stored without art gets another try.
+    const sameTrack =
+      previous.artist === payload.artist && previous.title === payload.title;
+    payload.artwork =
+      (sameTrack && previous.artwork) ||
+      (await findArtwork(payload.artist, payload.title)) ||
+      '';
 
     try {
       await writeStored(payload);
