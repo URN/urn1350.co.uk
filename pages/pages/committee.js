@@ -33,9 +33,6 @@ export default function Page({ current }) {
             <PixelHeading id="h1" size="xl">Committee</PixelHeading>
             <span className="yearchip tnum">{year}</span>
           </div>
-          {isNow ? null : (
-            <p className="pagehead__intro">{`The committee that ran URN in ${year}. Role names have changed over the years.`}</p>
-          )}
         </div>
         <div role="group" aria-label="Year" className="pills pills--scroll">
           {years.map((y) => (
