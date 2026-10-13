@@ -117,15 +117,15 @@ export default function Page() {
         </ol>
       </section>
 
-      <section className="awards" aria-labelledby="awards-h">
-        <div className="awards__row">
+      <section className="band awards" aria-labelledby="awards-h">
+        <div className="band__head awards__head">
           <h2 id="awards-h" className="h-light">Best Student<br />Radio Station</h2>
           <p className="muted awards__note">
             Student Radio Awards, judged by some of the most prominent figures in the radio industry, from across the BBC and
             commercial radio. URN has won more of them than any other station.
           </p>
         </div>
-        <ul className="awards__years" aria-label="Years we won Best Student Radio Station">
+        <ul className="band__body awards__years" aria-label="Years we won Best Student Radio Station">
           {BEST_STATION.map((y) => (
             <li className="tnum" key={y}>{y}</li>
           ))}
