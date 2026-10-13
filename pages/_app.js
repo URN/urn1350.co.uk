@@ -5,7 +5,6 @@ import { Lexend, Silkscreen } from 'next/font/google';
 import Layout from '../components/Layout';
 import { StreamPlayerProvider } from '../context/StreamPlayerContext';
 import { StationProvider } from '../context/StationContext';
-import { ThemeProvider } from '../context/ThemeContext';
 
 import '../styles/globals.scss';
 
@@ -16,7 +15,7 @@ const silkscreen = Silkscreen({ subsets: ['latin'], weight: '700', display: 'swa
 
 export default function MyApp({ Component, pageProps }) {
   return (
-    <ThemeProvider>
+    <>
       <Head>
         <style
           dangerouslySetInnerHTML={{
@@ -31,6 +30,6 @@ export default function MyApp({ Component, pageProps }) {
           </Layout>
         </StreamPlayerProvider>
       </StationProvider>
-    </ThemeProvider>
+    </>
   );
 }

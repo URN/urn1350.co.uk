@@ -3,9 +3,8 @@ import { Html, Head, Main, NextScript } from 'next/document';
 
 import Settings from '../settings.json';
 
-// Runs before first paint: picks the night/purple look from the UK time (or the
-// visitor's saved choice) and flags that JS is on, so there is no flash of the wrong theme.
-const BOOT = `(function(){var d=document.documentElement;try{d.classList.add('js');var t=localStorage.getItem('urn-theme');if(t!=='day'&&t!=='night'){var h=+new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',hour:'numeric',hourCycle:'h23'}).format(new Date());t=h>=8&&h<20?'day':'night'}d.setAttribute('data-theme',t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',t==='day'?'#4a2a8b':'#1e1e1e')}catch(e){d.setAttribute('data-theme','night')}setTimeout(function(){if(!d.classList.contains('hydrated'))d.classList.remove('js')},6000)})();`;
+// Runs before first paint: flags that JS is on, so the reveal animations don't flash.
+const BOOT = `(function(){var d=document.documentElement;d.classList.add('js');setTimeout(function(){if(!d.classList.contains('hydrated'))d.classList.remove('js')},6000)})();`;
 
 export default function Document() {
   return (
