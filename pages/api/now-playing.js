@@ -6,6 +6,7 @@ import { getStore } from '@netlify/blobs';
 const BLOB_STORE = 'now-playing';
 const BLOB_KEY = 'current';
 const STALE_AFTER_MS = 10 * 60 * 1000;
+const HISTORY_LENGTH = 4;
 const DATA_DIR = path.join(process.cwd(), 'data');
 const DATA_FILE =
   process.env.NOW_PLAYING_FILE || path.join(DATA_DIR, 'now-playing.json');
@@ -22,7 +23,20 @@ function emptyPayload() {
     text: '',
     updatedAt: null,
     changedAt: null,
+    history: [],
   };
+}
+
+function normalizeHistory(history) {
+  if (!Array.isArray(history)) return [];
+  return history
+    .filter((h) => h && typeof h === 'object' && (h.artist || h.title))
+    .map((h) => ({
+      artist: String(h.artist || ''),
+      title: String(h.title || ''),
+      playedAt: h.playedAt ? String(h.playedAt) : null,
+    }))
+    .slice(0, HISTORY_LENGTH);
 }
 
 function isStale(data) {
@@ -48,6 +62,7 @@ function normalizeStored(parsed) {
     artist,
     title,
     text: parsed.text || toText(artist, title),
+    history: normalizeHistory(parsed.history),
   };
 }
 
@@ -156,6 +171,22 @@ function normalizeBody(body = {}, previous = null) {
     previous.title === title &&
     (previous.artist || previous.title);
 
+  // A stale record means the station went quiet, so its tracks are not "earlier" any more.
+  let history = [];
+  if (previous && !isStale(previous)) {
+    history = previous.history || [];
+    if (!sameTrack && (previous.artist || previous.title)) {
+      history = [
+        {
+          artist: previous.artist,
+          title: previous.title,
+          playedAt: previous.airdatetime || previous.changedAt || null,
+        },
+        ...history,
+      ];
+    }
+  }
+
   return {
     station,
     artist,
@@ -169,6 +200,7 @@ function normalizeBody(body = {}, previous = null) {
     // Only reset the staleness clock when the track itself changes.
     changedAt:
       sameTrack && previous.changedAt ? previous.changedAt : now,
+    history: normalizeHistory(history),
   };
 }
 
@@ -198,6 +230,7 @@ export default async function handler(req, res) {
       runtime: data.runtime || '',
       updatedAt: data.updatedAt || null,
       changedAt: data.changedAt || null,
+      history: data.history,
     });
   }
 
