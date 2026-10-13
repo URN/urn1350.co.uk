@@ -116,7 +116,7 @@ export function StationProvider({ children, initialSchedule }) {
     const pct = show
       ? Math.min(100, Math.max(0, Math.round(((now.minutes - show.startMin) / (show.endMin - show.startMin)) * 100)))
       : 0;
-    const upcoming = ready ? findUpcoming(schedule, now, 3) : [];
+    const upcoming = ready ? findUpcoming(schedule, now, 5) : [];
     return {
       ready,
       schedule,
@@ -125,7 +125,7 @@ export function StationProvider({ children, initialSchedule }) {
       left,
       leftText: show ? formatLeft(left, show.endMin) : '',
       pct,
-      upNext: upcoming.slice(0, 2),
+      upNext: upcoming.slice(0, 5),
       nextShow: upcoming[0] || null,
       track,
       history,

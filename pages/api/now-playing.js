@@ -219,6 +219,22 @@ export default async function handler(req, res) {
     res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
 
     if (isStale(data)) {
+      // Local dev has no uploader, so show the live site's track and iTunes artwork.
+      const host = req.headers.host || '';
+      const isLocal = host.startsWith('localhost') || host.startsWith('127.0.0.1');
+      if (isLocal) {
+        try {
+          const remote = await fetch('https://urn1350.co.uk/api/now-playing', {
+            signal: AbortSignal.timeout(4000),
+          });
+          if (remote.ok) {
+            const body = await remote.json();
+            if (body.artist || body.title) return res.status(200).json(body);
+          }
+        } catch (error) {
+          // Fall through to the empty payload.
+        }
+      }
       return res.status(200).json(emptyPayload());
     }
 

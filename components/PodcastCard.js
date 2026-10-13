@@ -5,7 +5,7 @@ import Reveal from './Reveal';
 import { ArrowIcon } from './Icons';
 import { initials } from '../utils/podcasts';
 
-const SWATCHES = ['#b39af0', '#feda86', '#b6a8d2', '#43d7fb', '#fc7588', '#f0743a', '#fefbf3', '#8a66cc'];
+const SWATCHES = ['#c4b5fd', '#d8b4fe', '#b6a8d2', '#43d7fb', '#fc7588', '#f0743a', '#fefbf3', '#8a66cc'];
 
 function swatchFor(slug) {
   let h = 0;

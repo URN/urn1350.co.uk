@@ -55,9 +55,28 @@ export default function Header() {
     <header className="site-header">
       <a className="skip-link" href="#main">Skip to content</a>
       <nav className="site-header__nav" aria-label="Main">
-        <Link href="/" className="site-header__logo" aria-label="URN, University Radio Nottingham. Home">
-          <img src={`${Settings.cdnUrl}/content/images/logo.png`} alt="" width="44" height="44" />
-        </Link>
+        <div className="site-header__brand">
+          <Link href="/" className="site-header__logo" aria-label="URN, University Radio Nottingham. Home">
+            <img src={`${Settings.cdnUrl}/content/images/logo.png`} alt="" width="44" height="44" />
+          </Link>
+          <p className="site-header__slogan">
+            {(() => {
+              const slogan = Settings.siteSubtitle || '';
+              const breakBefore = 'Your Student Sound';
+              const splitAt = slogan.indexOf(breakBefore);
+              if (splitAt > 0) {
+                return (
+                  <>
+                    {slogan.slice(0, splitAt).trimEnd()}
+                    <br />
+                    {slogan.slice(splitAt).trimStart()}
+                  </>
+                );
+              }
+              return slogan;
+            })()}
+          </p>
+        </div>
         <div className="site-header__links">
           {NAV.map((l) => {
             const active = isActive(router.asPath, l.href);

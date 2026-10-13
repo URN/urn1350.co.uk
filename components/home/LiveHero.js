@@ -1,11 +1,28 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import PixelHeading from '../PixelHeading';
+import PixelDJ from './PixelDJ';
 import { PlayIcon, PauseIcon, Spinner } from '../Icons';
 import { useStation } from '../../context/StationContext';
 import { useStreamPlayer } from '../../context/StreamPlayerContext';
 import { useMessage, MESSAGE_MAX } from '../../hooks/useMessage';
 import { formatRange, formatMinutes } from '../../utils/schedule';
+
+const SHOW_TAGS = {
+  breakfast: 'Breakfast',
+  daytime: 'Daytime',
+  drivetime: 'Drivetime',
+  sport: 'Sport',
+  'pre-club': 'Pre-club',
+  'after-dark': 'After dark',
+};
+
+function showTag(show) {
+  if (show.tag === 'News') return { label: 'News', kind: 'news' };
+  const kind = show.type || '';
+  const label = SHOW_TAGS[kind];
+  return label ? { label, kind } : null;
+}
 
 const KINDS = {
   Request: 'What should they play next?',
@@ -27,7 +44,7 @@ function Meter({ active }) {
 
 export default function LiveHero() {
   const { ready, show, pct, left, leftText, upNext, track, history } = useStation();
-  const { isPlaying, isLoading, error, togglePlay } = useStreamPlayer();
+  const { isPlaying, isLoading, error, togglePlay, analyserRef } = useStreamPlayer();
   const msg = useMessage();
   const [kind, setKind] = useState('Request');
   const input = useRef(null);
@@ -53,6 +70,7 @@ export default function LiveHero() {
 
   const playText = isLoading ? 'Connecting…' : isPlaying ? 'Pause' : 'Listen live';
   const playLabel = isLoading ? 'Connecting to live stream' : isPlaying ? 'Pause live stream' : 'Play live stream';
+  const nowPlaying = track ? [track.title, track.artist].filter(Boolean).join(' · ') : '';
 
   const shout = () => {
     if (!track) return;
@@ -70,7 +88,7 @@ export default function LiveHero() {
   return (
     <section id="listen" className={`live ${isPlaying ? 'is-playing' : ''}`} aria-labelledby="live-h">
       <div className="live__rings" aria-hidden="true">
-        <i /><i /><i />
+        <PixelDJ playing={isPlaying} analyserRef={analyserRef} />
       </div>
 
       <div className="live__progress">
@@ -105,7 +123,7 @@ export default function LiveHero() {
             </span>
             <span className="bigplay__text">
               <span>{playText}</span>
-              <span className="muted bigplay__sub">{isPlaying ? 'You’re listening to URN' : 'Press play to tune in. Live from the Portland Building'}</span>
+              <span className="muted bigplay__sub">{nowPlaying || 'Live from the Portland Building'}</span>
             </span>
           </button>
           {error ? <p className="notice notice--err" role="alert">{error}</p> : null}
@@ -114,15 +132,22 @@ export default function LiveHero() {
             <div className="upnext">
               <h2 className="caps caps--butter">Up next</h2>
               <ul>
-                {upNext.map((u) => (
-                  <li key={`${u.id}-${u.when}`}>
-                    <a href="#lineup" className="upnext__row">
-                      <span className="upnext__time">{formatMinutes(u.startMin)}</span>
-                      <span className="upnext__title">{u.name}</span>
-                      <span className="muted upnext__when">{u.when}</span>
-                    </a>
-                  </li>
-                ))}
+                {upNext.map((u, i) => {
+                  const tag = showTag(u);
+                  return (
+                    <li key={`${u.id}-${u.when}`} className={i >= 2 ? 'upnext__extra' : undefined}>
+                      <a href="#lineup" className="upnext__row">
+                        <span className="upnext__time">{formatMinutes(u.startMin)}</span>
+                        <span className="upnext__title">{u.name}</span>
+                        {tag ? (
+                          <span className={`upnext__tag upnext__tag--${tag.kind}`}>{tag.label}</span>
+                        ) : (
+                          <span className="muted upnext__when">{u.when}</span>
+                        )}
+                      </a>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ) : null}
