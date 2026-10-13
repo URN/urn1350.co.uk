@@ -6,9 +6,6 @@ import PixelHeading from '../../components/PixelHeading';
 import { ArrowIcon } from '../../components/Icons';
 import committees from '../../lib/committee.json';
 
-const NEW_MEMBERS = 'https://www.facebook.com/groups/9040436162640250';
-const FACEBOOK = 'https://www.facebook.com/urn1350';
-
 // `head` is matched against the committee roles, so the "Talk to" name follows the
 // committee page and never needs editing when a new year starts.
 const TEAMS = [
@@ -72,10 +69,7 @@ export default function Page() {
             <span className="muted">Many of us had never done radio before we joined.</span>
           </p>
           <div className="pageintro__actions">
-            <a className="btn btn--lime btn--xl" href={NEW_MEMBERS} target="_blank" rel="noopener noreferrer">
-              Join the new members group
-            </a>
-            <a className="btn btn--ghost btn--xl" href="#teams">Find your team</a>
+            <a className="btn btn--lime btn--xl" href="#teams">Find your team</a>
           </div>
         </div>
       </section>
@@ -107,8 +101,7 @@ export default function Page() {
         <div className="callout__text">
           <h2 id="unsure-h" className="callout__title">Not sure where you fit?</h2>
           <p>
-            None of these seem right? Drop us an email and we'll point you to the right people. You can also message{' '}
-            <a href={FACEBOOK} target="_blank" rel="noopener noreferrer">us on Facebook</a>. General questions go to{' '}
+            None of these seem right? Drop us an email and we'll point you to the right people. General questions go to{' '}
             <a href="mailto:management@urn1350.co.uk">management@urn1350.co.uk</a>.
           </p>
         </div>
