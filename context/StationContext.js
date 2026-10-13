@@ -9,7 +9,6 @@ import {
 const TRACK_POLL_MS = 15000;
 const CLOCK_MS = 15000;
 const SCHEDULE_REFRESH_MS = 5 * 60 * 1000;
-const HISTORY_LENGTH = 4;
 
 const StationContext = createContext(null);
 
@@ -29,7 +28,7 @@ export function StationProvider({ children, initialSchedule }) {
   const [track, setTrack] = useState(null);
   const [history, setHistory] = useState([]);
   const lastKey = useRef('');
-  const lastTrack = useRef(null);
+  const lastHistoryKey = useRef('');
 
   // Pages that ship a statically generated schedule keep it fresh on navigation.
   useEffect(() => {
@@ -85,11 +84,14 @@ export function StationProvider({ children, initialSchedule }) {
           lastKey.current = '';
           setTrack(null);
         } else if (key !== lastKey.current) {
-          const previous = lastTrack.current;
-          lastTrack.current = { artist, title, time: timeOf(data.airdatetime || data.changedAt) };
           lastKey.current = key;
-          setTrack(lastTrack.current);
-          if (previous) setHistory((h) => [previous, ...h].slice(0, HISTORY_LENGTH));
+          setTrack({ artist, title, time: timeOf(data.airdatetime || data.changedAt) });
+        }
+        const played = Array.isArray(data.history) ? data.history : [];
+        const historyKey = played.map((h) => `${h.playedAt}|${h.artist}|${h.title}`).join('\n');
+        if (historyKey !== lastHistoryKey.current) {
+          lastHistoryKey.current = historyKey;
+          setHistory(played.map((h) => ({ artist: h.artist || '', title: h.title || '', time: h.playedAt ? timeOf(h.playedAt) : '' })));
         }
       } catch (e) {
         // Keep the last known track if the endpoint is briefly unavailable.
