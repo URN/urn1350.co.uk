@@ -36,6 +36,7 @@ export default class NowPlaying extends React.Component {
       schedule: null,
       trackArtist: '',
       trackTitle: '',
+      trackArtwork: '',
     };
     this.send_message = this.send_message.bind(this);
     this.fetchNowPlaying = this.fetchNowPlaying.bind(this);
@@ -69,6 +70,7 @@ export default class NowPlaying extends React.Component {
         ...prevState,
         trackArtist: data.artist || '',
         trackTitle: data.title || '',
+        trackArtwork: data.artwork || '',
       }));
     } catch (error) {
       // Keep the last known track if the endpoint is briefly unavailable.
@@ -146,6 +148,16 @@ export default class NowPlaying extends React.Component {
               </div>
               {(this.state.trackArtist || this.state.trackTitle) && (
                 <span className="now-playing-track">
+                  {this.state.trackArtwork ? (
+                    <img
+                      className="now-playing-art"
+                      src={this.state.trackArtwork}
+                      alt=""
+                      width="48"
+                      height="48"
+                      onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                    />
+                  ) : null}
                   <MusicNote className="now-playing-track-icon" fontSize="inherit" aria-hidden="true" />
                   <span className="now-playing-track-text">
                     {this.state.trackArtist && this.state.trackTitle
