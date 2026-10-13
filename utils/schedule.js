@@ -2,9 +2,7 @@ export const DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'
 export const DAY_SHORT = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 const DAYTIME_START = 8 * 60;
-const AFTER_DARK_START = 19 * 60;
-// After Dark runs 19:00 to 03:00; slots are counted in minutes past 24:00 after midnight.
-const AFTER_DARK_END = 27 * 60;
+const AFTER_DARK_START = 20 * 60;
 
 /**
  * Turn the raw parsed schedule into something the UI can use directly:
@@ -42,7 +40,7 @@ export function normaliseSchedule(raw) {
           startMin,
           endMin,
           tag,
-          night: startMin >= AFTER_DARK_START && startMin < AFTER_DARK_END,
+          night: startMin >= AFTER_DARK_START,
         });
       });
   });
