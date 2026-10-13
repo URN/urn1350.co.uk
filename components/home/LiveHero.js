@@ -105,7 +105,7 @@ export default function LiveHero() {
             </span>
             <span className="bigplay__text">
               <span>{playText}</span>
-              <span className="muted bigplay__sub">Live from Portland Building</span>
+              <span className="muted bigplay__sub">Live from the Portland Building</span>
             </span>
           </button>
           {error ? <p className="notice notice--err" role="alert">{error}</p> : null}
