@@ -68,9 +68,6 @@ export default function Page() {
             Present, produce or report. You'll get all the training you need to make it on air.{' '}
             <span className="muted">Many of us had never done radio before we joined.</span>
           </p>
-          <div className="pageintro__actions">
-            <a className="btn btn--lime btn--xl" href="#teams">Find your team</a>
-          </div>
         </div>
       </section>
 
