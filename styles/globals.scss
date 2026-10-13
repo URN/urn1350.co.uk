@@ -2516,6 +2516,10 @@ textarea.field {
     font-weight: 500;
     letter-spacing: -0.02em;
   }
+  &__text a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
   .btn {
     max-width: 100%;
     background: var(--lime);
