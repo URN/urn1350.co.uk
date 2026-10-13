@@ -2,10 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 
 import { SOCIALS } from './Header';
-import { useTheme } from '../context/ThemeContext';
 
 export default function Footer() {
-  const { theme, toggle } = useTheme();
   const year = new Date().getFullYear();
 
   return (
@@ -36,9 +34,6 @@ export default function Footer() {
           <h3>Small print</h3>
           <Link href="/pages/competitions">Competition terms</Link>
           <a href="https://constitution.urn1350.co.uk/constitution.pdf">Constitution (PDF)</a>
-          <button type="button" className="textbtn" onClick={toggle}>
-            {theme === 'day' ? 'Switch to night look' : 'Switch to purple look'}
-          </button>
         </div>
       </div>
       <div className="site-footer__base">

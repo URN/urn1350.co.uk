@@ -6,7 +6,6 @@ import Settings from '../settings.json';
 import { ArrowIcon, PlayIcon, PauseIcon } from './Icons';
 import { useStation } from '../context/StationContext';
 import { useStreamPlayer } from '../context/StreamPlayerContext';
-import { useTheme } from '../context/ThemeContext';
 import useDialog from '../hooks/useDialog';
 
 const NAV = [
@@ -33,7 +32,6 @@ export default function Header() {
   const router = useRouter();
   const { show, leftText, ready } = useStation();
   const { isPlaying, togglePlay } = useStreamPlayer();
-  const { theme, toggle } = useTheme();
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
   const panel = useDialog(open, close);
@@ -125,9 +123,6 @@ export default function Header() {
             <a key={s.href} href={s.href} target="_blank" rel="noopener noreferrer">{s.label}</a>
           ))}
           <Link href="/pages/competitions">Competition terms</Link>
-          <button type="button" className="textbtn" onClick={toggle}>
-            {theme === 'day' ? 'Switch to night look' : 'Switch to purple look'}
-          </button>
         </div>
       </div>
     </header>

@@ -1,10 +1,9 @@
-// URN Rewired design system: URN purple by day, black "Rewired" by night.
+// URN Rewired design system: the black "Rewired" night look.
 // Square blocks, pill controls, hard down-left extrude shadows, pixel display type.
 // Motion borrows from radioradio.radio: per-character elastic rise, pulsing rings,
 // soft staggered reveals, radial menu open.
 
-:root,
-:root[data-theme='night'] {
+:root {
   --ground: #1e1e1e;
   --raised: #2a272e;
   --sunken: #141314;
@@ -15,23 +14,8 @@
   --face: #8a66cc;
   --ext: #ffffff;
   --ring: rgba(138, 102, 204, 0.8);
-  --day-block: transparent;
   --hover: rgba(255, 255, 255, 0.05);
   color-scheme: dark;
-}
-
-:root[data-theme='day'] {
-  --ground: #4a2a8b;
-  --raised: #5e4093;
-  --sunken: #33196b;
-  --field: #33196b;
-  --muted: #cfc4ec;
-  --border: #b8a6e6;
-  --line: #6a4fa3;
-  --face: #ffffff;
-  --ext: #151214;
-  --ring: rgba(182, 168, 210, 0.7);
-  --day-block: #33196b;
 }
 
 :root {
@@ -1511,7 +1495,6 @@ textarea.field {
   min-width: 0;
   border-right: 1px solid var(--line);
   border-top: 3px solid var(--butter);
-  background: var(--day-block);
 
   &--day .caps {
     color: var(--butter);
@@ -1949,8 +1932,7 @@ textarea.field {
     flex-direction: column;
     border-right: 1px solid var(--line);
     border-top: 3px solid var(--butter);
-    background: var(--day-block);
-
+  
   }
   &__label {
     padding: 10px 14px;
