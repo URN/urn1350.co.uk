@@ -609,7 +609,7 @@ textarea.field {
     -0.05em 0.05em 0 var(--ext), -0.0625em 0.0625em 0 var(--ext), -0.075em 0.075em 0 var(--ext);
 
   &--hero {
-    --size: clamp(52px, 8vw, 136px);
+    --size: clamp(36px, 5vw, 84px);
   }
   &--l {
     --size: clamp(34px, 5vw, 72px);
@@ -2709,7 +2709,7 @@ textarea.field {
     display: flex;
   }
   .pixel--hero {
-    --size: clamp(46px, 13vw, 96px);
+    --size: clamp(34px, 9vw, 60px);
   }
   .live__rings {
     right: -40vw;
