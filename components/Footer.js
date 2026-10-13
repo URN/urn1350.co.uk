@@ -15,25 +15,25 @@ export default function Footer() {
       </p>
       <div className="site-footer__cols">
         <div>
-          <h2>Listen</h2>
+          <h3>Listen</h3>
           <Link href="/#listen">Listen live</Link>
           <Link href="/schedule">Schedule</Link>
           <Link href="/podcasts">Podcasts</Link>
         </div>
         <div>
-          <h2>Station</h2>
+          <h3>Station</h3>
           <Link href="/pages/about">About and contact</Link>
           <Link href="/pages/committee">Committee</Link>
           <Link href="/pages/get-involved">Get involved</Link>
         </div>
         <div>
-          <h2>Follow</h2>
+          <h3>Follow</h3>
           {SOCIALS.map((s) => (
             <a key={s.href} href={s.href} target="_blank" rel="noopener noreferrer">{s.label}</a>
           ))}
         </div>
         <div>
-          <h2>Small print</h2>
+          <h3>Small print</h3>
           <Link href="/pages/competitions">Competition terms</Link>
           <a href="https://constitution.urn1350.co.uk/constitution.pdf">Constitution (PDF)</a>
           <button type="button" className="textbtn" onClick={toggle}>
