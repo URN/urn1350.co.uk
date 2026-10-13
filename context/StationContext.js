@@ -6,7 +6,7 @@ import {
   formatLeft,
 } from '../utils/schedule';
 
-const TRACK_POLL_MS = 15000;
+const TRACK_POLL_MS = 5000;
 const CLOCK_MS = 15000;
 const SCHEDULE_REFRESH_MS = 5 * 60 * 1000;
 
