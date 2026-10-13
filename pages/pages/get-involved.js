@@ -14,42 +14,36 @@ const FACEBOOK = 'https://www.facebook.com/urn1350';
 const TEAMS = [
   {
     name: 'Daytime',
-    meta: '09:00–17:00 every day in term',
     head: 'daytime',
     email: 'daytime@urn1350.co.uk',
     desc: 'Entertainment, chat, music and competitions. Think Scott Mills, Clara Amfo and Greg James. The best place to express your creativity.',
   },
   {
     name: 'After Dark',
-    meta: '19:00–03:00',
     head: 'specialist',
     email: 'afterdark@urn1350.co.uk',
     desc: 'The best of specialist music, from rock to rap. If you have a passion for a particular genre, this is for you.',
   },
   {
     name: 'Culture',
-    meta: 'Speech and podcasts',
     head: 'cultur',
     email: 'speech@urn1350.co.uk',
     desc: 'A huge array of shows, from film and lifestyle to award winning podcasts.',
   },
   {
     name: 'News',
-    meta: 'The Pulse, 17:00 weekdays',
     head: 'news',
     email: 'news@urn1350.co.uk',
     desc: "An hour long news show covering the top stories of the day in more detail, plus in depth specials and coverage of the Students' Union elections. Valuable experience in broadcast journalism.",
   },
   {
     name: 'Sport',
-    meta: 'Saturdays and Varsity',
     head: 'sport',
     email: 'sport@urn1350.co.uk',
     desc: 'A Saturday football show and a huge number of podcasts covering all different areas of sport. Exclusive live coverage of the Varsity series in the new year, broadcasting from iconic venues, and press passes for Notts County FC fixtures.',
   },
   {
     name: 'Technical',
-    meta: 'Studios, servers and website',
     head: 'technolog',
     email: 'technical@urn1350.co.uk',
     desc: "Everything from microphones, servers and cables to website design. Two digital radio studios, a live room and numerous outside broadcasts. Whether you're experienced or have absolutely no experience, we would love to hear from you.",
@@ -96,7 +90,6 @@ export default function Page() {
             <Reveal as="li" className="teamrow" delay={Math.min(i, 5) * 50} key={t.name}>
               <div className="teamrow__title">
                 <h3 className="teamrow__name">{t.name}</h3>
-                <span className="caps caps--butter">{t.meta}</span>
               </div>
               <p className="teamrow__desc">{t.desc}</p>
               <div className="teamrow__contact">
