@@ -479,7 +479,10 @@ main:focus {
     flex-wrap: nowrap;
     overflow-x: auto;
     max-width: 100%;
+    // padding leaves room for focus rings inside the scroller; the negative
+    // margin cancels it so pill edges line up with the page gutter
     padding: 4px;
+    margin: -4px;
     scrollbar-width: none;
 
     &::-webkit-scrollbar {
@@ -1651,11 +1654,14 @@ textarea.field {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 560px), 1fr));
   border-top: 1px solid var(--line);
+  // the last column's right border has nothing to divide from, so clip it
+  overflow: hidden;
 }
 
 .pod {
   border-bottom: 1px solid var(--line);
   border-right: 1px solid var(--line);
+  margin-right: -1px;
 
   &__link {
     display: flex;
@@ -1835,7 +1841,9 @@ textarea.field {
   align-items: flex-end;
   justify-content: space-between;
   gap: 24px;
-  padding: clamp(48px, 6vw, 96px) var(--gutter);
+  // bottom padding is reduced by the footer's margin-top so the space
+  // above and below the CTA reads as equal
+  padding: clamp(48px, 6vw, 96px) var(--gutter) calc(clamp(48px, 6vw, 96px) - clamp(32px, 4vw, 64px));
 
   &__text {
     max-width: 900px;
@@ -1977,6 +1985,7 @@ textarea.field {
 
   > .pills {
     padding: 16px;
+    margin: 0;
   }
 }
 

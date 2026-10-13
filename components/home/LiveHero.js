@@ -75,7 +75,7 @@ export default function LiveHero() {
 
       <div className="live__progress">
         <div className="live__meta">
-          <span className="doto">{live ? formatRange(show) : 'URN 1350'}</span>
+          <span className="doto">{live ? formatRange(show) : ready ? 'Between shows' : ' '}</span>
           <span className="muted">{live ? leftText : '\u00a0'}</span>
         </div>
         <div
