@@ -122,7 +122,6 @@ export default function PlayerBar() {
               <h2 id="sheet-h">Message {ready && show ? show.name : 'the studio'}</h2>
               <button type="button" className="textbtn" onClick={closeSheet}>Close</button>
             </div>
-            <p className="sheet__sub">Goes straight to the studio screen, live on air.</p>
             {sent ? (
               <div className="notice notice--ok" role="status">
                 <span><strong>Sent.</strong> Listen out for it on air.</span>

@@ -161,7 +161,6 @@ export default function LiveHero() {
         <div className="panel__head">
           <div>
             <h2 className="panel__title">Message {title}</h2>
-            <span className="muted small">Goes straight to the studio screen, live on air</span>
           </div>
           <div role="group" aria-label="Message type" className="pills">
             {kinds.map((k) => (
