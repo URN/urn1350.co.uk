@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import PixelHeading from '../PixelHeading';
+import { PlayIcon, PauseIcon, Spinner } from '../Icons';
 import { useStation } from '../../context/StationContext';
 import { useStreamPlayer } from '../../context/StreamPlayerContext';
 import { useMessage, MESSAGE_MAX } from '../../hooks/useMessage';
@@ -26,7 +27,7 @@ function Meter({ active }) {
 
 export default function LiveHero() {
   const { ready, show, pct, left, leftText, upNext, track, history } = useStation();
-  const { isPlaying, error } = useStreamPlayer();
+  const { isPlaying, isLoading, error, togglePlay } = useStreamPlayer();
   const msg = useMessage();
   const [kind, setKind] = useState('Request');
   const input = useRef(null);
@@ -50,6 +51,8 @@ export default function LiveHero() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [msg.status]);
 
+  const playText = isLoading ? 'Connecting…' : isPlaying ? 'Pause' : 'Listen live';
+  const playLabel = isLoading ? 'Connecting to live stream' : isPlaying ? 'Pause live stream' : 'Play live stream';
 
   const shout = () => {
     if (!track) return;
@@ -91,6 +94,20 @@ export default function LiveHero() {
         <div className="live__main">
           <PixelHeading id="live-h" size="hero" play={ready || waited}>{title}</PixelHeading>
 
+          <button
+            type="button"
+            className={`bigplay ${isPlaying ? 'is-playing' : ''}`}
+            onClick={togglePlay}
+            aria-label={playLabel}
+          >
+            <span className="bigplay__disc">
+              {isLoading ? <Spinner size={40} /> : isPlaying ? <PauseIcon size={36} /> : <PlayIcon size={40} className="nudge" />}
+            </span>
+            <span className="bigplay__text">
+              <span>{playText}</span>
+              <span className="muted bigplay__sub">{isPlaying ? 'You’re listening to URN' : 'Press play to tune in. Live from the Portland Building'}</span>
+            </span>
+          </button>
           {error ? <p className="notice notice--err" role="alert">{error}</p> : null}
 
           {upNext.length > 0 ? (

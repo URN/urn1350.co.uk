@@ -1257,6 +1257,54 @@ textarea.field {
   }
 }
 
+.bigplay {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: clamp(22px, 2vw, 28px);
+  text-align: left;
+
+  &__disc {
+    width: clamp(84px, 7vw, 108px);
+    height: clamp(84px, 7vw, 108px);
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: var(--action);
+    color: #fff;
+    transition: transform 0.4s var(--ease-spring), box-shadow 0.3s var(--ease-out);
+  }
+  &:hover &__disc {
+    transform: scale(1.07) translate(2px, -2px);
+    box-shadow: -6px 6px 0 var(--ext);
+  }
+  &:active &__disc {
+    transform: scale(0.94);
+    box-shadow: none;
+  }
+  &.is-playing &__disc {
+    animation: pulse-action 2s ease-out infinite;
+  }
+  &__text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  &__sub {
+    font-size: 15px;
+  }
+  &__text > span:first-child {
+    font-weight: 500;
+  }
+}
+
 .panel__hint {
   margin: 4px 0 0;
   font-size: 15px;
