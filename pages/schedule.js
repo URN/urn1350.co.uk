@@ -64,7 +64,6 @@ export default function Page({ schedule: staticSchedule }) {
       night: filter === 'day' ? [] : rows.filter((r) => r.night),
     };
   });
-  const total = days.reduce((n, d) => n + d.day.length + d.night.length, 0);
 
   const selDay = days[sel];
 
@@ -76,9 +75,6 @@ export default function Page({ schedule: staticSchedule }) {
         <div className="pagehead__row">
           <div className="pagehead__title">
             <PixelHeading id="h1" size="xl">Schedule</PixelHeading>
-            <span className="muted">
-              {ready ? `Week of ${dates[0].long} · ` : ''}All times UK · {schedule ? `${total} shows` : 'loading'}
-            </span>
           </div>
           <div role="group" aria-label="Show" className="pills">
             {FILTERS.map(([id, label]) => (
