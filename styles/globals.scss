@@ -2223,11 +2223,13 @@ textarea.field {
 
 .herolede,
 .biglede {
-  flex: 1 1 520px;
   max-width: 900px;
   font-size: clamp(24px, 2.8vw, 42px);
   line-height: 1.15;
   font-weight: 300;
+}
+.herolede {
+  flex: 1 1 520px;
 }
 .biglede {
   max-width: 1180px;
@@ -2345,7 +2347,7 @@ textarea.field {
 }
 
 .awards {
-  padding: clamp(48px, 6vw, 96px) var(--gutter);
+  padding: clamp(48px, 6vw, 96px) var(--gutter) clamp(32px, 4vw, 56px);
   border-bottom: 1px solid var(--line);
 
   &__row {
@@ -2364,13 +2366,15 @@ textarea.field {
   &__years {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px 36px;
-    margin: 28px 0 0;
-    padding: 0;
+    justify-content: space-between;
+    gap: 12px 28px;
+    margin: clamp(32px, 4vw, 56px) 0 0;
+    padding: clamp(20px, 2.4vw, 32px) 0 0;
+    border-top: 1px solid var(--line);
     list-style: none;
     font-family: var(--font-dot);
     font-weight: 900;
-    font-size: clamp(28px, 3vw, 44px);
+    font-size: clamp(24px, 2.6vw, 40px);
     line-height: 1;
     color: var(--lime);
   }
