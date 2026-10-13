@@ -150,15 +150,17 @@ export default class NowPlaying extends React.Component {
                 <span className="now-playing-track">
                   {this.state.trackArtwork ? (
                     <img
+                      key={this.state.trackArtwork}
                       className="now-playing-art"
                       src={this.state.trackArtwork}
                       alt=""
-                      width="48"
-                      height="48"
-                      onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                      width="64"
+                      height="64"
+                      onError={(e) => { e.currentTarget.hidden = true; }}
                     />
-                  ) : null}
-                  <MusicNote className="now-playing-track-icon" fontSize="inherit" aria-hidden="true" />
+                  ) : (
+                    <MusicNote className="now-playing-track-icon" fontSize="inherit" aria-hidden="true" />
+                  )}
                   <span className="now-playing-track-text">
                     {this.state.trackArtist && this.state.trackTitle
                       ? `${this.state.trackArtist} — ${this.state.trackTitle}`
