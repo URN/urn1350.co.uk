@@ -31,7 +31,6 @@ export default function Page({ current }) {
         <div className="pagehead__row">
           <div className="pagehead__title pagehead__title--row">
             <PixelHeading id="h1" size="xl">Committee</PixelHeading>
-            <span className="yearchip tnum">{year}</span>
           </div>
         </div>
         <div role="group" aria-label="Year" className="pills pills--scroll">

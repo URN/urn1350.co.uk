@@ -2010,14 +2010,6 @@ textarea.field {
 
 /* ---------- committee ---------- */
 
-.yearchip {
-  padding: 6px 14px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  font-size: 16px;
-  line-height: 1.4;
-}
-
 .roster {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
