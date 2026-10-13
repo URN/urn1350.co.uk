@@ -3,12 +3,12 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useS
 const KEY = 'urn-theme';
 const ThemeContext = createContext(null);
 
-/** After 8pm UK time the site goes to the Rewired night look, otherwise URN purple. */
+/** After 7pm UK time (when After Dark starts) the site goes to the Rewired night look, otherwise URN purple. */
 function autoTheme(date = new Date()) {
   const hour = Number(
     new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', hour: 'numeric', hourCycle: 'h23' }).format(date)
   );
-  return hour >= 8 && hour < 20 ? 'day' : 'night';
+  return hour >= 8 && hour < 19 ? 'day' : 'night';
 }
 
 function readStored() {

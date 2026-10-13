@@ -60,7 +60,7 @@ export default function Lineup() {
         <ShowBlocks
           key={sel}
           rows={decorate(schedule[DAY_NAMES[sel]] || [], isToday, now)}
-          nightFirst={isToday && now.minutes >= 20 * 60}
+          nightFirst={isToday && now.minutes >= 19 * 60}
           left={left}
           onListen={listen}
           emptyText={`Nothing scheduled for ${DAY_NAMES[sel]}.`}
