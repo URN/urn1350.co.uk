@@ -4,28 +4,21 @@ import Seo from '../../components/Seo';
 import Cta from '../../components/Cta';
 import Reveal from '../../components/Reveal';
 import PixelHeading from '../../components/PixelHeading';
-import { fetchCdn } from '../../lib/content';
-import fallback from '../../lib/committee.json';
+import { ArrowIcon } from '../../components/Icons';
+import committees from '../../lib/committee.json';
 
-const CURRENT_LABEL = '2026–27';
+// lib/committee.json is newest first: a new year is one new entry at the top.
+const years = committees.map((c) => c.label);
+const current = years[0];
+const oldest = years[years.length - 1].slice(0, 4);
 
-/** "- Head of Station: **Name**" lines from the CDN page, or null if it can't be read. */
-function parseCurrent(md) {
-  const heading = /^##\s*(\d{4})\s*[-–]\s*(\d{2})(\d{2})?/m.exec(md);
-  const rows = [...md.matchAll(/^\s*[-*+]\s+(.+?):\s*\*\*(.+?)\*\*\s*$/gm)].map((m) => [m[1].trim(), m[2].trim()]);
-  if (!heading || rows.length === 0) return null;
-  return { label: `${heading[1]}–${heading[3] || heading[2]}`, rows };
-}
-
-export default function Page({ current }) {
-  const years = [current.label, ...Object.keys(fallback.archive)];
-  const [year, setYear] = useState(current.label);
-  const isNow = year === current.label;
-  const roles = isNow ? current.rows : fallback.archive[year];
+export default function Page() {
+  const [year, setYear] = useState(current);
+  const roles = committees.find((c) => c.label === year).rows;
 
   return (
     <>
-      <Seo title="Committee" description={`The students who run URN, ${current.label} and every committee since 2012.`} />
+      <Seo title="Committee" description={`The students who run URN, ${current} and every committee since ${oldest}.`} />
 
       <section className="pagehead" aria-labelledby="h1">
         <div className="pagehead__row">
@@ -51,17 +44,17 @@ export default function Page({ current }) {
         ))}
       </ul>
 
+      <Reveal as="section" className="archive" aria-labelledby="history-h">
+        <div className="archive__text">
+          <h2 id="history-h" className="archive__title">Looking for older years?</h2>
+          <p className="muted">Committees from before {oldest} are in the University Radio Nottingham History Project.</p>
+        </div>
+        <a className="btn btn--ghost btn--xl" href="https://history.urn1350.co.uk/years/" target="_blank" rel="noopener noreferrer">
+          Browse the history<ArrowIcon className="arrow" />
+        </a>
+      </Reveal>
+
       <Cta heading="Want to talk to a team?" sub="Every head has their own inbox." href="/pages/get-involved" label="Team contacts" />
     </>
   );
-}
-
-export async function getStaticProps() {
-  let current = { label: CURRENT_LABEL, rows: fallback.current };
-  try {
-    current = parseCurrent(await fetchCdn('website/committee')) || current;
-  } catch (e) {
-    // keep the bundled list
-  }
-  return { props: { current }, revalidate: 60 };
 }
