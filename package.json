@@ -5,6 +5,9 @@
   "main": "index.js",
   "author": "University Radio Nottingham",
   "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
