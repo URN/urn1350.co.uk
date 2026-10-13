@@ -35,14 +35,7 @@ export function PodcastArt({ podcast, className = '' }) {
   );
 }
 
-/** Pulls a "trigger warning: …" style note out of a description so it can sit above the blurb. */
-export function contentNote(description) {
-  const m = /(trigger warning|content warning|content note)s?\s*[:\-–]\s*([^.!\n]+)/i.exec(description || '');
-  return m ? `Content note: ${m[2].trim().replace(/^and\s+/i, '')}` : '';
-}
-
 export default function PodcastCard({ podcast, index = 0 }) {
-  const note = contentNote(podcast.description);
   return (
     <Reveal as="li" className="pod" delay={Math.min(index, 5) * 70}>
       <Link href={`/podcasts/${podcast.slug}`} className="pod__link">
@@ -50,7 +43,6 @@ export default function PodcastCard({ podcast, index = 0 }) {
         <span className="pod__body">
           <span className="pod__title">{podcast.title}</span>
           {podcast.host ? <span className="muted pod__host">Hosted by {podcast.host}</span> : null}
-          {note ? <span className="tag tag--note">{note}</span> : null}
           {podcast.description ? <span className="pod__desc">{podcast.description}</span> : null}
           <span className="pod__cta">Listen<ArrowIcon /></span>
         </span>

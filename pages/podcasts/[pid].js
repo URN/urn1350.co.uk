@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Seo from '../../components/Seo';
 import Reveal from '../../components/Reveal';
 import PixelHeading from '../../components/PixelHeading';
-import { PodcastArt, contentNote } from '../../components/PodcastCard';
+import { PodcastArt } from '../../components/PodcastCard';
 import { ArrowIcon, ExternalIcon } from '../../components/Icons';
 import { fetchPodcasts } from '../../lib/content';
 import {
@@ -17,7 +17,6 @@ export default function Page({ data }) {
   const spotifyEmbed = toSpotifyEmbedUrl(data.spotifyEmbed);
   const spotifyUrl = toSpotifyShowUrl(data.spotifyEmbed);
   const tiktokEmbed = !spotifyEmbed ? toTikTokEmbedUrl(data) : '';
-  const note = contentNote(data.description);
 
   return (
     <>
@@ -36,7 +35,6 @@ export default function Page({ data }) {
             {data.guests ? (<div><dt className="caps caps--muted">Guests</dt><dd>{data.guests}</dd></div>) : null}
             {data.instagram ? (<div><dt className="caps caps--muted">Instagram</dt><dd>{data.instagram}</dd></div>) : null}
           </dl>
-          {note ? <span className="tag tag--note">{note}</span> : null}
           {data.description ? <p className="lede">{data.description}</p> : null}
           <div className="actions">
             {spotifyUrl ? (
