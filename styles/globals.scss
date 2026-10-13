@@ -1869,6 +1869,28 @@ textarea.field {
   }
 }
 
+.archive {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: clamp(32px, 4vw, 56px) var(--gutter);
+  border-bottom: 1px solid var(--line);
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  &__title {
+    font-size: clamp(28px, 3vw, 44px);
+    line-height: 1.05;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+  }
+}
+
 /* ---------- schedule page ---------- */
 
 .livebar {
