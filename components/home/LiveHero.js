@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import PixelHeading from '../PixelHeading';
 import PixelDJ from './PixelDJ';
+import TrackMenu from './TrackMenu';
 import { PlayIcon, PauseIcon, Spinner } from '../Icons';
 import { useStation } from '../../context/StationContext';
 import { useStreamPlayer } from '../../context/StreamPlayerContext';
@@ -171,6 +172,7 @@ export default function LiveHero() {
                 <span className="nowplaying__title">{track.title}</span>
                 <span className="muted nowplaying__artist">{track.artist}</span>
               </div>
+              <TrackMenu track={track} />
             </div>
               <button type="button" className="btn btn--ghost" onClick={shout}>Loving this? Tell the studio</button>
             {history.length > 0 ? (
@@ -184,6 +186,7 @@ export default function LiveHero() {
                         <span>{h.title}</span>
                         {h.artist ? <span className="muted">{h.artist}</span> : null}
                       </span>
+                      <TrackMenu track={h} />
                     </li>
                   ))}
                 </ol>
