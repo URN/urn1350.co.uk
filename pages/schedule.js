@@ -5,9 +5,8 @@ import Settings from '../settings.json';
 import React from 'react';
 import Paper from '@mui/material/Paper';
 import CircularProgress from '@mui/material/CircularProgress';
-import Axios from 'axios';
 import { Typography } from '@mui/material';
-import { parseScheduleYaml } from '../utils/schedule';
+import { fetchSchedule } from '../utils/schedule';
 
 const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
@@ -87,12 +86,12 @@ export default function Page({schedule}) {
   );
 }
 
-export async function getStaticProps(context) {
-    const cb = Math.floor(Math.random() * 1000);
-    const data = await Axios.get(`${Settings.cdnUrl}/schedule.yml?cb=${cb}`);
-    const schedule = parseScheduleYaml(data.data);
-    return {
-      props: {schedule}, // will be passed to the page component as props
-      revalidate: 60,
-    }
+export async function getServerSideProps() {
+  try {
+    const schedule = await fetchSchedule();
+    return { props: { schedule } };
+  } catch (error) {
+    console.error('Schedule load failed:', error);
+    return { props: { schedule: {} } };
   }
+}

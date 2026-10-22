@@ -55,19 +55,19 @@ export default class Header extends React.Component {
           <link
             rel="icon"
             type="image/png"
-            href={`${Settings.cdnUrl}/content/images/icon-96.png`}
+            href="/content/images/icon-96.png"
             sizes="96x96"
           />
           <link
             rel="icon"
             type="image/png"
-            href={`${Settings.cdnUrl}/content/images/icon-64.png`}
+            href="/content/images/icon-64.png"
             sizes="64x64"
           />
           <link
             rel="icon"
             type="image/png"
-            href={`${Settings.cdnUrl}/content/images/icon-32.png`}
+            href="/content/images/icon-32.png"
             sizes="32x32"
           />
           <meta property="fb:app_id" content="966242223397117" />
