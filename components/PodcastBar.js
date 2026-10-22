@@ -1,7 +1,5 @@
 import React from 'react';
 import Link from 'next/link';
-import Axios from 'axios';
-import YAML from 'yaml';
 import CircularProgress from '@mui/material/CircularProgress';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -10,7 +8,7 @@ import { CardActionArea } from '@mui/material';
 import PlusIcon from '@mui/icons-material/Add';
 
 import PodcastCard from './podcastCard';
-import Settings from '../settings.json';
+import { listPodcasts } from '../utils/podcasts';
 
 export default class PodcastBar extends React.Component {
   constructor(props) {
@@ -19,7 +17,6 @@ export default class PodcastBar extends React.Component {
       podcasts: [],
       loading: true,
       error: null,
-      cacheBust: Math.floor(Math.random() * 10000000),
     };
   }
 
@@ -29,22 +26,14 @@ export default class PodcastBar extends React.Component {
 
   fetchPodcasts = async () => {
     try {
-      const response = await Axios.get(
-        `${Settings.cdnUrl}/Podcasts/podcasts.yml?cb=${this.state.cacheBust}`
-      );
-      // Tolerate common typo: extra space before list dash (must align with other `  -` items)
-      const raw = String(response.data).replace(/^ {3}- /gm, '  - ');
-      const parsed = YAML.parse(raw);
-      const podcasts = Array.isArray(parsed?.podcasts) ? parsed.podcasts : [];
-      podcasts.sort((a, b) => (a.order || 999) - (b.order || 999));
+      const podcasts = await listPodcasts();
       this.setState({ podcasts, loading: false, error: null });
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.error('Podcasts YAML load failed:', error);
+      console.error('Podcasts load failed:', error);
       this.setState({
         loading: false,
-        error:
-          'Unable to load podcasts. Check that podcasts.yml is valid YAML on content.urn1350.co.uk (list items must use the same indentation, e.g. two spaces before each `-`).',
+        error: 'Unable to load podcasts right now. Please try again later.',
       });
     }
   };

@@ -4,10 +4,8 @@ import Footer from "../../components/footer";
 import Button from '@mui/material/Button';
 import { Typography } from "@mui/material";
 
-import Axios from 'axios';
-import YAML from 'yaml';
-
 import Settings from '../../settings.json';
+import { getPodcastBySlug } from '../../utils/podcasts';
 
 function toSpotifyEmbedUrl(value) {
   if (!value) return '';
@@ -195,15 +193,10 @@ export default function Page({ data }) {
 export async function getServerSideProps(context) {
   let data = null;
   try {
-    const response = await Axios.get(`${Settings.cdnUrl}/Podcasts/podcasts.yml`);
-    const raw = String(response.data).replace(/^ {3}- /gm, '  - ');
-    const parsed = YAML.parse(raw);
-    const podcasts = Array.isArray(parsed?.podcasts) ? parsed.podcasts : [];
-    data = podcasts.find((podcast) => podcast.slug === context.query.pid) || null;
+    data = await getPodcastBySlug(context.query.pid);
   } catch (error) {
     data = null;
   }
 
-  // Pass data to the page via props
   return { props: { data } };
 }

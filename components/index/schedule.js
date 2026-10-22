@@ -2,11 +2,9 @@ import React from 'react';
 import Link from 'next/link';
 import Paper from '@mui/material/Paper';
 import CircularProgress from '@mui/material/CircularProgress';
-import Axios from 'axios';
 
-import Settings from '../../settings.json';
 import { Button, Card } from '@mui/material';
-import { parseScheduleYaml } from '../../utils/schedule';
+import { fetchSchedule } from '../../utils/schedule';
 
 function pm(x)
 {
@@ -23,14 +21,13 @@ const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", 
       super(props);
       this.liveRef = React.createRef();
       this.hasScrolledToLive = false;
-      this.state = {schedule: null, rand: Math.floor(Math.random() * 1000)};
-      Axios.get(`${Settings.cdnUrl}/schedule.yml?cb=${this.state.rand}`).then(r => {
-        const schedule = parseScheduleYaml(r.data)
-        this.setState({
-          ...this.state,
-          schedule
-        })
-      })
+      this.state = { schedule: null };
+      fetchSchedule().then((schedule) => {
+        this.setState((prevState) => ({
+          ...prevState,
+          schedule,
+        }));
+      });
     }
 
     componentDidUpdate() {

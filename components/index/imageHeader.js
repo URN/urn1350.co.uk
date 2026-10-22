@@ -1,11 +1,10 @@
 import React from 'react';
-import Axios from 'axios';
 
 import PlayArrow from '@mui/icons-material/PlayArrow';
 import Pause from '@mui/icons-material/Pause';
 import Settings from '../../settings.json';
 import { StreamPlayerContext } from '../../context/StreamPlayerContext';
-import { parseScheduleYaml } from '../../utils/schedule';
+import { fetchSchedule } from '../../utils/schedule';
 
 function pm(x) {
   if (x === 12) return x;
@@ -27,12 +26,11 @@ export default class ImageHeader extends React.Component {
     super(props);
     this.state = { schedule: null };
 
-    Axios.get(`${Settings.cdnUrl}/schedule.yml`).then((r) => {
-      const schedule = parseScheduleYaml(r.data);
-      this.setState({
-        ...this.state,
+    fetchSchedule().then((schedule) => {
+      this.setState((prevState) => ({
+        ...prevState,
         schedule,
-      });
+      }));
     });
   }
 
@@ -81,7 +79,7 @@ export default class ImageHeader extends React.Component {
           <div className="hero-title">
             <img
               className="hero-logo"
-              src={`${Settings.cdnUrl}/content/images/logo.png`}
+              src="/content/images/logo.png"
               alt="University Radio Nottingham logo"
             />
             <div className="hero-text-block">

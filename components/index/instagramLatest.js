@@ -1,39 +1,19 @@
 import React from 'react';
 import Paper from '@mui/material/Paper';
 import CircularProgress from '@mui/material/CircularProgress';
-import Axios from 'axios';
-import YAML from 'yaml';
 
-import Settings from '../../settings.json';
-
-// Fallback if CDN fetch fails or YAML has no posts
-const FALLBACK_POSTS = [
-  'https://www.instagram.com/p/DVUN-9LjOjy/embed',
-  'https://www.instagram.com/p/DVE2WBvDC6o/embed',
-  'https://www.instagram.com/p/DVg3jk_jD8n/embed',
-];
-
-function normalizePosts(data) {
-  if (!data || !Array.isArray(data.posts)) return null;
-  const urls = data.posts
-    .map((item) => (typeof item === 'string' ? item : item && item.url))
-    .filter(Boolean);
-  return urls.length > 0 ? urls.slice(0, 3) : null;
-}
+import { FALLBACK_POSTS, listInstagramPosts } from '../../utils/instagram';
 
 export default class InstagramLatest extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { posts: null, rand: Math.floor(Math.random() * 1000) };
-    Axios.get(`${Settings.cdnUrl}/instagram_links.yml?cb=${this.state.rand}`)
-      .then((r) => {
-        const parsed = YAML.parse(r.data);
-        const posts = normalizePosts(parsed) || FALLBACK_POSTS;
-        this.setState({ posts });
-      })
-      .catch(() => {
-        this.setState({ posts: FALLBACK_POSTS });
-      });
+    this.state = { posts: null };
+  }
+
+  componentDidMount() {
+    listInstagramPosts()
+      .then((posts) => this.setState({ posts }))
+      .catch(() => this.setState({ posts: FALLBACK_POSTS }));
   }
 
   render() {

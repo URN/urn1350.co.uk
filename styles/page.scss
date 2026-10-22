@@ -32,7 +32,7 @@
   body {
     background-image:
       linear-gradient(135deg, rgba(105, 72, 138, 0.72), rgba(122, 92, 152, 0.72)),
-      url("https://content.urn1350.co.uk/content/images/Nottingham.jpg");
+      url("/content/images/Nottingham.jpg");
     background-position: center top;
     background-repeat: no-repeat;
     background-size: cover;
@@ -44,14 +44,14 @@
   body.page-bg-about {
     background-image:
       linear-gradient(135deg, rgba(105, 72, 138, 0.72), rgba(122, 92, 152, 0.72)),
-      url("https://content.urn1350.co.uk/content/images/Studio.png");
+      url("/content/images/Studio.png");
   }
 
   /* Full Schedule page: oscilloscope.jpg, same overlay as default/about */
   body.page-bg-schedule {
     background-image:
       linear-gradient(135deg, rgba(105, 72, 138, 0.72), rgba(122, 92, 152, 0.72)),
-      url("https://content.urn1350.co.uk/content/images/oscilloscope.jpg");
+      url("/content/images/oscilloscope.jpg");
   }
   
   @function container($container-size, $true-val: false) {

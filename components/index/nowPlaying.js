@@ -7,9 +7,8 @@ import Axios from 'axios';
 import PlayArrow from '@mui/icons-material/PlayArrow';
 import Pause from '@mui/icons-material/Pause';
 import MusicNote from '@mui/icons-material/MusicNote';
-import Settings from '../../settings.json';
 import { StreamPlayerContext } from '../../context/StreamPlayerContext';
-import { parseScheduleYaml } from '../../utils/schedule';
+import { fetchSchedule } from '../../utils/schedule';
 
 function pm(x) {
   if (x === 12) return x;
@@ -42,8 +41,7 @@ export default class NowPlaying extends React.Component {
     this.fetchNowPlaying = this.fetchNowPlaying.bind(this);
     this.nowPlayingTimer = null;
 
-    Axios.get(`${Settings.cdnUrl}/schedule.yml`).then((r) => {
-      const schedule = parseScheduleYaml(r.data);
+    fetchSchedule().then((schedule) => {
       this.setState((prevState) => ({
         ...prevState,
         schedule,
