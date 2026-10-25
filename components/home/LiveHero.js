@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import PixelHeading from '../PixelHeading';
 import TrackMenu from './TrackMenu';
@@ -38,6 +38,7 @@ export default function LiveHero() {
   const msg = useMessage();
   const [kind, setKind] = useState('Request');
   const input = useRef(null);
+  const playBtn = useRef(null);
   // If the schedule never loads, still reveal the heading rather than leaving it blank.
   const [waited, setWaited] = useState(false);
   useEffect(() => {
@@ -60,6 +61,36 @@ export default function LiveHero() {
 
   const playText = isLoading ? 'Connecting…' : isPlaying ? 'Pause' : 'Listen live';
   const playLabel = isLoading ? 'Connecting to live stream' : isPlaying ? 'Pause live stream' : 'Play live stream';
+  // Animate the pill's width between label changes so it squishes rather than snaps.
+  const prevText = useRef(null);
+  const prevWidth = useRef(0);
+  useLayoutEffect(() => {
+    const el = playBtn.current;
+    if (!el) return undefined;
+    const first = prevText.current === null;
+    prevText.current = playText;
+    // The DOM already holds the new label here, so the old width comes from the last run.
+    const from = prevWidth.current;
+    el.style.width = '';
+    const to = el.offsetWidth;
+    prevWidth.current = to;
+    if (first || !from || !window.matchMedia('(min-width: 901px)').matches) return undefined;
+    el.style.width = `${from}px`;
+    el.getBoundingClientRect();
+    if (from === to) {
+      el.style.width = '';
+      return undefined;
+    }
+    el.style.width = `${to}px`;
+    const done = (e) => {
+      if (e.propertyName !== 'width') return;
+      el.style.width = '';
+      el.removeEventListener('transitionend', done);
+    };
+    el.addEventListener('transitionend', done);
+    return () => el.removeEventListener('transitionend', done);
+  }, [playText]);
+
   const nowPlaying = track ? [track.title, track.artist].filter(Boolean).join(' · ') : '';
 
   const shout = () => {
@@ -101,19 +132,18 @@ export default function LiveHero() {
           <PixelHeading id="live-h" size="hero" play={ready || waited}>{title}</PixelHeading>
 
           <button
+            ref={playBtn}
             type="button"
             className={`bigplay ${isPlaying ? 'is-playing' : ''}`}
             onClick={togglePlay}
             aria-label={playLabel}
           >
             <span className="bigplay__disc">
-              {isLoading ? <Spinner size={40} /> : isPlaying ? <PauseIcon size={36} /> : <PlayIcon size={40} className="nudge" />}
+              {isLoading ? <Spinner size={28} /> : isPlaying ? <PauseIcon size={24} /> : <PlayIcon size={28} className="nudge" />}
             </span>
-            <span className="bigplay__text">
-              <span>{playText}</span>
-              <span className="muted bigplay__sub">{nowPlaying || 'Live from the Portland Building'}</span>
-            </span>
+            <span className="bigplay__label">{playText}</span>
           </button>
+          <p className="muted bigplay__sub">{nowPlaying || 'Live from the Portland Building'}</p>
           {error ? <p className="notice notice--err" role="alert">{error}</p> : null}
 
           {upNext.length > 0 ? (

@@ -1235,46 +1235,55 @@ textarea.field {
   display: inline-flex;
   align-items: center;
   gap: 20px;
-  padding: 0;
+  min-height: 88px;
+  padding: 0 40px 0 12px;
   border: 0;
-  background: transparent;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--purple);
   cursor: pointer;
-  font-size: clamp(22px, 2vw, 28px);
+  font-family: var(--font-pixel);
+  font-stretch: 125%;
+  font-weight: 900;
+  font-size: clamp(24px, 2.4vw, 34px);
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
   text-align: left;
+  transition: transform 0.3s var(--ease-spring), width 0.5s var(--ease-spring);
 
+  &__label {
+    white-space: nowrap;
+  }
+  &:hover {
+    transform: scale(1.04);
+  }
+  &:active {
+    transform: scale(0.97);
+  }
   &__disc {
-    width: clamp(84px, 7vw, 108px);
-    height: clamp(84px, 7vw, 108px);
+    width: 64px;
+    height: 64px;
     flex-shrink: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     border-radius: 999px;
-    background: var(--action);
+    background: var(--purple);
     color: #fff;
-    transition: transform 0.4s var(--ease-spring), box-shadow 0.3s var(--ease-out);
-  }
-  &:hover &__disc {
-    transform: scale(1.07) translate(2px, -2px);
-    box-shadow: -6px 6px 0 var(--ext);
-  }
-  &:active &__disc {
-    transform: scale(0.94);
-    box-shadow: none;
   }
   &.is-playing &__disc {
     animation: pulse-action 2s ease-out infinite;
   }
-  &__text {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
   &__sub {
+    margin: 0;
     font-size: 15px;
   }
-  &__text > span:first-child {
-    font-weight: 500;
+  @media (max-width: 900px) {
+    align-self: stretch;
+    padding-right: 24px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 }
 
