@@ -10,7 +10,7 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <meta charSet="utf-8" />
-        <meta name="theme-color" content="#1e1e1e" />
+        <meta name="theme-color" content="#7b54bf" />
         <meta name="robots" content="index,follow" />
         <meta property="fb:app_id" content="966242223397117" />
         <link rel="icon" type="image/png" href={`/content/images/icon-96.png`} sizes="96x96" />
