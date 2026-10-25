@@ -7,6 +7,7 @@ import { StreamPlayerProvider } from '../context/StreamPlayerContext';
 import { StationProvider } from '../context/StationContext';
 
 import '../styles/globals.scss';
+import '../styles/account.scss';
 
 // Self-hosted and preloaded, so display type is ready before the heading animation starts.
 // (Doto is not in next/font's list yet, so _document links it from Google Fonts.)

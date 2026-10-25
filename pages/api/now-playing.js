@@ -8,6 +8,7 @@ const BLOB_STORE = 'now-playing';
 const BLOB_KEY = 'current';
 const STALE_AFTER_MS = 10 * 60 * 1000;
 const HISTORY_LENGTH = 4;
+const CACHE_TAG = 'now-playing';
 const DATA_DIR = path.join(process.cwd(), 'data');
 const DATA_FILE =
   process.env.NOW_PLAYING_FILE || path.join(DATA_DIR, 'now-playing.json');
@@ -207,15 +208,37 @@ function normalizeBody(body = {}, previous = null) {
   };
 }
 
+// Same request as purgeCache from @netlify/functions, whose current release needs Node 22.
+async function purgeCdnCache() {
+  const token = process.env.NETLIFY_PURGE_API_TOKEN;
+  const siteID = process.env.SITE_ID;
+  if (!token || !siteID) {
+    if (process.env.NETLIFY) console.warn('Skipping now-playing cache purge: no purge token or site ID.');
+    return;
+  }
+  const response = await fetch('https://api.netlify.com/api/v1/purge', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=utf8',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ site_id: siteID, cache_tags: [CACHE_TAG] }),
+    signal: AbortSignal.timeout(5000),
+  });
+  if (!response.ok) throw new Error(`purge API returned ${response.status}`);
+}
+
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     const data = await readStored();
     // Set the CDN lifetime explicitly. Without this header the Next runtime on
-    // Netlify can cache the response for a year. Browsers still recheck every poll.
+    // Netlify can cache the response for a year. POST purges the tag when the
+    // track changes; the TTL only bounds staleness if a purge fails.
     res.setHeader(
       'Netlify-CDN-Cache-Control',
-      'public, durable, max-age=30, stale-while-revalidate=60'
+      'public, durable, max-age=60, stale-while-revalidate=60'
     );
+    res.setHeader('Netlify-Cache-Tag', CACHE_TAG);
     res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
 
     if (isStale(data)) {
@@ -274,16 +297,17 @@ export default async function handler(req, res) {
       });
     }
 
-    // Look art up once per track change; repeat POSTs of the same track reuse it.
+    // Look art up once per track change; repeat POSTs of the same track reuse it,
+    // and a track stored without art gets another try.
     const sameTrack =
       previous.artist === payload.artist && previous.title === payload.title;
-    payload.artwork = sameTrack
-      ? previous.artwork || ''
-      : (await findArtwork(payload.artist, payload.title)) || '';
+    payload.artwork =
+      (sameTrack && previous.artwork) ||
+      (await findArtwork(payload.artist, payload.title)) ||
+      '';
 
     try {
       await writeStored(payload);
-      return res.status(200).json({ success: true, ...payload });
     } catch (error) {
       console.error('Error writing now-playing data:', error.message);
       return res.status(500).json({
@@ -291,6 +315,17 @@ export default async function handler(req, res) {
         detail: error.message,
       });
     }
+
+    // Repeat posts of the same track keep changedAt, so they never purge.
+    if (payload.changedAt !== previous.changedAt) {
+      try {
+        await purgeCdnCache();
+      } catch (error) {
+        console.error('Error purging now-playing cache:', error.message);
+      }
+    }
+
+    return res.status(200).json({ success: true, ...payload });
   }
 
   res.setHeader('Allow', ['GET', 'POST']);

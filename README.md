@@ -1,5 +1,7 @@
 # University Radio Nottingham
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/fef6da65-73c3-4d18-bd67-0e0566103c30/deploy-status)](https://app.netlify.com/projects/melodic-boba-e421cb/deploys)
+
 ## Developing
 
 ```shell

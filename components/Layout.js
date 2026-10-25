@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import Header from './Header';
 import Footer from './Footer';
 import PlayerBar from './PlayerBar';
-import Settings from '../settings.json';
 import { useStation } from '../context/StationContext';
 import { useStreamPlayer } from '../context/StreamPlayerContext';
 
@@ -20,7 +19,7 @@ function useMediaSession() {
       title: track && track.title ? track.title : showName,
       artist: track && track.artist ? track.artist : 'University Radio Nottingham',
       album: showName,
-      artwork: [{ src: `${Settings.cdnUrl}/content/images/logo.png`, sizes: '170x170', type: 'image/png' }],
+      artwork: [{ src: `/content/images/logo.png`, sizes: '170x170', type: 'image/png' }],
     });
   }, [show, track, ready]);
 

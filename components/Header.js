@@ -57,7 +57,7 @@ export default function Header() {
       <nav className="site-header__nav" aria-label="Main">
         <div className="site-header__brand">
           <Link href="/" className="site-header__logo" aria-label="URN, University Radio Nottingham. Home">
-            <img src={`${Settings.cdnUrl}/content/images/logo.png`} alt="" width="44" height="44" />
+            <img src={`/content/images/logo.png`} alt="" width="44" height="44" />
           </Link>
           <p className="site-header__slogan">
             {(() => {
@@ -109,7 +109,7 @@ export default function Header() {
         aria-hidden={!open}
       >
         <div className="menu__top">
-          <img src={`${Settings.cdnUrl}/content/images/logo.png`} alt="" width="44" height="44" />
+          <img src={`/content/images/logo.png`} alt="" width="44" height="44" />
           <button type="button" className="menu-btn" onClick={close}>
             <span className="menu-btn__x" aria-hidden="true"><i /><i /></span>
             Close
