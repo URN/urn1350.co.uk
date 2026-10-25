@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import PixelHeading from '../PixelHeading';
-import PixelDJ from './PixelDJ';
 import TrackMenu from './TrackMenu';
 import { PlayIcon, PauseIcon, Spinner } from '../Icons';
 import { useStation } from '../../context/StationContext';
@@ -45,7 +44,7 @@ function Meter({ active }) {
 
 export default function LiveHero() {
   const { ready, show, pct, left, leftText, upNext, track, history } = useStation();
-  const { isPlaying, isLoading, error, togglePlay, analyserRef } = useStreamPlayer();
+  const { isPlaying, isLoading, error, togglePlay } = useStreamPlayer();
   const msg = useMessage();
   const [kind, setKind] = useState('Request');
   const input = useRef(null);
@@ -88,9 +87,7 @@ export default function LiveHero() {
 
   return (
     <section id="listen" className={`live ${isPlaying ? 'is-playing' : ''}`} aria-labelledby="live-h">
-      <div className="live__rings" aria-hidden="true">
-        <PixelDJ playing={isPlaying} analyserRef={analyserRef} />
-      </div>
+      <div className="live__mark" aria-hidden="true">URN</div>
 
       <div className="live__progress">
         <div className="live__meta">
