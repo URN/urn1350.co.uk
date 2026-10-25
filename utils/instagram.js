@@ -1,9 +1,9 @@
 import { supabase } from './supabase';
 
 const FALLBACK_POSTS = [
-  'https://www.instagram.com/p/DVUN-9LjOjy/embed',
-  'https://www.instagram.com/p/DVE2WBvDC6o/embed',
-  'https://www.instagram.com/p/DVg3jk_jD8n/embed',
+  'https://www.instagram.com/p/DdRGRrujBah/embed',
+  'https://www.instagram.com/p/DdTjmaRjul8/embed',
+  'https://www.instagram.com/p/DdRKwRDjD8R/embed',
 ];
 
 /** Normalise any Instagram post/reel URL to the embed form used on the homepage. */

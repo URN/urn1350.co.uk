@@ -1,41 +1,29 @@
-/* eslint-disable react/jsx-filename-extension */
 import React from 'react';
-import Document, {
-  Head, Html, Main, NextScript
-} from 'next/document';
-import { ServerStyleSheets } from '@mui/styles';
+import { Html, Head, Main, NextScript } from 'next/document';
 
-export default class MyDocument extends Document {
-  render() {
-    return (
-      <Html lang="en">
-        <Head />
-        <body>
-          <Main />
-          <NextScript />
-        </body>
-      </Html>
-    );
-  }
+
+// Runs before first paint: flags that JS is on, so the reveal animations don't flash.
+const BOOT = `(function(){var d=document.documentElement;d.classList.add('js');setTimeout(function(){if(!d.classList.contains('hydrated'))d.classList.remove('js')},6000)})();`;
+
+export default function Document() {
+  return (
+    <Html lang="en">
+      <Head>
+        <meta charSet="utf-8" />
+        <meta name="theme-color" content="#7b54bf" />
+        <meta name="robots" content="index,follow" />
+        <meta property="fb:app_id" content="966242223397117" />
+        <link rel="icon" type="image/png" href={`/content/images/icon-96.png`} sizes="96x96" />
+        <link rel="icon" type="image/png" href={`/content/images/icon-64.png`} sizes="64x64" />
+        <link rel="icon" type="image/png" href={`/content/images/icon-32.png`} sizes="32x32" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Doto:wght@900&display=swap" />
+        <script dangerouslySetInnerHTML={{ __html: BOOT }} />
+      </Head>
+      <body>
+        <Main />
+        <NextScript />
+      </body>
+    </Html>
+  );
 }
-
-// `getInitialProps` belongs to `_document` (instead of `_app`),
-// it's compatible with server-side generation (SSG).
-MyDocument.getInitialProps = async (ctx) => {
-
-  // Render app and page and get the context of the page with collected side effects.
-  const sheets = new ServerStyleSheets();
-  const originalRenderPage = ctx.renderPage;
-
-  ctx.renderPage = () => originalRenderPage({
-    enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
-  });
-
-  const initialProps = await Document.getInitialProps(ctx);
-
-  return {
-    ...initialProps,
-    // Styles fragment is rendered after the app and page rendering finish.
-    styles: [...React.Children.toArray(initialProps.styles), sheets.getStyleElement()],
-  };
-};
