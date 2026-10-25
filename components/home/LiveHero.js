@@ -6,13 +6,7 @@ import { PlayIcon, PauseIcon, Spinner } from '../Icons';
 import { useStation } from '../../context/StationContext';
 import { useStreamPlayer } from '../../context/StreamPlayerContext';
 import { useMessage, MESSAGE_MAX } from '../../hooks/useMessage';
-import { formatRange, formatMinutes, SHOW_TAG_LABELS } from '../../utils/schedule';
-
-function showTag(show) {
-  const kind = show.type || '';
-  const label = SHOW_TAG_LABELS[kind];
-  return label ? { label, kind } : null;
-}
+import { formatRange } from '../../utils/schedule';
 
 const KINDS = {
   Request: 'What should they play next?',
@@ -33,7 +27,7 @@ function Meter({ active }) {
 }
 
 export default function LiveHero() {
-  const { ready, show, pct, left, leftText, upNext, track, history } = useStation();
+  const { ready, show, pct, left, leftText, track, history } = useStation();
   const { isPlaying, isLoading, error, togglePlay } = useStreamPlayer();
   const msg = useMessage();
   const [kind, setKind] = useState('Request');
@@ -143,30 +137,6 @@ export default function LiveHero() {
             <span className="bigplay__label">{playText}</span>
           </button>
           {error ? <p className="notice notice--err" role="alert">{error}</p> : null}
-
-          {upNext.length > 0 ? (
-            <div className="upnext">
-              <h2 className="caps caps--butter">Up next</h2>
-              <ul>
-                {upNext.map((u, i) => {
-                  const tag = showTag(u);
-                  return (
-                    <li key={`${u.id}-${u.when}`} className={i >= 2 ? 'upnext__extra' : undefined}>
-                      <a href="#lineup" className="upnext__row">
-                        <span className="upnext__time">{formatMinutes(u.startMin)}</span>
-                        <span className="upnext__title">{u.name}</span>
-                        {tag ? (
-                          <span className={`upnext__tag upnext__tag--${tag.kind}`}>{tag.label}</span>
-                        ) : (
-                          <span className="muted upnext__when">{u.when}</span>
-                        )}
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ) : null}
         </div>
 
         {track ? (
@@ -198,8 +168,7 @@ export default function LiveHero() {
                     <li key={`${h.time}-${h.title}`}>
                       <span className="muted tnum">{h.time}</span>
                       <span className="played__track">
-                        <span>{h.title}</span>
-                        {h.artist ? <span className="muted">{h.artist}</span> : null}
+                        {[h.title, h.artist].filter(Boolean).join(' · ')}
                       </span>
                       <TrackMenu track={h} />
                     </li>
