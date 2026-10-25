@@ -27,6 +27,8 @@ export function StationProvider({ children, initialSchedule }) {
   const [now, setNow] = useState(null);
   const [track, setTrack] = useState(null);
   const [history, setHistory] = useState([]);
+  // True once the first now-playing poll has answered, so the hero can lay out the track in one go.
+  const [trackChecked, setTrackChecked] = useState(false);
   const lastKey = useRef('');
   const lastHistoryKey = useRef('');
 
@@ -97,6 +99,7 @@ export function StationProvider({ children, initialSchedule }) {
       } catch (e) {
         // Keep the last known track if the endpoint is briefly unavailable.
       }
+      if (!cancelled) setTrackChecked(true);
     };
     poll();
     const id = setInterval(poll, TRACK_POLL_MS);
@@ -128,9 +131,10 @@ export function StationProvider({ children, initialSchedule }) {
       upNext: upcoming.slice(0, 5),
       nextShow: upcoming[0] || null,
       track,
+      trackChecked,
       history,
     };
-  }, [schedule, now, track, history]);
+  }, [schedule, now, track, trackChecked, history]);
 
   return <StationContext.Provider value={value}>{children}</StationContext.Provider>;
 }

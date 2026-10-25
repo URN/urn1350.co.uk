@@ -1217,6 +1217,19 @@ textarea.field {
       align-self: flex-start;
     }
   }
+  // Until the first track check answers, the side column and panel wait unseen,
+  // then fade in already in their final place.
+  &:not(.is-settling) &__side,
+  &:not(.is-settling) .panel {
+    animation: fade-in 0.5s var(--ease-out) both;
+  }
+}
+
+.js .live.is-settling {
+  .live__side,
+  .panel {
+    visibility: hidden;
+  }
 }
 
 .bar {

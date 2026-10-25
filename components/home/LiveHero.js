@@ -27,7 +27,7 @@ function Meter({ active }) {
 }
 
 export default function LiveHero() {
-  const { ready, show, pct, left, leftText, track, history } = useStation();
+  const { ready, show, pct, left, leftText, track, trackChecked, history } = useStation();
   const { isPlaying, isLoading, error, togglePlay } = useStreamPlayer();
   const msg = useMessage();
   const [kind, setKind] = useState('Request');
@@ -45,6 +45,9 @@ export default function LiveHero() {
 
   const title = ready && show ? show.name : 'URN 1350';
   const live = Boolean(ready && show);
+  // Hold the now-playing column and message panel back until the first track check answers,
+  // so they appear already in place instead of shoving the panel down mid-load.
+  const settled = trackChecked || waited;
 
   useEffect(() => {
     if (msg.status !== 'sent') return undefined;
@@ -61,14 +64,14 @@ export default function LiveHero() {
   useLayoutEffect(() => {
     const el = playBtn.current;
     if (!el) return undefined;
-    const first = prevText.current === null;
+    const changed = prevText.current !== null && prevText.current !== playText;
     prevText.current = playText;
     // The DOM already holds the new label here, so the old width comes from the last run.
     const from = prevWidth.current;
     el.style.width = '';
     const to = el.offsetWidth;
     prevWidth.current = to;
-    if (first || !from || !window.matchMedia('(min-width: 901px)').matches) return undefined;
+    if (!changed || !from || !window.matchMedia('(min-width: 901px)').matches) return undefined;
     el.style.width = `${from}px`;
     el.getBoundingClientRect();
     if (from === to) {
@@ -100,7 +103,7 @@ export default function LiveHero() {
   };
 
   return (
-    <section id="listen" className={`live ${isPlaying ? 'is-playing' : ''}`} aria-labelledby="live-h">
+    <section id="listen" className={`live ${isPlaying ? 'is-playing' : ''} ${settled ? '' : 'is-settling'}`} aria-labelledby="live-h">
       <div className="live__mark" aria-hidden="true">URN</div>
 
       <div className="live__progress">
@@ -139,6 +142,8 @@ export default function LiveHero() {
           {error ? <p className="notice notice--err" role="alert">{error}</p> : null}
         </div>
 
+        {/* Keeps the column's width while the first track check is out, so the heading never reflows. */}
+        {!track && !settled ? <div className="live__side" aria-hidden="true" /> : null}
         {track ? (
           <div className="live__side">
             <div className="nowplaying" aria-live="polite">
