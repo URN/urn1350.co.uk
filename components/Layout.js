@@ -69,6 +69,8 @@ function RouteProgress() {
 export default function Layout({ children }) {
   const router = useRouter();
   useMediaSession();
+  // The members area has its own header, so the public header and footer step aside.
+  const members = router.pathname === '/account';
 
   useEffect(() => {
     document.documentElement.classList.add('hydrated');
@@ -77,11 +79,11 @@ export default function Layout({ children }) {
   return (
     <div className="shell">
       <RouteProgress />
-      <Header />
+      {members ? null : <Header />}
       <main id="main" tabIndex={-1} className="page-enter" key={router.asPath.split('#')[0]}>
         {children}
       </main>
-      <Footer />
+      {members ? null : <Footer />}
       <PlayerBar />
     </div>
   );
