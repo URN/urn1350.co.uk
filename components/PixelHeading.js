@@ -1,10 +1,9 @@
 import React from 'react';
 
 /**
- * The extruded pixel display heading. Each character rises into place with an
- * elastic ease, staggered left to right (the radioradio.radio intro), then the
- * hard offset extrude settles underneath. `play` holds the letters back until
- * the content they spell is ready.
+ * The wide display heading. Each character rises into place with an elastic
+ * ease, staggered left to right (the radioradio.radio intro). `play` holds the
+ * letters back until the content they spell is ready.
  */
 export default function PixelHeading({ as: Tag = 'h1', size = 'xl', play = true, className = '', id, children }) {
   const text = String(children);
