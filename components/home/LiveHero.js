@@ -91,7 +91,6 @@ export default function LiveHero() {
     return () => el.removeEventListener('transitionend', done);
   }, [playText]);
 
-  const nowPlaying = track ? [track.title, track.artist].filter(Boolean).join(' · ') : '';
 
   const shout = () => {
     if (!track) return;
@@ -143,7 +142,6 @@ export default function LiveHero() {
             </span>
             <span className="bigplay__label">{playText}</span>
           </button>
-          <p className="muted bigplay__sub">{nowPlaying || 'Live from the Portland Building'}</p>
           {error ? <p className="notice notice--err" role="alert">{error}</p> : null}
 
           {upNext.length > 0 ? (
@@ -218,7 +216,6 @@ export default function LiveHero() {
         <div className="panel__head">
           <div>
             <h2 className="panel__title">Message {title}</h2>
-            <p className="muted panel__hint">Request a song or say hi. It goes straight to the studio.</p>
           </div>
           <div role="group" aria-label="Message type" className="pills">
             {kinds.map((k) => (
