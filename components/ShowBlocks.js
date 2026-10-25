@@ -51,7 +51,7 @@ export default function ShowBlocks({ rows, nightFirst = false, left, onListen, e
                       </span>
                     </span>
                     <span className="row__end">
-                      {r.tag && !isNow ? <span className={`tag tag--${r.tag.toLowerCase()}`}>{r.tag}</span> : null}
+                      {r.tag && !isNow ? <span className={`tag tag--${r.type}`}>{r.tag}</span> : null}
                       {isNow && onListen ? (
                         <button type="button" className="btn btn--sm btn--ink" onClick={onListen}>
                           <PlayIcon size={13} />Listen

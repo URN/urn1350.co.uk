@@ -6,21 +6,11 @@ import { PlayIcon, PauseIcon, Spinner } from '../Icons';
 import { useStation } from '../../context/StationContext';
 import { useStreamPlayer } from '../../context/StreamPlayerContext';
 import { useMessage, MESSAGE_MAX } from '../../hooks/useMessage';
-import { formatRange, formatMinutes } from '../../utils/schedule';
-
-const SHOW_TAGS = {
-  breakfast: 'Breakfast',
-  daytime: 'Daytime',
-  drivetime: 'Drivetime',
-  sport: 'Sport',
-  'pre-club': 'Pre-club',
-  'after-dark': 'After dark',
-};
+import { formatRange, formatMinutes, SHOW_TAG_LABELS } from '../../utils/schedule';
 
 function showTag(show) {
-  if (show.tag === 'News') return { label: 'News', kind: 'news' };
   const kind = show.type || '';
-  const label = SHOW_TAGS[kind];
+  const label = SHOW_TAG_LABELS[kind];
   return label ? { label, kind } : null;
 }
 

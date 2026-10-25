@@ -9,7 +9,7 @@ const AFTER_DARK_START = 20 * 60;
 /**
  * Turn the raw parsed schedule into something the UI can use directly:
  * automation/unnamed slots dropped, shows sorted, minutes precomputed,
- * and a `tag` ("News" / "Sport") plus `night` flag per show.
+ * and a `tag` (the label for the slot's show type, e.g. "Drivetime") plus `night` flag per show.
  * Output is plain JSON so it can cross the getStaticProps boundary.
  */
 export function normaliseSchedule(raw) {
@@ -32,9 +32,7 @@ export function normaliseSchedule(raw) {
           startMin += 1440;
           endMin += 1440;
         }
-        let tag = '';
-        if (/^news\b/i.test(s.name)) tag = 'News';
-        else if (s.type === 'sport') tag = 'Sport';
+        const tag = SHOW_TAG_LABELS[s.type] || '';
         out[DAY_NAMES[target]].push({
           id: s.id,
           name: s.name,
@@ -158,6 +156,15 @@ export function findUpcoming(schedule, now, count = 2) {
 
 // ---- Editable schedule (Supabase) ----
 
+
+export const SHOW_TAG_LABELS = {
+  breakfast: 'Breakfast',
+  daytime: 'Daytime',
+  drivetime: 'Drivetime',
+  sport: 'Sport',
+  'pre-club': 'Pre-club',
+  'after-dark': 'After dark',
+};
 
 export const SHOW_TYPES = [
   'breakfast',

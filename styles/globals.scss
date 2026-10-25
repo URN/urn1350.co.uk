@@ -324,10 +324,13 @@ main:focus {
   font-size: 13px;
   line-height: 1.4;
 
-  &--news {
-    border-color: var(--cyan);
-    color: var(--cyan);
-  }
+  // Show-type colours, matching the live timetable.
+  &--breakfast { background: #feda86; border-color: #feda86; color: #1a1a1a; }
+  &--daytime { background: #44d7fc; border-color: #44d7fc; color: #1a1a1a; }
+  &--drivetime { background: #fb763b; border-color: #fb763b; color: #1a1a1a; }
+  &--sport { background: #9dda57; border-color: #9dda57; color: #1a1a1a; }
+  &--pre-club { background: #905ece; border-color: #905ece; color: #fff; }
+  &--after-dark { background: #4a2a8b; border-color: #4a2a8b; color: #fff; }
 }
 
 /* ---------- buttons, pills, fields ---------- */
@@ -1334,9 +1337,14 @@ textarea.field {
     line-height: 1.3;
     white-space: nowrap;
 
-    // Butter for every kind of show; news keeps cyan so it stands apart.
     color: var(--butter);
-    &--news { color: var(--cyan); }
+
+    &--breakfast { background: #feda86; border-color: #feda86; color: #1a1a1a; }
+    &--daytime { background: #44d7fc; border-color: #44d7fc; color: #1a1a1a; }
+    &--drivetime { background: #fb763b; border-color: #fb763b; color: #1a1a1a; }
+    &--sport { background: #9dda57; border-color: #9dda57; color: #1a1a1a; }
+    &--pre-club { background: #905ece; border-color: #905ece; color: #fff; }
+    &--after-dark { background: #4a2a8b; border-color: #4a2a8b; color: #fff; }
   }
 }
 
@@ -2072,6 +2080,7 @@ textarea.field {
     font-size: 12px;
   }
   &__row.row--now .tag {
+    background: transparent;
     border-color: var(--lime);
     color: var(--lime);
   }

@@ -15,14 +15,10 @@ import {
   weekDates,
   formatMinutes,
   formatRange,
+  SHOW_TAG_LABELS,
 } from '../utils/schedule';
 
-const FILTERS = [
-  ['all', 'Everything'],
-  ['day', 'Daytime'],
-  ['night', 'After dark'],
-  ['sport', 'Sport and news'],
-];
+const FILTERS = [['all', 'Everything'], ...Object.entries(SHOW_TAG_LABELS)];
 
 function Cell({ rows, label, night }) {
   return (
@@ -34,7 +30,7 @@ function Cell({ rows, label, night }) {
           <li key={r.id} className={`wk__row row--${r.state}`} aria-current={r.state === 'now' ? 'time' : undefined}>
             <span className="wk__time tnum">{formatMinutes(r.startMin)}–{formatMinutes(r.endMin)}</span>
             <span className="wk__title">{r.name}</span>
-            {r.tag ? <span className={`tag tag--${r.tag.toLowerCase()}`}>{r.tag}</span> : null}
+            {r.tag ? <span className={`tag tag--${r.type}`}>{r.tag}</span> : null}
           </li>
         ))}
       </ul>
@@ -55,13 +51,13 @@ export default function Page({ schedule: staticSchedule }) {
   const days = DAY_NAMES.map((name, i) => {
     const isToday = i === todayIdx;
     const rows = decorate((schedule && schedule[name]) || [], isToday, now || { minutes: 0 }).filter(
-      (r) => filter !== 'sport' || r.tag
+      (r) => filter === 'all' || r.type === filter
     );
     return {
       name,
       isToday,
-      day: filter === 'night' ? [] : rows.filter((r) => !r.night),
-      night: filter === 'day' ? [] : rows.filter((r) => r.night),
+      day: rows.filter((r) => !r.night),
+      night: rows.filter((r) => r.night),
     };
   });
 
@@ -105,8 +101,8 @@ export default function Page({ schedule: staticSchedule }) {
                 <span className="small">{d.isToday ? 'Today' : ready ? dates[i].short : ''}</span>
               </div>
             ))}
-            {filter !== 'night' ? days.map((d) => <Cell key={`d-${d.name}`} rows={d.day} label="Daytime" night={false} />) : null}
-            {filter !== 'day' ? days.map((d) => <Cell key={`n-${d.name}`} rows={d.night} label="After dark" night />) : null}
+            {days.map((d) => <Cell key={`d-${d.name}`} rows={d.day} label="Daytime" night={false} />)}
+            {days.map((d) => <Cell key={`n-${d.name}`} rows={d.night} label="After dark" night />)}
           </Reveal>
 
           <div className="wkm">
