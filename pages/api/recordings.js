@@ -3,6 +3,16 @@ import { isAllowedEmail } from '../../lib/allowedEmail.mjs';
 import { parseRecordingFile, retentionStatus, slotBelongsToShows } from '../../lib/recordings.mjs';
 import { signRecordingUrl } from '../../lib/recordingSigner.mjs';
 
+// Exact (case-insensitive) email match against the admins table, as the caller.
+// ilike treats "_" and "%" as wildcards, so compare the results exactly.
+async function isAdminUser(supabase, email) {
+  const lower = (email || '').toLowerCase();
+  if (!lower) return false;
+  const { data, error } = await supabase.from('admins').select('email').ilike('email', lower);
+  if (error) throw error;
+  return (data ?? []).some((row) => (row.email || '').toLowerCase() === lower);
+}
+
 /**
  * GET /api/recordings?file=YYYY-MM-DD-HH.mp3
  * Authorization: Bearer <supabase access token>
@@ -44,7 +54,7 @@ export default async function handler(req, res) {
     if (status === 'expired') return res.status(410).json({ error: 'expired' });
     if (status === 'future') return res.status(404).json({ error: 'not_found' });
 
-    // Explicitly scope to the caller; don't rely on RLS to hide other people's rows.
+    // Presenters: scope explicitly to the caller; don't rely on RLS to hide other rows.
     const { data: memberships, error: memberError } = await supabase
       .from('show_members')
       .select('show_id, shows(id, name)')
@@ -52,17 +62,25 @@ export default async function handler(req, res) {
       .eq('status', 'approved');
     if (memberError) throw memberError;
     const shows = (memberships ?? []).map((row) => row.shows).filter(Boolean);
-    if (shows.length === 0) return res.status(403).json({ error: 'forbidden' });
 
-    const { data: slots, error: slotError } = await supabase
-      .from('schedule_slots')
-      .select('name, show_id')
-      .eq('day', parsed.weekday)
-      .lte('start_hour', parsed.hour)
-      .gt('end_hour', parsed.hour);
-    if (slotError) throw slotError;
-    if (!(slots ?? []).some((slot) => slotBelongsToShows(slot, shows))) {
-      return res.status(403).json({ error: 'forbidden' });
+    let allowed = false;
+    if (shows.length > 0) {
+      const { data: slots, error: slotError } = await supabase
+        .from('schedule_slots')
+        .select('name, show_id')
+        .eq('day', parsed.weekday)
+        .lte('start_hour', parsed.hour)
+        .gt('end_hour', parsed.hour);
+      if (slotError) throw slotError;
+      allowed = (slots ?? []).some((slot) => slotBelongsToShows(slot, shows));
+    }
+
+    if (!allowed) {
+      // Admins may fetch any recording. Each such access is logged (no secrets or URLs).
+      if (!(await isAdminUser(supabase, user.email))) {
+        return res.status(403).json({ error: 'forbidden' });
+      }
+      console.log(JSON.stringify({ event: 'recording_admin_access', admin: user.id, file }));
     }
 
     const secret = process.env.RECORDINGS_SECRET;

@@ -327,7 +327,7 @@ function PresenterHome({ session, onSignedOut }) {
           onMessage={setMessage}
           onVisibility={handleVisibility}
           onLeave={myShowIds.has(openShow.id) ? () => handleLeave(openShow) : null}
-          recordings={myShowIds.has(openShow.id) ? <RecordingsPanel userId={userId} show={openShow} /> : null}
+          recordings={myShowIds.has(openShow.id) || isAdmin ? <RecordingsPanel show={openShow} /> : null}
         />
       </>
     );

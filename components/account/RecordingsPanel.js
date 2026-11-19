@@ -2,8 +2,8 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import PlayArrowRounded from '@mui/icons-material/PlayArrowRounded';
 import PauseRounded from '@mui/icons-material/PauseRounded';
 import DownloadRounded from '@mui/icons-material/DownloadRounded';
-import { listMyRecordingSlots, requestRecordingUrl } from '../../utils/recordings';
-import { groupEpisodes, slotBelongsToShows } from '../../lib/recordings.mjs';
+import { listShowRecordingSlots, requestRecordingUrl } from '../../utils/recordings';
+import { groupEpisodes } from '../../lib/recordings.mjs';
 
 const EARLIER_FIRST_PAGE = 5;
 const clock = (h) => `${String(h % 24).padStart(2, '0')}:00`;
@@ -16,7 +16,7 @@ const shortDate = (key) => fmtDate(key, { weekday: 'short', day: 'numeric', mont
 const timeRange = (ep) => `${clock(ep.startHour)}–${clock(ep.endHour)}`;
 
 /** Recordings for one show: a featured latest episode, earlier ones, one player. */
-export default function RecordingsPanel({ userId, show }) {
+export default function RecordingsPanel({ show }) {
   const [hourly, setHourly] = useState(null);
   const [loadError, setLoadError] = useState('');
   const [showAll, setShowAll] = useState(false);
@@ -28,22 +28,17 @@ export default function RecordingsPanel({ userId, show }) {
 
   useEffect(() => {
     let active = true;
-    listMyRecordingSlots(userId)
+    listShowRecordingSlots(show)
       .then((list) => active && setHourly(list))
       .catch((err) => active && setLoadError(err.message || 'Could not load recordings.'));
     return () => { active = false; };
-  }, [userId]);
+  }, [show]);
 
   useEffect(() => {
     if (now) audioRef.current?.play().catch(() => {});
   }, [now]);
 
-  const episodes = useMemo(() => {
-    if (!hourly) return [];
-    return groupEpisodes(hourly.filter((item) => (
-      slotBelongsToShows({ show_id: item.showId, name: item.showName }, [show])
-    )));
-  }, [hourly, show]);
+  const episodes = useMemo(() => (hourly ? groupEpisodes(hourly) : []), [hourly]);
 
   // Signed links are requested on click (or when the next part starts), never on page load.
   async function withLink(epKey, file, then) {
