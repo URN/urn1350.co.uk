@@ -1,23 +1,22 @@
 import { supabase } from './supabase';
-import { listSlotHours } from '../lib/recordings.mjs';
+import { listSlotHours, slotBelongsToShows } from '../lib/recordings.mjs';
 
 /** Hourly recordings (newest first) from the user's shows in the last 6 weeks. */
 export async function listMyRecordingSlots(userId) {
   const { data: memberships, error: memberError } = await supabase
     .from('show_members')
-    .select('show_id')
+    .select('show_id, shows(id, name)')
     .eq('presenter_id', userId)
     .eq('status', 'approved');
   if (memberError) throw memberError;
-  const showIds = (memberships ?? []).map((row) => row.show_id).filter(Boolean);
-  if (showIds.length === 0) return [];
+  const shows = (memberships ?? []).map((row) => row.shows).filter(Boolean);
+  if (shows.length === 0) return [];
 
   const { data: slots, error } = await supabase
     .from('schedule_slots')
-    .select('day, start_hour, end_hour, name, show_id')
-    .in('show_id', showIds);
+    .select('day, start_hour, end_hour, name, show_id');
   if (error) throw error;
-  return listSlotHours(slots ?? []);
+  return listSlotHours((slots ?? []).filter((slot) => slotBelongsToShows(slot, shows)));
 }
 
 const ERROR_MESSAGES = {

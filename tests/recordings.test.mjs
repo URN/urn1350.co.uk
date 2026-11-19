@@ -6,6 +6,7 @@ import {
   retentionStatus,
   londonToday,
   listSlotHours,
+  slotBelongsToShows,
 } from '../lib/recordings.mjs';
 
 test('signer matches the openssl shell pipeline', () => {
@@ -64,4 +65,13 @@ test('listSlotHours drops unfinished hours today', () => {
   const slots = [{ day: 'Thursday', start_hour: 17, end_hour: 20, name: 'X' }];
   const todays = listSlotHours(slots, now).filter((x) => x.dateKey === '2026-11-19');
   assert.deepEqual(todays.map((x) => x.hour), [17]);
+});
+
+test('slotBelongsToShows matches by id, else by name for legacy null show_id', () => {
+  const shows = [{ id: 'a', name: 'S2S Sounds' }];
+  assert.ok(slotBelongsToShows({ show_id: 'a', name: 'x' }, shows));
+  assert.ok(slotBelongsToShows({ show_id: null, name: ' s2s sounds ' }, shows));
+  assert.ok(!slotBelongsToShows({ show_id: 'b', name: 'S2S Sounds' }, shows));
+  assert.ok(!slotBelongsToShows({ show_id: null, name: 'Other' }, shows));
+  assert.ok(!slotBelongsToShows({ show_id: null, name: '' }, [{ id: 'a', name: '' }]));
 });

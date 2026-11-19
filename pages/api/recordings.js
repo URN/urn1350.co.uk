@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { isAllowedEmail } from '../../lib/allowedEmail.mjs';
-import { parseRecordingFile, retentionStatus } from '../../lib/recordings.mjs';
+import { parseRecordingFile, retentionStatus, slotBelongsToShows } from '../../lib/recordings.mjs';
 import { signRecordingUrl } from '../../lib/recordingSigner.mjs';
 
 /**
@@ -47,23 +47,23 @@ export default async function handler(req, res) {
     // Explicitly scope to the caller; don't rely on RLS to hide other people's rows.
     const { data: memberships, error: memberError } = await supabase
       .from('show_members')
-      .select('show_id')
+      .select('show_id, shows(id, name)')
       .eq('presenter_id', user.id)
       .eq('status', 'approved');
     if (memberError) throw memberError;
-    const showIds = (memberships ?? []).map((row) => row.show_id).filter(Boolean);
-    if (showIds.length === 0) return res.status(403).json({ error: 'forbidden' });
+    const shows = (memberships ?? []).map((row) => row.shows).filter(Boolean);
+    if (shows.length === 0) return res.status(403).json({ error: 'forbidden' });
 
     const { data: slots, error: slotError } = await supabase
       .from('schedule_slots')
-      .select('id')
-      .in('show_id', showIds)
+      .select('name, show_id')
       .eq('day', parsed.weekday)
       .lte('start_hour', parsed.hour)
-      .gt('end_hour', parsed.hour)
-      .limit(1);
+      .gt('end_hour', parsed.hour);
     if (slotError) throw slotError;
-    if (!slots || slots.length === 0) return res.status(403).json({ error: 'forbidden' });
+    if (!(slots ?? []).some((slot) => slotBelongsToShows(slot, shows))) {
+      return res.status(403).json({ error: 'forbidden' });
+    }
 
     const secret = process.env.RECORDINGS_SECRET;
     if (!secret) return res.status(500).json({ error: 'server_misconfigured' });
