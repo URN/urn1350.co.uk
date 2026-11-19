@@ -327,13 +327,8 @@ function PresenterHome({ session, onSignedOut }) {
           onMessage={setMessage}
           onVisibility={handleVisibility}
           onLeave={myShowIds.has(openShow.id) ? () => handleLeave(openShow) : null}
+          recordings={myShowIds.has(openShow.id) ? <RecordingsPanel userId={userId} show={openShow} /> : null}
         />
-        {myShowIds.has(openShow.id) ? (
-          <>
-            <h2>Recordings</h2>
-            <RecordingsPanel userId={userId} show={openShow} />
-          </>
-        ) : null}
       </>
     );
   }
@@ -523,6 +518,7 @@ function ShowDetailEditor({
   onMessage,
   onVisibility,
   onLeave,
+  recordings,
 }) {
   const [members, setMembers] = useState([]);
   const [spotify, setSpotify] = useState(show.spotify_playlist_url || '');
@@ -624,6 +620,13 @@ function ShowDetailEditor({
           <p className="account-muted">{getShowKind(show) === 'podcast' ? 'Podcast' : 'Radio show'}</p>
         </div>
       </div>
+
+      {recordings ? (
+        <>
+          {recordings}
+          <h3 className="show-settings-title">Show settings</h3>
+        </>
+      ) : null}
 
       {isAdmin ? (
         <div className="show-profile-controls">
