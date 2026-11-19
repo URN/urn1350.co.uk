@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Header from '../components/header';
 import Footer from '../components/footer';
+import RecordingsPanel from '../components/account/RecordingsPanel';
 import Settings from '../settings.json';
 import { supabase } from '../utils/supabase';
 import {
@@ -424,6 +425,13 @@ function PresenterHome({ session, onSignedOut }) {
           ))}
         </ul>
       )}
+
+      {myShows.length > 0 ? (
+        <>
+          <h2>Your recordings</h2>
+          <RecordingsPanel userId={userId} />
+        </>
+      ) : null}
 
       <h2>Join a show</h2>
       {otherShows.length === 0 ? (
