@@ -1,182 +1,104 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { listMyRecordingSlots, requestRecordingUrl } from '../../utils/recordings';
-import { daysBetween, groupEpisodes, londonToday } from '../../lib/recordings.mjs';
+import { groupEpisodes } from '../../lib/recordings.mjs';
 
-const INITIAL_EPISODES = 4;
-const pad = (n) => String(n).padStart(2, '0');
-const clock = (h) => `${pad(h % 24)}:00`;
-
-function dateFromKey(key) {
+const FIRST_PAGE = 4;
+const clock = (h) => `${String(h % 24).padStart(2, '0')}:00`;
+const fmtDate = (key, opts) => {
   const [y, m, d] = key.split('-').map(Number);
-  return new Date(Date.UTC(y, m - 1, d));
-}
-const longDate = (key) => dateFromKey(key).toLocaleDateString('en-GB', {
-  weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC',
-});
-const shortDate = (key) => dateFromKey(key).toLocaleDateString('en-GB', {
-  weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC',
-});
-
-function relativeDay(key, today) {
-  const n = daysBetween(key, today);
-  if (n <= 0) return 'Today';
-  if (n === 1) return 'Yesterday';
-  if (n < 7) return `${n} days ago`;
-  const weeks = Math.round(n / 7);
-  return weeks === 1 ? 'Last week' : `${weeks} weeks ago`;
-}
+  return new Date(Date.UTC(y, m - 1, d)).toLocaleDateString('en-GB', { ...opts, timeZone: 'UTC' });
+};
 
 export default function RecordingsPanel({ userId }) {
   const [hourly, setHourly] = useState(null);
   const [loadError, setLoadError] = useState('');
-  const [showFilter, setShowFilter] = useState('all');
-  const [expanded, setExpanded] = useState(false);
-  const [busy, setBusy] = useState(null); // { file, kind }
-  const [done, setDone] = useState('');
-  const [errors, setErrors] = useState({});
+  const [showAll, setShowAll] = useState(false);
+  const [busy, setBusy] = useState(null); // file being prepared
   const [playing, setPlaying] = useState(null); // { file, url }
+  const [errors, setErrors] = useState({});
   const audioRef = useRef(null);
 
   useEffect(() => {
     let active = true;
     listMyRecordingSlots(userId)
       .then((list) => active && setHourly(list))
-      .catch((err) => active && setLoadError(err instanceof Error ? err.message : 'Could not load recordings.'));
+      .catch((err) => active && setLoadError(err.message || 'Could not load recordings.'));
     return () => { active = false; };
   }, [userId]);
 
-  const today = londonToday();
-  const episodes = useMemo(() => (hourly ? groupEpisodes(hourly) : []), [hourly]);
-  const showNames = useMemo(() => [...new Set(episodes.map((e) => e.showName))].sort(), [episodes]);
-  const filtered = showFilter === 'all' ? episodes : episodes.filter((e) => e.showName === showFilter);
-  const visible = expanded ? filtered : filtered.slice(0, INITIAL_EPISODES);
-
   useEffect(() => {
-    if (playing && audioRef.current) audioRef.current.play().catch(() => {});
+    if (playing) audioRef.current?.play().catch(() => {});
   }, [playing]);
 
-  function setRowError(file, message) {
-    setErrors((prev) => ({ ...prev, [file]: message }));
-  }
+  const episodes = useMemo(() => (hourly ? groupEpisodes(hourly) : []), [hourly]);
 
-  async function handleDownload(file) {
-    setBusy({ file, kind: 'download' });
-    setRowError(file, '');
-    setDone('');
+  // Signed links are requested here, on click, so a tab left open still works.
+  async function withLink(file, then) {
+    setBusy(file);
+    setErrors((prev) => ({ ...prev, [file]: '' }));
     try {
-      const url = await requestRecordingUrl(file); // signed now, on click
-      window.location.assign(url);
-      setDone(file);
+      then(await requestRecordingUrl(file));
     } catch (err) {
-      setRowError(file, err instanceof Error ? err.message : 'Link expired, try again.');
+      setErrors((prev) => ({ ...prev, [file]: err.message || 'Link expired, try again.' }));
     } finally {
       setBusy(null);
     }
   }
 
-  async function handlePlay(file) {
-    if (playing?.file === file) {
-      audioRef.current?.pause();
-      setPlaying(null);
-      return;
-    }
-    setBusy({ file, kind: 'play' });
-    setRowError(file, '');
-    try {
-      const url = await requestRecordingUrl(file);
-      setPlaying({ file, url });
-    } catch (err) {
-      setRowError(file, err instanceof Error ? err.message : 'Link expired, try again.');
-    } finally {
-      setBusy(null);
-    }
-  }
+  const download = (file) => withLink(file, (url) => window.location.assign(url));
+  const play = (file) => {
+    if (playing?.file === file) return setPlaying(null);
+    return withLink(file, (url) => setPlaying({ file, url }));
+  };
 
   if (loadError) return <p className="account-error" role="alert">{loadError}</p>;
   if (hourly === null) {
-    return (
-      <div className="rec-skeleton" aria-hidden="true">
-        <div /><div /><div />
-      </div>
-    );
+    return <div className="rec-skeleton" aria-hidden="true"><div /><div /></div>;
   }
   if (episodes.length === 0) {
     return (
-      <section className="account-card rec-empty">
-        <h3>No recordings yet</h3>
-        <p>
-          Once one of your shows has been on air, its recording appears here within the hour.
-          We keep recordings for 6 weeks.
-        </p>
-      </section>
+      <p className="account-muted">
+        No recordings yet. Your shows appear here an hour after they air.
+      </p>
     );
   }
 
+  const visible = showAll ? episodes : episodes.slice(0, FIRST_PAGE);
   return (
-    <div className="rec-panel">
+    <div>
       <p className="rec-intro">
-        Listen back or download your shows. Recordings are kept for 6 weeks and can only be
-        downloaded from the UK.
+        Kept for 6 weeks. Downloads only work from the UK.
       </p>
-
-      {showNames.length > 1 ? (
-        <div className="rec-filters" role="group" aria-label="Filter by show">
-          {['all', ...showNames].map((name) => (
-            <button
-              key={name}
-              type="button"
-              className={`rec-chip${showFilter === name ? ' is-active' : ''}`}
-              aria-pressed={showFilter === name}
-              onClick={() => { setShowFilter(name); setExpanded(false); }}>
-              {name === 'all' ? 'All shows' : name}
-            </button>
-          ))}
-        </div>
-      ) : null}
-
       <ul className="rec-episodes">
         {visible.map((ep) => (
           <li key={ep.key} className="account-card rec-episode">
-            <header>
-              <div>
-                <h3>{longDate(ep.dateKey)}</h3>
-                <p className="rec-meta">
-                  {ep.showName} · {clock(ep.startHour)}–{clock(ep.endHour)}
-                </p>
-              </div>
-              <span className="rec-when">{relativeDay(ep.dateKey, today)}</span>
-            </header>
-
+            <h3>{fmtDate(ep.dateKey, { weekday: 'long', day: 'numeric', month: 'long' })}</h3>
+            <p className="rec-meta">{ep.showName}</p>
             <ul className="rec-parts">
-              {ep.hours.map((part, i) => {
-                const isBusy = busy?.file === part.file;
+              {ep.hours.map((part) => {
+                const label = `${ep.showName}, ${fmtDate(ep.dateKey, { weekday: 'short', day: 'numeric', month: 'short' })}, ${clock(part.hour)}`;
                 const isPlaying = playing?.file === part.file;
-                const label = `${ep.showName}, ${shortDate(ep.dateKey)}, ${clock(part.hour)}`;
+                const working = busy === part.file;
                 return (
                   <li key={part.file}>
                     <div className="rec-part-row">
-                      <span className="rec-part-label">
-                        {ep.hours.length > 1 ? `Hour ${i + 1}` : 'Full show'}
-                        <small>{clock(part.hour)}–{clock(part.hour + 1)}</small>
-                      </span>
+                      <strong>{clock(part.hour)}–{clock(part.hour + 1)}</strong>
                       <span className="rec-actions">
                         <button
                           type="button"
                           className="rec-btn rec-btn--ghost"
                           aria-label={`${isPlaying ? 'Stop' : 'Play'} ${label}`}
-                          disabled={isBusy && busy.kind === 'play'}
-                          onClick={() => handlePlay(part.file)}>
-                          {isBusy && busy.kind === 'play' ? 'Loading…' : isPlaying ? '■ Stop' : '▶ Play'}
+                          disabled={working}
+                          onClick={() => play(part.file)}>
+                          {isPlaying ? '■ Stop' : '▶ Play'}
                         </button>
                         <button
                           type="button"
                           className="rec-btn"
                           aria-label={`Download ${label}`}
-                          disabled={isBusy && busy.kind === 'download'}
-                          onClick={() => handleDownload(part.file)}>
-                          {isBusy && busy.kind === 'download'
-                            ? 'Preparing…'
-                            : done === part.file ? '✓ Started' : '⬇ Download'}
+                          disabled={working}
+                          onClick={() => download(part.file)}>
+                          {working ? 'Preparing…' : '⬇ Download'}
                         </button>
                       </span>
                     </div>
@@ -185,33 +107,24 @@ export default function RecordingsPanel({ userId }) {
                         ref={audioRef}
                         className="rec-audio"
                         controls
-                        preload="metadata"
                         src={playing.url}
                         onError={() => {
-                          setRowError(part.file, 'Could not play this recording. The link may have expired, so try again.');
+                          setErrors((prev) => ({ ...prev, [part.file]: 'Could not play this. Try again.' }));
                           setPlaying(null);
                         }}
                       />
                     ) : null}
-                    {errors[part.file] ? (
-                      <p className="rec-error" role="alert">{errors[part.file]}</p>
-                    ) : null}
+                    {errors[part.file] ? <p className="rec-error" role="alert">{errors[part.file]}</p> : null}
                   </li>
                 );
               })}
             </ul>
-
-            <p className="rec-expiry">Available until {shortDate(ep.expiresKey)}</p>
           </li>
         ))}
       </ul>
-
-      {filtered.length > INITIAL_EPISODES ? (
-        <button
-          type="button"
-          className="rec-more"
-          onClick={() => setExpanded((v) => !v)}>
-          {expanded ? 'Show fewer' : `Show ${filtered.length - INITIAL_EPISODES} older ${filtered.length - INITIAL_EPISODES === 1 ? 'show' : 'shows'}`}
+      {!showAll && episodes.length > FIRST_PAGE ? (
+        <button type="button" className="rec-more" onClick={() => setShowAll(true)}>
+          Show older
         </button>
       ) : null}
     </div>
