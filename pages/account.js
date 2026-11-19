@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Header from '../components/header';
 import Footer from '../components/footer';
+import RecordingsPanel from '../components/account/RecordingsPanel';
 import Settings from '../settings.json';
 import { supabase } from '../utils/supabase';
 import {
@@ -326,6 +327,7 @@ function PresenterHome({ session, onSignedOut }) {
           onMessage={setMessage}
           onVisibility={handleVisibility}
           onLeave={myShowIds.has(openShow.id) ? () => handleLeave(openShow) : null}
+          recordings={myShowIds.has(openShow.id) ? <RecordingsPanel userId={userId} show={openShow} /> : null}
         />
       </>
     );
@@ -516,6 +518,7 @@ function ShowDetailEditor({
   onMessage,
   onVisibility,
   onLeave,
+  recordings,
 }) {
   const [members, setMembers] = useState([]);
   const [spotify, setSpotify] = useState(show.spotify_playlist_url || '');
@@ -617,6 +620,13 @@ function ShowDetailEditor({
           <p className="account-muted">{getShowKind(show) === 'podcast' ? 'Podcast' : 'Radio show'}</p>
         </div>
       </div>
+
+      {recordings ? (
+        <>
+          {recordings}
+          <h3 className="show-settings-title">Show settings</h3>
+        </>
+      ) : null}
 
       {isAdmin ? (
         <div className="show-profile-controls">
