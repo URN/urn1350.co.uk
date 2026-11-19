@@ -709,15 +709,6 @@
 
     strong { font-size: 1.15rem; color: #ffffff; }
     span { color: rgba(255, 255, 255, 0.8); }
-    .rec-tag {
-      align-self: flex-start;
-      margin-bottom: 0.15rem;
-      font-size: 0.7rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: #f4b400;
-    }
   }
 
   .rec-downloads,
@@ -816,11 +807,6 @@
   box-shadow: inset 0 0 0 2px #5f2a87;
 }
 
-.show-profile .rec-footnote {
-  margin: 1rem 0 0;
-  font-size: 0.8rem;
-  color: #6b6b6b;
-}
 
 .show-profile .rec-empty {
   margin: 0;

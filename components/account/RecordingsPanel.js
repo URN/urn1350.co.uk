@@ -129,7 +129,6 @@ export default function RecordingsPanel({ userId, show }) {
       <div className="rec-hero">
         <PlayButton ep={latest} large />
         <div className="rec-hero-text">
-          <span className="rec-tag">Latest</span>
           <strong>{longDate(latest.dateKey)}</strong>
           <span>{timeRange(latest)}</span>
         </div>
@@ -160,10 +159,6 @@ export default function RecordingsPanel({ userId, show }) {
           ) : null}
         </>
       ) : null}
-
-      <p className="rec-footnote">
-        Kept for 6 weeks · downloads work from the UK only · about 140 MB per hour
-      </p>
 
       {now ? (
         <div className="rec-player" role="region" aria-label="Now playing">
