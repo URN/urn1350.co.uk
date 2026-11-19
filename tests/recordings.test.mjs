@@ -75,3 +75,16 @@ test('slotBelongsToShows matches by id, else by name for legacy null show_id', (
   assert.ok(!slotBelongsToShows({ show_id: null, name: 'Other' }, shows));
   assert.ok(!slotBelongsToShows({ show_id: null, name: '' }, [{ id: 'a', name: '' }]));
 });
+
+test('groupEpisodes merges hours of one show per date, newest first', async () => {
+  const { groupEpisodes, daysBetween } = await import('../lib/recordings.mjs');
+  const now = new Date('2026-11-19T12:30:00Z');
+  const slots = [{ day: 'Sunday', start_hour: 18, end_hour: 20, name: 'S2S', show_id: 's1' }];
+  const eps = groupEpisodes(listSlotHours(slots, now));
+  assert.equal(eps.length, 6);
+  assert.equal(eps[0].dateKey, '2026-11-15');
+  assert.deepEqual(eps[0].hours.map((h) => h.hour), [18, 19]);
+  assert.equal([eps[0].startHour, eps[0].endHour].join('-'), '18-20');
+  assert.equal(eps[0].expiresKey, '2026-12-27');
+  assert.equal(daysBetween('2026-11-15', '2026-11-19'), 4);
+});
