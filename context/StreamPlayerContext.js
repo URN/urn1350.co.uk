@@ -69,7 +69,6 @@ export function StreamPlayerProvider({ children }) {
       <audio
         ref={audioRef}
         src={value.streamURL}
-        preload="none"
         className="now-playing-audio"
         style={{ display: 'none' }}
       />
