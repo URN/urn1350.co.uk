@@ -92,7 +92,7 @@ export function StreamPlayerProvider({ children }) {
   return (
     <StreamPlayerContext.Provider value={value}>
       {children}
-      <audio ref={audioRef} preload="none" style={{ display: 'none' }} />
+      <audio ref={audioRef} style={{ display: 'none' }} />
     </StreamPlayerContext.Provider>
   );
 }
