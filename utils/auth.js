@@ -1,11 +1,6 @@
 import { supabase } from './supabase';
 
-export const ALLOWED_EMAIL_DOMAINS = ['nottingham.ac.uk', 'urn1350.co.uk'];
-
-export function isAllowedEmail(email) {
-  const lower = (email || '').toLowerCase();
-  return ALLOWED_EMAIL_DOMAINS.some((domain) => lower.endsWith(`@${domain}`));
-}
+export { ALLOWED_EMAIL_DOMAINS, isAllowedEmail } from '../lib/allowedEmail.mjs';
 
 export function accountNameFromUser(user) {
   return user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email || '';
