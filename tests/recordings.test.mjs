@@ -86,3 +86,17 @@ test('groupEpisodes merges hours of one show per date, newest first', async () =
   assert.deepEqual(eps[0].hours.map((h) => h.hour), [18, 19]);
   assert.equal([eps[0].startHour, eps[0].endHour].join('-'), '18-20');
 });
+
+test('listDayHours covers 24 hours, naming scheduled shows and marking status', async () => {
+  const { listDayHours } = await import('../lib/recordings.mjs');
+  const now = new Date('2026-11-20T12:30:00Z'); // Friday, London 12:30 (GMT)
+  const slots = [{ day: 'Thursday', start_hour: 20, end_hour: 22, name: 'Show', show_id: 's1' }];
+  const hours = listDayHours(slots, '2026-11-19', now);
+  assert.equal(hours.length, 24);
+  assert.equal(hours[20].showName, 'Show');
+  assert.equal(hours[21].showName, 'Show');
+  assert.equal(hours[19].showName, '');
+  assert.equal(hours[20].file, '2026-11-19-20.mp3');
+  assert.ok(hours.every((h) => h.status === 'ok'));
+  assert.equal(listDayHours(slots, '2026-11-20', now)[13].status, 'future');
+});

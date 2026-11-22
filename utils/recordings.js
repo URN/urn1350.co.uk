@@ -31,3 +31,12 @@ export async function requestRecordingUrl(file) {
   const body = await res.json();
   return body.url;
 }
+
+/** Every weekly schedule slot (the archive and the "Recording now" banner read these). */
+export async function listAllSlots() {
+  const { data, error } = await supabase
+    .from('schedule_slots')
+    .select('day, start_hour, end_hour, name, show_id');
+  if (error) throw error;
+  return data ?? [];
+}

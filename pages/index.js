@@ -1,35 +1,47 @@
-import Header from '../components/header';
-import Footer from '../components/footer';
-import Schedule from '../components/index/schedule';
-import News from '../components/index/news';
+import React from 'react';
+import Link from 'next/link';
 
-import NowPlaying from '../components/index/nowPlaying';
-import InstagramLatest from '../components/index/instagramLatest';
+import Seo from '../components/Seo';
+import Cta from '../components/Cta';
+import Reveal from '../components/Reveal';
+import PodcastCard from '../components/PodcastCard';
+import { ArrowIcon } from '../components/Icons';
+import LiveHero from '../components/home/LiveHero';
+import Lineup from '../components/home/Lineup';
+import { InstagramLatest } from '../components/home/Social';
+import { fetchSchedule, fetchPodcasts, fetchInstagramPosts } from '../lib/content';
 
-import Settings from '../settings.json';
-import EpisodesTable from '../components/PodcastBar';
-import Spotify from '../components/index/spotify';
-import JoinUs from '../components/index/joinUs';
+export default function Home({ podcasts, posts }) {
+  const featured = podcasts.filter((p) => p.featured);
+  const shown = (featured.length ? featured : podcasts).slice(0, 4);
 
-export default function Home() {
   return (
     <>
-      <Header title={Settings.siteTitle} />
-      <main>
-        <NowPlaying />
-        <InstagramLatest />
-        <div className="schedule-spotify-row">
-          <Schedule />
-          <div className="schedule-parent">
-            <Spotify />
-          </div>
-        </div>
-        <div className="home-podcast-section">
-          <EpisodesTable full={false} />
-        </div>
-        <JoinUs />
-      </main>
-      <Footer />
+      <Seo />
+      <LiveHero />
+      <Lineup />
+
+      {shown.length > 0 ? (
+        <section className="teaser" aria-labelledby="pod-h">
+          <Reveal className="section-head">
+            <h2 id="pod-h" className="h-light">Podcasts</h2>
+            <Link href="/podcasts" className="link-arrow">All podcasts<ArrowIcon /></Link>
+          </Reveal>
+          <ul className="pods pods--teaser">
+            {shown.map((p, i) => (
+              <PodcastCard podcast={p} index={i} key={p.slug} />
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      <InstagramLatest posts={posts} />
+      <Cta heading="Want to join us?" href="/pages/get-involved" label="Get involved" />
     </>
-  )
+  );
+}
+
+export async function getStaticProps() {
+  const [schedule, podcasts, posts] = await Promise.all([fetchSchedule(), fetchPodcasts(), fetchInstagramPosts()]);
+  return { props: { schedule, podcasts, posts }, revalidate: 60 };
 }

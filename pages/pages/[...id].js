@@ -1,10 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
-import Header from '../../components/header';
-import Footer from '../../components/footer';
 import Markdown from 'markdown-to-jsx';
 
-import Settings from '../../settings.json';
+import Seo from '../../components/Seo';
+import PixelHeading from '../../components/PixelHeading';
 import { getWebsitePage } from '../../utils/pages';
 
 function MdLink({ href, children, ...props }) {
@@ -23,47 +22,49 @@ function MdLink({ href, children, ...props }) {
   );
 }
 
-function PageName(str) {
-  return str
-    .replaceAll('/', ':')
+function pageName(slug) {
+  return slug
+    .replaceAll('/', ': ')
     .split('-')
-    .map((w) => w[0].toUpperCase() + w.substr(1).toLowerCase())
+    .map((w) => (w ? w[0].toUpperCase() + w.slice(1).toLowerCase() : w))
     .join(' ');
 }
 
+/** Any /pages/<slug> without its own designed page: Markdown edited under Account > Manage website. */
 export default function Page({ data, p }) {
   const slug = p.join('/');
-
-  // About page only: swap body background to Studio.png (same overlay as global)
-  React.useEffect(() => {
-    if (slug !== 'about') return;
-    document.body.classList.add('page-bg-about');
-    return () => document.body.classList.remove('page-bg-about');
-  }, [slug]);
 
   if (!data) {
     return (
       <>
-        <Header title={`Page Not found - ${Settings.siteTitle}`} />
-        <h1 className="err">Unfortunately, the page you were looking for could not be found.</h1>
-        <Footer />
+        <Seo title="Page not found" />
+        <section className="pagehead" aria-labelledby="h1">
+          <div className="pagehead__row">
+            <div className="pagehead__title">
+              <PixelHeading id="h1" size="xl">Not found</PixelHeading>
+            </div>
+          </div>
+        </section>
+        <div className="prose">
+          <p>Unfortunately, the page you were looking for could not be found.</p>
+        </div>
       </>
     );
   }
 
   return (
     <>
-      <Header title={`${PageName(slug)} - ${Settings.siteTitle}`} />
-      <main className={`page page-${slug.replace(/\//g, '-')}`}>
-        <Markdown
-          options={{
-            forceBlock: false,
-            overrides: { a: MdLink },
-          }}>
-          {data}
-        </Markdown>
+      <Seo title={pageName(slug)} />
+      <section className="pagehead" aria-labelledby="h1">
+        <div className="pagehead__row">
+          <div className="pagehead__title">
+            <PixelHeading id="h1" size="xl">{pageName(slug)}</PixelHeading>
+          </div>
+        </div>
+      </section>
+      <main className={`prose page-${slug.replace(/\//g, '-')}`}>
+        <Markdown options={{ forceBlock: false, overrides: { a: MdLink } }}>{data}</Markdown>
       </main>
-      <Footer />
     </>
   );
 }
