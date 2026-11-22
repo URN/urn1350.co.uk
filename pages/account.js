@@ -5,7 +5,10 @@ import Seo from '../components/Seo';
 import { ArrowIcon } from '../components/Icons';
 import AccountBar from '../components/account/AccountBar';
 import AdminsScreen from '../components/account/AdminsScreen';
+import ArchiveScreen from '../components/account/ArchiveScreen';
 import ProfileScreen from '../components/account/ProfileScreen';
+import RecordingEpisode from '../components/account/RecordingEpisode';
+import RecordingsScreen from '../components/account/RecordingsScreen';
 import ScheduleScreen from '../components/account/ScheduleScreen';
 import ShowScreen from '../components/account/ShowScreen';
 import ShowsScreen from '../components/account/ShowsScreen';
@@ -160,7 +163,12 @@ function SignInPanel({ loading, rejected }) {
   );
 }
 
-const VIEW_TAB = { home: 'profile', shows: 'shows', schedule: 'schedule', website: 'website', admins: 'admins' };
+const VIEW_TAB = {
+  home: 'profile',
+  recordings: 'recordings',
+  archive: 'recordings',
+  episode: 'recordings',
+  shows: 'shows', schedule: 'schedule', website: 'website', admins: 'admins' };
 
 function MembersHome({ session, onSignedOut }) {
   const userId = session.user.id;
@@ -238,7 +246,8 @@ function MembersHome({ session, onSignedOut }) {
   const myShowIds = new Set(myShows.map((show) => show.id));
   const otherShows = scheduledShows.filter((show) => !myShowIds.has(show.id));
 
-  const tabs = [{ key: 'profile', label: 'Profile' }];
+  const tabs = [{ key: 'profile', label: 'Profile' }, { key: 'recordings', label: 'Recordings' }];
+  const canArchive = isAdmin && perms.canManageShows;
   if (isAdmin) {
     if (perms.canManageShows) tabs.push({ key: 'shows', label: 'Manage shows', count: pendingRequests.length || '' });
     if (perms.canEditSchedule) tabs.push({ key: 'schedule', label: 'Schedule' });
@@ -379,6 +388,19 @@ function MembersHome({ session, onSignedOut }) {
         onLeave={myShowIds.has(openShow.id) ? () => handleLeave(openShow) : null}
       />
     );
+  } else if (view.name === 'recordings') {
+    screen = (
+      <RecordingsScreen
+        myShows={myShows}
+        canArchive={canArchive}
+        onSelectView={(name) => go({ name })}
+        onOpenEpisode={(episode) => go({ name: 'episode', episode })}
+      />
+    );
+  } else if (view.name === 'archive') {
+    screen = canArchive ? <ArchiveScreen onSelectView={(name) => go({ name })} /> : null;
+  } else if (view.name === 'episode') {
+    screen = <RecordingEpisode episode={view.episode} onBack={() => go({ name: 'recordings' })} />;
   } else if (view.name === 'shows') {
     screen = (
       <ShowsScreen
