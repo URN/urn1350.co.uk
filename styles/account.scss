@@ -2037,8 +2037,9 @@
   }
 
   &__range {
-    width: 108px;
+    width: 124px;
     flex-shrink: 0;
+    white-space: nowrap;
     font-size: 15px;
     font-variant-numeric: tabular-nums;
     color: var(--muted);
@@ -2056,7 +2057,7 @@
   }
 
   &__seek {
-    padding: 0 4px 12px 124px;
+    padding: 0 4px 12px 140px;
   }
 }
 

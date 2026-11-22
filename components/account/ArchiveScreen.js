@@ -37,12 +37,7 @@ export default function ArchiveScreen({ onSelectView }) {
     () => Array.from({ length: RETENTION_DAYS + 1 }, (_, i) => shiftDateKey(today, -i)),
     [today],
   );
-  // The day starts at 06:00, like the radio day.
-  const hours = useMemo(() => {
-    if (!slots) return [];
-    const all = listDayHours(slots, day);
-    return [...all.slice(6), ...all.slice(0, 6)];
-  }, [slots, day]);
+  const hours = useMemo(() => (slots ? listDayHours(slots, day) : []), [slots, day]);
 
   async function play(item) {
     setPlayError('');
